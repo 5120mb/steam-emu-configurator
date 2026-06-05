@@ -1,0 +1,9 @@
+pydantic~=2.13.4
+orjson~=3.11.9
+requests~=2.34.2
+dateparser~=1.4.0
+loguru~=0.7.3
+pillow~=12.2.0
+python-slugify~=8.0.4
+packaging~=26.2
+rich-argparse~=1.8.0
