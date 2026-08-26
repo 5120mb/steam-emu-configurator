@@ -11,7 +11,7 @@ from email.utils import parsedate_to_datetime
 from http.client import RemoteDisconnected
 from re import Match
 from textwrap import dedent
-from typing import overload, Literal
+from typing import Literal, overload
 
 import dateparser
 import orjson
@@ -22,131 +22,132 @@ from rich_argparse import RawDescriptionRichHelpFormatter
 from slugify import slugify
 
 from __version__ import __version__
-from common import (AdvancedArgumentParser,
-                    STATS_REPO_SUB_PATH,
-                    GH_STATS_PACKAGE_REPO_URL,
-                    DEFAULT_EARLY_ACCESS_LABEL,
-                    SEVENZIP_LIST_WILDCARD_PATTERNS,
-                    STEAMAPI_SO_NAME,
-                    STEAMCLIENT_SO_NAME,
-                    STEAMCLIENT_SO_PATTERN,
-                    STEAM_API_SO_PATTERN,
-                    SESSION,
-                    EXTRACT_FROM_PACKAGE_NAME_PATTERN,
-                    STEAM_API_DLL_PATTERN,
-                    STEAMCLIENT_DLL_PATTERN,
-                    STEAM_APPID_PATTERN,
-                    STATS_URL_TEMPLATE,
-                    APP_DETAILS_URL_TEMPLATE,
-                    SUPPORTED_LANG_EXTRACTION_STEP_1,
-                    SUPPORTED_LANG_EXTRACTION_STEP_2,
-                    LANGUAGES_ONLY_IN_GAMES,
-                    SUPPORTED_LANGUAGES_MAPPING,
-                    CONFIG_MAIN_FILENAME,
-                    CONFIG_APP_FILENAME,
-                    CONFIG_OVERLAY_FILENAME,
-                    STATS_FILENAME,
-                    INTERFACE_PATTERNS,
-                    INTERFACES_FILENAME,
-                    LONG_LANGUAGE_CHOICES,
-                    SHORT_LANGUAGE_CHOICES,
-                    ACF_APPID_PATTERN,
+from common import (ACF_APPID_PATTERN,
                     ACF_BUILDID_PATTERN,
-                    STEAM_APPID_FILENAME,
-                    LANGUAGE_CHOICES_MAPPING,
-                    get_program_dir,
-                    CURRENT_DATE,
-                    STEAM_SETTINGS_FOLDER_NAME_PATTERN,
-                    DLC_INFO_URL_TEMPLATE,
-                    GH_STATS_PACKAGE_URL,
-                    SYSTEM_PLATFORM,
                     ACHIEVEMENTS_DIRNAME,
-                    SUPPORTED_LANGUAGES_FILENAME,
+                    APP_DETAILS_URL_TEMPLATE,
+                    AdvancedArgumentParser,
+                    CONFIG_APP_FILENAME,
+                    CONFIG_MAIN_FILENAME,
+                    CONFIG_OVERLAY_FILENAME,
+                    CONFIG_USER_FILENAME,
+                    CURRENT_DATE,
+                    DEFAULT_EARLY_ACCESS_LABEL,
+                    DLC_INFO_URL_TEMPLATE,
+                    EXTRACT_FROM_PACKAGE_NAME_PATTERN,
+                    GH_STATS_PACKAGE_REPO_URL,
+                    GH_STATS_PACKAGE_URL,
+                    INTERFACES_FILENAME,
+                    INTERFACE_PATTERNS,
+                    LANGUAGES_ONLY_IN_GAMES,
+                    LANGUAGE_CHOICES_MAPPING,
                     LOCKFILE_WAIT_TIME,
-                    STEAMAPI_DLL_NAME,
+                    LONG_LANGUAGE_CHOICES,
+                    NON_GAME_APPIDS,
+                    SESSION,
+                    SEVENZIP_LIST_WILDCARD_PATTERNS,
+                    SHORT_LANGUAGE_CHOICES,
+                    STATS_FILENAME,
+                    STATS_REPO_SUB_PATH,
+                    STATS_URL_TEMPLATE,
                     STEAMAPI64_DLL_NAME,
+                    STEAMAPI_DLL_NAME,
+                    STEAMAPI_SO_NAME,
                     STEAMCLIENT64_DLL_NAME,
                     STEAMCLIENT_DLL_NAME,
-                    CONFIG_USER_FILENAME,
-                    load_data_file,
-                    NON_GAME_APPIDS)
-from custom_types.common import (OutputDirRelations,
-                                 OutputDirResult,
+                    STEAMCLIENT_DLL_PATTERN,
+                    STEAMCLIENT_SO_NAME,
+                    STEAMCLIENT_SO_PATTERN,
+                    STEAM_API_DLL_PATTERN,
+                    STEAM_API_SO_PATTERN,
+                    STEAM_APPID_FILENAME,
+                    STEAM_APPID_PATTERN,
+                    STEAM_SETTINGS_FOLDER_NAME_PATTERN,
+                    SUPPORTED_LANGUAGES_FILENAME,
+                    SUPPORTED_LANGUAGES_MAPPING,
+                    SUPPORTED_LANG_EXTRACTION_STEP_1,
+                    SUPPORTED_LANG_EXTRACTION_STEP_2,
+                    SYSTEM_PLATFORM,
+                    get_program_dir,
+                    load_data_file)
+from custom_types.common import (ExtractFromPackageFilesResult,
+                                 ExtractIdFromAcfResult,
                                  ExtractIdsResult,
                                  ExtractOrAskIdsResult,
-                                 ExtractFromPackageFilesResult,
                                  GetSteamLibLocationResult,
-                                 ExtractIdFromAcfResult)
+                                 OutputDirRelations,
+                                 OutputDirResult)
 from custom_types.emulator_user_provided import ParseEmuConfigArgsResult
-from models.app import (AppConfig,
-                        MinAppConfig,
+from models.app import (AchievementOptions,
+                        AppConfig,
                         CacheOptions,
-                        AchievementOptions,
+                        GameDetails,
                         LanguageOptions,
-                        RuntimeData,
-                        GameDetails)
+                        MinAppConfig,
+                        RuntimeData)
 from models.common import (ErrorOccurred)
-from models.emulator import (EmuConfigUserWithOptionals,
-                             EmuConfigUserSavesWithOptionals,
+from models.emulator import (EmuConfigApp,
+                             EmuConfigAppCloudSaveGeneral,
+                             EmuConfigAppCloudSaveLinux,
+                             EmuConfigAppCloudSaveWin,
+                             EmuConfigAppController,
+                             EmuConfigAppDLC,
+                             EmuConfigAppGeneral,
+                             EmuConfigAppPaths,
+                             EmuConfigMain,
+                             EmuConfigMainConnectivity,
+                             EmuConfigMainGeneral,
+                             EmuConfigMainMisc,
+                             EmuConfigMainStats,
+                             EmuConfigOverlay,
+                             EmuConfigOverlayAppearance,
+                             EmuConfigOverlayGeneral,
+                             EmuConfigOverlayHotkeys,
+                             EmuConfigUserGeneralOnlyLanguage,
                              EmuConfigUserGeneralWithOptionals,
                              EmuConfigUserOnlyGeneral,
+                             EmuConfigUserOnlyGeneralOnlyLanguage,
                              EmuConfigUserOnlySaves,
-                             EmuConfigAppGeneral,
-                             EmuConfigAppDLC,
-                             EmuConfigAppController,
-                             EmuConfigAppPaths,
-                             EmuConfigAppCloudSaveGeneral,
-                             EmuConfigAppCloudSaveWin,
-                             EmuConfigAppCloudSaveLinux,
-                             EmuConfigApp,
-                             EmuConfigMainGeneral,
-                             EmuConfigMainStats,
-                             EmuConfigMainConnectivity,
-                             EmuConfigMainMisc,
-                             EmuConfigMain,
-                             EmuConfigOverlayGeneral,
-                             EmuConfigOverlayAppearance,
-                             EmuConfigOverlayHotkeys,
-                             EmuConfigOverlay,
-                             EmuConfigUserGeneralOnlyLanguage,
-                             EmuConfigUserOnlyGeneralOnlyLanguage)
+                             EmuConfigUserSavesWithOptionals,
+                             EmuConfigUserWithOptionals)
 from models.game import AchievementInfo, GameStat
-from models.github import GHGameStat, GHGameInfo
-from models.parsed_emulator_user_provided import (ParsedUserProvidedEmuConfigMain,
-                                                  ParsedUserProvidedEmuConfigApp,
+from models.github import GHGameInfo, GHGameStat
+from models.parsed_emulator_user_provided import (ParsedUserProvidedEmuConfigApp,
+                                                  ParsedUserProvidedEmuConfigMain,
                                                   ParsedUserProvidedEmuConfigOverlay,
                                                   ParsedUserProvidedEmuConfigUser)
-from models.steam import (SteamStatEntry,
+from models.steam import (RawSteamGameInfo,
                           RawSteamStatInfo,
-                          SteamStatInfo,
-                          SteamGameReleaseDate,
-                          RawSteamGameInfo,
+                          SteamDLCInfo,
                           SteamGameInfo,
-                          SteamDLCInfo)
-from utils import (custom_copy,
-                   write_last_retrieval_flag,
-                   should_refresh_cache,
-                   GitRepo,
-                   get_git_path,
-                   check_python_version,
-                   delete_old_caches,
+                          SteamGameReleaseDate,
+                          SteamStatEntry,
+                          SteamStatInfo)
+from utils import (GitRepo,
                    _handle_ro,
-                   ensure_sevenzip,
-                   remove_readonly_flag,
-                   process_errors,
-                   sanitize_name,
-                   get_gray_icon_from_normal,
-                   read_file_content,
-                   update_emulator,
-                   pad_directory,
-                   search_for_package_file,
-                   list_compressed_file_content,
-                   extract_compressed_file_content,
+                   check_python_version,
+                   cleanup,
                    compress_directory_content,
+                   custom_copy,
+                   delete_old_caches,
+                   ensure_sevenzip,
+                   extract_compressed_file_content,
                    extract_paths_from_7z_listing,
-                   get_with_retry,
                    get_elf_lib_bitness,
-                   cleanup, parse_emu_config_args)
+                   get_git_path,
+                   get_gray_icon_from_normal,
+                   get_with_retry,
+                   list_compressed_file_content,
+                   pad_directory,
+                   parse_emu_config_args,
+                   process_errors,
+                   read_file_content,
+                   remove_readonly_flag,
+                   sanitize_name,
+                   search_for_package_file,
+                   should_refresh_cache,
+                   update_emulator,
+                   write_last_retrieval_flag)
 
 PROGRAM_DIR: str = get_program_dir()
 
@@ -324,6 +325,8 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
                                     action="store_true_int")
     emu_group.add_advanced_argument("--ec--main--general--steam-deck",
                                     help="Pretend the app is running on a steam deck. "
+                                         "**Warning**: This option is deprecated and may be removed in the future. "
+                                         "Please use the `steam_hardware_type` option instead. "
                                          "Default: `Disabled`",
                                     action="store_true_int")
     emu_group.add_advanced_argument("--ec--main--general--enable-account-avatar",
@@ -361,6 +364,27 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
                                          "Default: `empty`",
                                     type=str,
                                     metavar="PATH")
+    emu_group.add_advanced_argument("--ec--main--general--steam-hardware-type",
+                                    help="Pretend the app is running on a Steam hardware device. Possible hardware "
+                                         "list: 0 (Not on a Steam hardware device), 1 (Steam deck), "
+                                         "2 (Steam Machine), 3 (Steam Frame) "
+                                         "Default : `0`",
+                                    type=int,
+                                    choices=[0, 1, 2, 3])
+    emu_group.add_advanced_argument("--ec--main--general--steam-hardware-default-config",
+                                    help="Set the default configuration for a Steam hardware device used by "
+                                         "`Steam_Utils::GetSteamHardwareDefaultConfig()`. The emulator can auto-parse "
+                                         "this option if `steam_hardware_type` is set to a valid device and "
+                                         "`steam_hardware_default_config` is left untouched. "
+                                         "Possible values: 0 (not set), 1 (low), 2 (medium), 3 (high), 4 (max), "
+                                         "5 (Steam Deck), 6 (Steam Machine), 7 (Steam Frame) "
+                                         "Default: `0`",
+                                    type=int,
+                                    choices=[0, 1, 2, 3, 4, 5, 6, 7])
+    emu_group.add_advanced_argument("--ec--main--general--is-under-proton",
+                                    help="Pretend the app is running on proton. "
+                                         "Default: `Disabled`",
+                                    action="store_true_int")
 
     # endregion
 
@@ -417,6 +441,16 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
                                          "Saves folder. The recorded playtime will be updated every minute, "
                                          "the emulator will also resume recording playtime when the game is "
                                          "relaunched. "
+                                         "Default: `Disabled`",
+                                    action="store_true_int")
+    emu_group.add_advanced_argument("--ec--main--stats--pause-total-when-unfocused",
+                                    help="When enabled, total playtime pauses when the game's window loses focus (on "
+                                         "ALT+TAB). "
+                                         "Default: `Disabled`",
+                                    action="store_true_int")
+    emu_group.add_advanced_argument("--ec--main--stats--pause-session-when-unfocused",
+                                    help="When enabled, session playtime pauses when the game's window loses focus ("
+                                         "on ALT+TAB). "
                                          "Default: `Disabled`",
                                     action="store_true_int")
 
@@ -600,6 +634,51 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
                                     help="Always show playtime in the overlay. "
                                          "Default: `Disabled`",
                                     action="store_true_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--enable-screenshot",
+                                    help="Enable the F12 screenshot feature, whether it is enabled or not the "
+                                         "gallery/pins remain available. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-button-user-info",
+                                    help="Show the button on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-button-achievements",
+                                    help="Show the button on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-button-test-achievement",
+                                    help="Show the button on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-button-copy-id",
+                                    help="Show the button on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-button-screenshots",
+                                    help="Show the button on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-button-history",
+                                    help="Show the button on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-button-settings",
+                                    help="Show the button on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-checkbox-fps",
+                                    help="Show the checkbox on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-checkbox-frametime",
+                                    help="Show the checkbox on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
+    emu_group.add_advanced_argument("--ec--overlay--general--show-checkbox-playtime",
+                                    help="Show the checkbox on the overlay. "
+                                         "Default: `Enabled`",
+                                    action="store_false_int")
 
     # endregion
 
@@ -610,6 +689,14 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
                                          "ctrl, alt, tab, fn1, fn2, ..., fn12. You can use the \"+\" sign to combine "
                                          "multiple keys. "
                                          "Default: `shift + tab`",
+                                    type=str,
+                                    metavar="KEY-COMBO")
+
+    emu_group.add_advanced_argument("--ec--overlay--hotkeys--screenshot-combo",
+                                    help="Combination of keys used to take a screenshot. Available values: shift, "
+                                         "ctrl, alt, tab, fn1, fn2, ..., fn12. You can use the \"+\" sign to combine "
+                                         "multiple keys. "
+                                         "Default: `fn12`",
                                     type=str,
                                     metavar="KEY-COMBO")
 
@@ -682,7 +769,16 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
 
     emu_group.add_advanced_argument("--ec--overlay--appearance--Achievement-Unlock-Datetime-Format",
                                     help="Format for the achievement unlock date/time, limited to 79 characters. If "
-                                         "the output formatted string exceeds this limit, the builtin format will be "
+                                         "the output formatted string exceeds this limit, the built-in format will be "
+                                         "used. Look for the format here: "
+                                         "https://en.cppreference.com/w/cpp/chrono/c/strftime "
+                                         "Default: `%%Y/%%m/%%d - %%H:%%M:%%S`",
+                                    type=str,
+                                    metavar="DATETIME-FORMAT")
+
+    emu_group.add_advanced_argument("--ec--overlay--appearance--Screenshot-Datetime-Format",
+                                    help="Format for the screenshots date/time, limited to 79 characters. If "
+                                         "the output formatted string exceeds this limit, the built-in format will be "
                                          "used. Look for the format here: "
                                          "https://en.cppreference.com/w/cpp/chrono/c/strftime "
                                          "Default: `%%Y/%%m/%%d - %%H:%%M:%%S`",

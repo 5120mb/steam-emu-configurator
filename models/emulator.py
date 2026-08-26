@@ -1,7 +1,7 @@
 import secrets
 from typing import Literal
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from custom_types.common import KeyComboStr
 from models.common import AllowExtraBaseModel, AllowExtraStrBaseModel
@@ -137,6 +137,8 @@ class EmuConfigMainGeneral(BaseModel, validate_assignment=True):
             known Steam emulators.
 
         steam_deck: Pretend the app is running on a steam deck.
+            **Warning**: This option is deprecated and may be removed in the future. Please use the
+            `steam_hardware_type` option instead.
 
         enable_account_avatar: Enable avatar functionality.
 
@@ -157,6 +159,18 @@ class EmuConfigMainGeneral(BaseModel, validate_assignment=True):
 
         crash_printer_location: Path to a file where to log. Very basic crash logger/printer. This is intended to
             debug some annoying scenarios and best used with the debug build of the emu.
+
+        steam_hardware_type: Pretend the app is running on a Steam hardware device.
+            Possible hardware list: 0 (Not on a Steam hardware device), 1 (Steam deck), 2 (Steam Machine),
+            3 (Steam Frame)
+
+        steam_hardware_default_config: Set the default configuration for a Steam hardware device used by
+            `Steam_Utils::GetSteamHardwareDefaultConfig()`. The emulator can auto-parse this option if
+            `steam_hardware_type` is set to a valid device and `steam_hardware_default_config` is left untouched.
+            Possible values: 0 (not set), 1 (low), 2 (medium), 3 (high), 4 (max), 5 (Steam Deck), 6 (Steam Machine),
+            7 (Steam Frame)
+
+        is_under_proton: Pretend the app is running on proton.
     """
     new_app_ticket: Literal[0, 1] = Field(default=1, ge=0, le=1)
     gc_token: Literal[0, 1] = Field(default=1, ge=0, le=1)
@@ -168,6 +182,10 @@ class EmuConfigMainGeneral(BaseModel, validate_assignment=True):
     matchmaking_server_list_actual_type: Literal[0, 1] = Field(default=0, ge=0, le=1)
     matchmaking_server_details_via_source_query: Literal[0, 1] = Field(default=0, ge=0, le=1)
     crash_printer_location: str = ""
+    steam_hardware_type: Literal[0, 1, 2, 3] = Field(default=0, ge=0, le=3)
+    # pyrefly: ignore [bad-assignment]
+    steam_hardware_default_config: Literal[0, 1, 2, 3, 4, 5, 6, 7] = Field(default=0, ge=0, le=7)
+    is_under_proton: Literal[0, 1] = Field(default=0, ge=0, le=1)
 
 
 class EmuConfigMainStats(BaseModel, validate_assignment=True):
@@ -215,6 +233,11 @@ class EmuConfigMainStats(BaseModel, validate_assignment=True):
             This will create a file named "playtime.txt" in the game's GSE Saves folder.
             The recorded playtime will be updated every minute, the emulator will also resume recording playtime when
             the game is relaunched.
+
+        pause_total_when_unfocused: When enabled, total playtime pauses when the game's window loses focus (on ALT+TAB).
+
+        pause_session_when_unfocused: When enabled, session playtime pauses when the game's window loses focus
+            (on ALT+TAB).
     """
     disable_leaderboards_create_unknown: Literal[0, 1] = Field(default=0, ge=0, le=1)
     allow_unknown_stats: Literal[0, 1] = Field(default=0, ge=0, le=1)
@@ -222,6 +245,8 @@ class EmuConfigMainStats(BaseModel, validate_assignment=True):
     save_only_higher_stat_achievement_progress: Literal[0, 1] = Field(default=1, ge=0, le=1)
     paginated_achievements_icons: int = Field(default=10, ge=-1)
     record_playtime: Literal[0, 1] = Field(default=0, ge=0, le=1)
+    pause_total_when_unfocused: Literal[0, 1] = Field(default=0, ge=0, le=1)
+    pause_session_when_unfocused: Literal[0, 1] = Field(default=0, ge=0, le=1)
 
 
 class EmuConfigMainConnectivity(BaseModel, validate_assignment=True):
@@ -353,6 +378,29 @@ class EmuConfigOverlayGeneral(BaseModel, validate_assignment=True):
         overlay_always_show_frametime: Always show frametime in the overlay.
 
         overlay_always_show_playtime: Always show playtime in the overlay.
+
+        enable_screenshot: Enable the F12 screenshot feature, whether it is enabled or not the gallery/pins remain
+            available.
+
+        show_button_user_info: Show the button on the overlay.
+
+        show_button_achievements: Show the button on the overlay.
+
+        show_button_test_achievement: Show the button on the overlay.
+
+        show_button_copy_id: Show the button on the overlay.
+
+        show_button_screenshots: Show the button on the overlay.
+
+        show_button_history: Show the button on the overlay.
+
+        show_button_settings: Show the button on the overlay.
+
+        show_checkbox_fps: Show the checkbox on the overlay.
+
+        show_checkbox_frametime: Show the checkbox on the overlay.
+
+        show_checkbox_playtime: Show the checkbox on the overlay.
     """
     enable_experimental_overlay: Literal[0, 1] = Field(default=0, ge=0, le=1)
     hook_delay_sec: int = Field(default=0, ge=0)
@@ -369,6 +417,17 @@ class EmuConfigOverlayGeneral(BaseModel, validate_assignment=True):
     overlay_always_show_fps: Literal[0, 1] = Field(default=0, ge=0, le=1)
     overlay_always_show_frametime: Literal[0, 1] = Field(default=0, ge=0, le=1)
     overlay_always_show_playtime: Literal[0, 1] = Field(default=0, ge=0, le=1)
+    enable_screenshot: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_user_info: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_achievements: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_test_achievement: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_copy_id: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_screenshots: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_history: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_settings: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_checkbox_fps: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_checkbox_frametime: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_checkbox_playtime: Literal[0, 1] = Field(default=1, ge=0, le=1)
 
 
 class EmuConfigOverlayAppearance(BaseModel, validate_assignment=True):
@@ -401,8 +460,10 @@ class EmuConfigOverlayAppearance(BaseModel, validate_assignment=True):
             Set to 0 to show all achievements immediately without delay.
 
         Achievement_Unlock_Datetime_Format: Format for the achievement unlock date/time, limited to 79 characters.
-            If the output formatted string exceeds this limit, the builtin format will be used.
+            If the output formatted string exceeds this limit, the built-in format will be used.
             Look for the format here: https://en.cppreference.com/w/cpp/chrono/c/strftime
+
+        Screenshot_Datetime_Format: Same as **Achievement_Unlock_Datetime_Format**, but for screenshots.
     """
     Font_Override: str = ""
     Font_Override_Achievement_Title: str = ""
@@ -418,6 +479,7 @@ class EmuConfigOverlayAppearance(BaseModel, validate_assignment=True):
 
     Achievement_Notification_Delay: int = Field(default=0, ge=0)
     Achievement_Unlock_Datetime_Format: str = Field(default="%Y/%m/%d - %H:%M:%S", max_length=79)
+    Screenshot_Datetime_Format: str = Field(default="%Y/%m/%d - %H:%M:%S", max_length=79)
 
 
 class EmuConfigOverlayHotkeys(BaseModel, validate_assignment=True):
@@ -436,8 +498,11 @@ class EmuConfigOverlayHotkeys(BaseModel, validate_assignment=True):
                         - fn12
                     You can use the '+' sign to combine multiple keys.
                     Example: ctrl + shift + fn5
+
+        screenshot_combo: Combination of keys used to take a screenshot (same syntax as key_combo).
     """
     key_combo: KeyComboStr = Field(default="shift + tab")
+    screenshot_combo: KeyComboStr = Field(default="fn12")
 
 
 class EmuConfigOverlay(BaseModel, validate_assignment=True):

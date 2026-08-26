@@ -55,6 +55,10 @@ class UserProvidedEmuConfigMainGeneral(FrozenModel):
     matchmaking_server_list_actual_type: Literal[0, 1] = Field(default=0, ge=0, le=1)
     matchmaking_server_details_via_source_query: Literal[0, 1] = Field(default=0, ge=0, le=1)
     crash_printer_location: str = ""
+    steam_hardware_type: Literal[0, 1, 2, 3] = Field(default=0, ge=0, le=3)
+    # pyrefly: ignore [bad-assignment]
+    steam_hardware_default_config: Literal[0, 1, 2, 3, 4, 5, 6, 7] = Field(default=0, ge=0, le=7)
+    is_under_proton: Literal[0, 1] = Field(default=0, ge=0, le=1)
 
 
 class UserProvidedEmuConfigMainStats(FrozenModel):
@@ -64,6 +68,8 @@ class UserProvidedEmuConfigMainStats(FrozenModel):
     save_only_higher_stat_achievement_progress: Literal[0, 1] = Field(default=1, ge=0, le=1)
     paginated_achievements_icons: int = Field(default=10, ge=-1)
     record_playtime: Literal[0, 1] = Field(default=0, ge=0, le=1)
+    pause_total_when_unfocused: Literal[0, 1] = Field(default=0, ge=0, le=1)
+    pause_session_when_unfocused: Literal[0, 1] = Field(default=0, ge=0, le=1)
 
 
 class UserProvidedEmuConfigMainConnectivity(FrozenModel):
@@ -104,6 +110,17 @@ class UserProvidedEmuConfigOverlayGeneral(FrozenModel):
     overlay_always_show_fps: Literal[0, 1] = Field(default=0, ge=0, le=1)
     overlay_always_show_frametime: Literal[0, 1] = Field(default=0, ge=0, le=1)
     overlay_always_show_playtime: Literal[0, 1] = Field(default=0, ge=0, le=1)
+    enable_screenshot: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_user_info: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_achievements: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_test_achievement: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_copy_id: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_screenshots: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_history: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_button_settings: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_checkbox_fps: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_checkbox_frametime: Literal[0, 1] = Field(default=1, ge=0, le=1)
+    show_checkbox_playtime: Literal[0, 1] = Field(default=1, ge=0, le=1)
 
 
 class UserProvidedEmuConfigOverlayAppearance(FrozenModel):
@@ -121,10 +138,12 @@ class UserProvidedEmuConfigOverlayAppearance(FrozenModel):
 
     Achievement_Notification_Delay: int = Field(default=0, ge=0)
     Achievement_Unlock_Datetime_Format: str = Field(default="%Y/%m/%d - %H:%M:%S", max_length=79)
+    Screenshot_Datetime_Format: str = Field(default="%Y/%m/%d - %H:%M:%S", max_length=79)
 
 
 class UserProvidedEmuConfigOverlayHotkeys(FrozenModel):
     key_combo: KeyComboStr = Field(default="shift + tab")
+    screenshot_combo: KeyComboStr = Field(default="fn12")
 
 
 class UserProvidedEmuConfigUserGeneral(FrozenModel):
