@@ -3750,8 +3750,8 @@ def get_dlc_info_from_steam(appid: str,
         if not should_refresh_cache(date=last_retrieval):
             logger.info(f"Using cached DLC info: {dlc_info_file_cache_path}")
 
-            with open(dlc_info_file_cache_path, "r", encoding="utf-8") as file_stream:
-                return SteamDLCInfo.model_validate(file_stream.read())
+            with open(dlc_info_file_cache_path, "rb") as file_stream:
+                return SteamDLCInfo.model_validate(orjson.loads(file_stream.read()))
 
     try:
         response = get_with_retry(url=DLC_INFO_URL_TEMPLATE.substitute(appid=appid,
