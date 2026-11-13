@@ -22,132 +22,146 @@ from rich_argparse import RawDescriptionRichHelpFormatter
 from slugify import slugify
 
 from __version__ import __version__
-from common import (ACF_APPID_PATTERN,
-                    ACF_BUILDID_PATTERN,
-                    ACHIEVEMENTS_DIRNAME,
-                    APP_DETAILS_URL_TEMPLATE,
-                    AdvancedArgumentParser,
-                    CONFIG_APP_FILENAME,
-                    CONFIG_MAIN_FILENAME,
-                    CONFIG_OVERLAY_FILENAME,
-                    CONFIG_USER_FILENAME,
-                    CURRENT_DATE,
-                    DEFAULT_EARLY_ACCESS_LABEL,
-                    DLC_INFO_URL_TEMPLATE,
-                    EXTRACT_FROM_PACKAGE_NAME_PATTERN,
-                    GH_STATS_PACKAGE_REPO_URL,
-                    GH_STATS_PACKAGE_URL,
-                    INTERFACES_FILENAME,
-                    INTERFACE_PATTERNS,
-                    LANGUAGES_ONLY_IN_GAMES,
-                    LANGUAGE_CHOICES_MAPPING,
-                    LOCKFILE_WAIT_TIME,
-                    LONG_LANGUAGE_CHOICES,
-                    NON_GAME_APPIDS,
-                    SESSION,
-                    SEVENZIP_LIST_WILDCARD_PATTERNS,
-                    SHORT_LANGUAGE_CHOICES,
-                    STATS_FILENAME,
-                    STATS_REPO_SUB_PATH,
-                    STATS_URL_TEMPLATE,
-                    STEAMAPI64_DLL_NAME,
-                    STEAMAPI_DLL_NAME,
-                    STEAMAPI_SO_NAME,
-                    STEAMCLIENT64_DLL_NAME,
-                    STEAMCLIENT_DLL_NAME,
-                    STEAMCLIENT_DLL_PATTERN,
-                    STEAMCLIENT_SO_NAME,
-                    STEAMCLIENT_SO_PATTERN,
-                    STEAM_API_DLL_PATTERN,
-                    STEAM_API_SO_PATTERN,
-                    STEAM_APPID_FILENAME,
-                    STEAM_APPID_PATTERN,
-                    STEAM_SETTINGS_FOLDER_NAME_PATTERN,
-                    SUPPORTED_LANGUAGES_FILENAME,
-                    SUPPORTED_LANGUAGES_MAPPING,
-                    SUPPORTED_LANG_EXTRACTION_STEP_1,
-                    SUPPORTED_LANG_EXTRACTION_STEP_2,
-                    SYSTEM_PLATFORM,
-                    get_program_dir,
-                    load_data_file)
-from custom_types.common import (ExtractFromPackageFilesResult,
-                                 ExtractIdFromAcfResult,
-                                 ExtractIdsResult,
-                                 ExtractOrAskIdsResult,
-                                 GetSteamLibLocationResult,
-                                 OutputDirRelations,
-                                 OutputDirResult)
+from common import (
+    ACF_APPID_PATTERN,
+    ACF_BUILDID_PATTERN,
+    ACHIEVEMENTS_DIRNAME,
+    APP_DETAILS_URL_TEMPLATE,
+    AdvancedArgumentParser,
+    CONFIG_APP_FILENAME,
+    CONFIG_MAIN_FILENAME,
+    CONFIG_OVERLAY_FILENAME,
+    CONFIG_USER_FILENAME,
+    CURRENT_DATE,
+    DEFAULT_EARLY_ACCESS_LABEL,
+    DLC_INFO_URL_TEMPLATE,
+    EXTRACT_FROM_PACKAGE_NAME_PATTERN,
+    GH_STATS_PACKAGE_REPO_URL,
+    GH_STATS_PACKAGE_URL,
+    INTERFACES_FILENAME,
+    INTERFACE_PATTERNS,
+    LANGUAGES_ONLY_IN_GAMES,
+    LANGUAGE_CHOICES_MAPPING,
+    LOCKFILE_WAIT_TIME,
+    LONG_LANGUAGE_CHOICES,
+    NON_GAME_APPIDS,
+    SESSION,
+    SEVENZIP_LIST_WILDCARD_PATTERNS,
+    SHORT_LANGUAGE_CHOICES,
+    STATS_FILENAME,
+    STATS_REPO_SUB_PATH,
+    STATS_URL_TEMPLATE,
+    STEAMAPI64_DLL_NAME,
+    STEAMAPI_DLL_NAME,
+    STEAMAPI_SO_NAME,
+    STEAMCLIENT64_DLL_NAME,
+    STEAMCLIENT_DLL_NAME,
+    STEAMCLIENT_DLL_PATTERN,
+    STEAMCLIENT_SO_NAME,
+    STEAMCLIENT_SO_PATTERN,
+    STEAM_API_DLL_PATTERN,
+    STEAM_API_SO_PATTERN,
+    STEAM_APPID_FILENAME,
+    STEAM_APPID_PATTERN,
+    STEAM_SETTINGS_FOLDER_NAME_PATTERN,
+    SUPPORTED_LANGUAGES_FILENAME,
+    SUPPORTED_LANGUAGES_MAPPING,
+    SUPPORTED_LANG_EXTRACTION_STEP_1,
+    SUPPORTED_LANG_EXTRACTION_STEP_2,
+    SYSTEM_PLATFORM,
+    get_program_dir,
+    load_data_file,
+)
+from custom_types.common import (
+    ExtractFromPackageFilesResult,
+    ExtractIdFromAcfResult,
+    ExtractIdsResult,
+    ExtractOrAskIdsResult,
+    GetSteamLibLocationResult,
+    OutputDirRelations,
+    OutputDirResult,
+)
 from custom_types.emulator_user_provided import ParseEmuConfigArgsResult
-from models.app import (AchievementOptions,
-                        AppConfig,
-                        CacheOptions,
-                        GameDetails,
-                        LanguageOptions,
-                        MinAppConfig,
-                        RuntimeData)
+from models.app import (
+    AchievementOptions,
+    AppConfig,
+    CacheOptions,
+    GameDetails,
+    LanguageOptions,
+    MinAppConfig,
+    RuntimeData,
+)
 from models.common import (ErrorOccurred)
-from models.emulator import (EmuConfigApp,
-                             EmuConfigAppCloudSaveGeneral,
-                             EmuConfigAppCloudSaveLinux,
-                             EmuConfigAppCloudSaveWin,
-                             EmuConfigAppController,
-                             EmuConfigAppDLC,
-                             EmuConfigAppGeneral,
-                             EmuConfigAppPaths,
-                             EmuConfigMain,
-                             EmuConfigMainConnectivity,
-                             EmuConfigMainGeneral,
-                             EmuConfigMainMisc,
-                             EmuConfigMainStats,
-                             EmuConfigOverlay,
-                             EmuConfigOverlayAppearance,
-                             EmuConfigOverlayGeneral,
-                             EmuConfigOverlayHotkeys,
-                             EmuConfigUserGeneralOnlyLanguage,
-                             EmuConfigUserGeneralWithOptionals,
-                             EmuConfigUserOnlyGeneral,
-                             EmuConfigUserOnlyGeneralOnlyLanguage,
-                             EmuConfigUserOnlySaves,
-                             EmuConfigUserSavesWithOptionals,
-                             EmuConfigUserWithOptionals)
+from models.emulator import (
+    EmuConfigApp,
+    EmuConfigAppCloudSaveGeneral,
+    EmuConfigAppCloudSaveLinux,
+    EmuConfigAppCloudSaveWin,
+    EmuConfigAppController,
+    EmuConfigAppDLC,
+    EmuConfigAppGeneral,
+    EmuConfigAppPaths,
+    EmuConfigMain,
+    EmuConfigMainConnectivity,
+    EmuConfigMainGeneral,
+    EmuConfigMainMisc,
+    EmuConfigMainStats,
+    EmuConfigOverlay,
+    EmuConfigOverlayAppearance,
+    EmuConfigOverlayGeneral,
+    EmuConfigOverlayHotkeys,
+    EmuConfigUserGeneralOnlyLanguage,
+    EmuConfigUserGeneralWithOptionals,
+    EmuConfigUserOnlyGeneral,
+    EmuConfigUserOnlyGeneralOnlyLanguage,
+    EmuConfigUserOnlySaves,
+    EmuConfigUserSavesWithOptionals,
+    EmuConfigUserWithOptionals,
+)
 from models.game import AchievementInfo, GameStat
 from models.github import GHGameInfo, GHGameStat
-from models.parsed_emulator_user_provided import (ParsedUserProvidedEmuConfigApp,
-                                                  ParsedUserProvidedEmuConfigMain,
-                                                  ParsedUserProvidedEmuConfigOverlay,
-                                                  ParsedUserProvidedEmuConfigUser)
-from models.steam import (RawSteamGameInfo,
-                          RawSteamStatInfo,
-                          SteamDLCInfo,
-                          SteamGameInfo,
-                          SteamGameReleaseDate,
-                          SteamStatEntry,
-                          SteamStatInfo)
-from utils import (GitRepo,
-                   _handle_ro,
-                   check_python_version,
-                   cleanup,
-                   compress_directory_content,
-                   custom_copy,
-                   delete_old_caches,
-                   ensure_sevenzip,
-                   extract_compressed_file_content,
-                   extract_paths_from_7z_listing,
-                   get_elf_lib_bitness,
-                   get_git_path,
-                   get_gray_icon_from_normal,
-                   get_with_retry,
-                   list_compressed_file_content,
-                   pad_directory,
-                   parse_emu_config_args,
-                   process_errors,
-                   read_file_content,
-                   remove_readonly_flag,
-                   sanitize_name,
-                   search_for_package_file,
-                   should_refresh_cache,
-                   update_emulator,
-                   write_last_retrieval_flag)
+from models.parsed_emulator_user_provided import (
+    ParsedUserProvidedEmuConfigApp,
+    ParsedUserProvidedEmuConfigMain,
+    ParsedUserProvidedEmuConfigOverlay,
+    ParsedUserProvidedEmuConfigUser,
+)
+from models.steam import (
+    RawSteamGameInfo,
+    RawSteamStatInfo,
+    SteamDLCInfo,
+    SteamGameInfo,
+    SteamGameReleaseDate,
+    SteamStatEntry,
+    SteamStatInfo,
+)
+from utils import (
+    GitRepo,
+    _handle_ro,
+    check_python_version,
+    cleanup,
+    compress_directory_content,
+    custom_copy,
+    delete_old_caches,
+    ensure_sevenzip,
+    extract_compressed_file_content,
+    extract_paths_from_7z_listing,
+    get_elf_lib_bitness,
+    get_git_path,
+    get_gray_icon_from_normal,
+    get_with_retry,
+    list_compressed_file_content,
+    pad_directory,
+    parse_emu_config_args,
+    process_errors,
+    read_file_content,
+    remove_readonly_flag,
+    sanitize_name,
+    search_for_package_file,
+    should_refresh_cache,
+    update_emulator,
+    write_last_retrieval_flag,
+)
 
 PROGRAM_DIR: str = get_program_dir()
 
@@ -155,6 +169,8 @@ error_occurred = ErrorOccurred()
 
 print_progress_flag = threading.Event()
 achievement_thread_error_flag = threading.Event()
+
+retrieving_stats_lock = threading.Lock()
 
 unnamed_stat_counter = 0
 unnamed_achievement_counter = 0
@@ -170,137 +186,168 @@ def error_sink(message):
 
 def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
     emu_group = parser.add_argument_group(
-            advanced=True,
-            title="Emulator Config",
-            description=dedent("""
-            --------------------------------------
-            
-            You should carefully read the help for each argument and understand the default values.
-            
-            Using these arguments switches the default to the opposite value for the ones that are Enable/Disable,
-            the name of the arguments don't necessarily represent the action each will perform, the name is
-            simply a copy of the original option name in the ini files.
-            
-            So if an option default is Enable then using the argument will Disable the option even if the argument
-            name doesn't describe it will switch off anything.
-            
-            i.e.: Using --ec--main--general--new-app-ticket will disable the `new-app-ticket` option because the 
-            default is to enable it.
-            
-            We do not validate any path whatsoever.
-            
-            About the User config:
-            
-            This app, if the --add-user-config is used, creates a user config with only the language defined.
-            If any argument related to the user-config is given then it will replace this behavior and the given user 
-            config data will be created. In this case the language can be left unspecified to use the one the app 
-            automatically calculates, otherwise that will also be overridden even.
-            
-            The language this app calculated will only be added if --add-user-config is used. In any other case 
-            either the one the user specifies is used or is simply not defined. 
-            
-            No user-related emu config uses the default value when the appropiate argument is not used, 
-            only the specified options are included in the ini file.
-            
-            --------------------------------------
-            """)
+        advanced=True,
+        title="Emulator Config",
+        description=dedent(
+            """
+                        --------------------------------------
+                        
+                        You should carefully read the help for each argument and understand the default values.
+                        
+                        Using these arguments switches the default to the opposite value for the ones that are 
+                        Enable/Disable,
+                        the name of the arguments don't necessarily represent the action each will perform, the name is
+                        simply a copy of the original option name in the ini files.
+                        
+                        So if an option default is Enable then using the argument will Disable the option even if the 
+                        argument
+                        name doesn't describe it will switch off anything.
+                        
+                        i.e.: Using --ec--main--general--new-app-ticket will disable the `new-app-ticket` option 
+                        because the 
+                        default is to enable it.
+                        
+                        We do not validate any path whatsoever.
+                        
+                        About the User config:
+                        
+                        This app, if the --add-user-config is used, creates a user config with only the language 
+                        defined.
+                        If any argument related to the user-config is given then it will replace this behavior and 
+                        the given user 
+                        config data will be created. In this case the language can be left unspecified to use the one 
+                        the app 
+                        automatically calculates, otherwise that will also be overridden even.
+                        
+                        The language this app calculated will only be added if --add-user-config is used. In any 
+                        other case 
+                        either the one the user specifies is used or is simply not defined. 
+                        
+                        No user-related emu config uses the default value when the appropiate argument is not used, 
+                        only the specified options are included in the ini file.
+                        
+                        --------------------------------------
+                        """,
+        ),
     )
 
     # region App Config
 
     # region App - General
 
-    emu_group.add_advanced_argument("--ec--app--general--is-beta-branch",
-                                    help="Report the game branch as beta. Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--app--general--branch-name",
-                                    help="The name of the current branch, it must also exist in the branches.json "
-                                         "file, or it will be ignored and \"public\" will be used instead. "
-                                         "Default: `public`",
-                                    type=str,
-                                    metavar="BRANCH-NAME")
+    emu_group.add_advanced_argument(
+        "--ec--app--general--is-beta-branch",
+        help="Report the game branch as beta. Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--app--general--branch-name",
+        help="The name of the current branch, it must also exist in the branches.json "
+             "file, or it will be ignored and \"public\" will be used instead. "
+             "Default: `public`",
+        type=str,
+        metavar="BRANCH-NAME",
+    )
 
     # endregion
 
     # region App - DLCs
 
-    emu_group.add_advanced_argument("--ec--app--dlcs--unlock-all",
-                                    help="Whether to report all DLCs as unlocked or only the ones listed. Some games "
-                                         "check for hidden DLCs, so sometimes this is needed, but other games do "
-                                         "emulator detection by querying fake DLCs which in such cases this should be "
-                                         "disabled. Default: `Disabled`",
-                                    action="store_true_int")
+    emu_group.add_advanced_argument(
+        "--ec--app--dlcs--unlock-all",
+        help="Whether to report all DLCs as unlocked or only the ones listed. Some games "
+             "check for hidden DLCs, so sometimes this is needed, but other games do "
+             "emulator detection by querying fake DLCs which in such cases this should be "
+             "disabled. Default: `Disabled`",
+        action="store_true_int",
+    )
 
-    emu_group.add_advanced_argument("--ec--app--dlcs--add-dlcs",
-                                    help="Add the following DLCs to the list. Notice that by default the list of DLCs "
-                                         "is automatically retrieved from the game's data. This is processed in "
-                                         "append mode. "
-                                         "Specify values as two-item tuples `(appid, name) (appid, name)`. "
-                                         "If you need to quote values, quote the entire tuple: "
-                                         "`\"(appid, name with spaces)\" (appid, name)`. "
-                                         "Default: `empty`",
-                                    nargs="*",
-                                    metavar="(APPID, NAME)")
+    emu_group.add_advanced_argument(
+        "--ec--app--dlcs--add-dlcs",
+        help="Add the following DLCs to the list. Notice that by default the list of DLCs "
+             "is automatically retrieved from the game's data. This is processed in "
+             "append mode. "
+             "Specify values as two-item tuples `(appid, name) (appid, name)`. "
+             "If you need to quote values, quote the entire tuple: "
+             "`\"(appid, name with spaces)\" (appid, name)`. "
+             "Default: `empty`",
+        nargs="*",
+        metavar="(APPID, NAME)",
+    )
 
     # endregion
 
     # region App - Controller
 
-    emu_group.add_advanced_argument("--ec--app--controller--steam-input",
-                                    help="Whether to enable SteamInput. SteamInput is automatically enabled when there "
-                                         "are action sets in \"steam_settings\\controller\\\". Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--app--controller--type",
-                                    help="Override the controller type reported to SteamInput. Default: `XBOX360`",
-                                    choices=["XBOX360", "XBOXONE", "PS3", "PS4", "PS5", "SWITCH"])
+    emu_group.add_advanced_argument(
+        "--ec--app--controller--steam-input",
+        help="Whether to enable SteamInput. SteamInput is automatically enabled when there "
+             "are action sets in \"steam_settings\\controller\\\". Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--app--controller--type",
+        help="Override the controller type reported to SteamInput. Default: `XBOX360`",
+        choices=["XBOX360", "XBOXONE", "PS3", "PS4", "PS5", "SWITCH"],
+    )
 
     # endregion
 
     # region App - Paths
 
-    emu_group.add_advanced_argument("--ec--app--paths",
-                                    help="Some rare games might need to be provided one or more paths to appids, "
-                                         "for example, the path to where a DLC is installed. This sets the paths "
-                                         "returned by the `Steam_Apps::GetAppInstallDir` function. "
-                                         "However, some other games might expect this function to return empty paths "
-                                         "to properly load DLCs. You can deliberately set the path to be empty to "
-                                         "specify this behavior. "
-                                         "Specify values as two-item tuples: `(appid, path) (appid,)`. If you need to "
-                                         "quote values, quote the entire tuple: "
-                                         "`\"(appid, path with spaces)\" (appid,)`. "
-                                         "Default: `empty`",
-                                    nargs="*",
-                                    metavar="(APPID, [PATH])")
+    emu_group.add_advanced_argument(
+        "--ec--app--paths",
+        help="Some rare games might need to be provided one or more paths to appids, "
+             "for example, the path to where a DLC is installed. This sets the paths "
+             "returned by the `Steam_Apps::GetAppInstallDir` function. "
+             "However, some other games might expect this function to return empty paths "
+             "to properly load DLCs. You can deliberately set the path to be empty to "
+             "specify this behavior. "
+             "Specify values as two-item tuples: `(appid, path) (appid,)`. If you need to "
+             "quote values, quote the entire tuple: "
+             "`\"(appid, path with spaces)\" (appid,)`. "
+             "Default: `empty`",
+        nargs="*",
+        metavar="(APPID, [PATH])",
+    )
 
     # endregion
 
     # region App - Cloud Save
 
-    emu_group.add_advanced_argument("--ec--app--cloud-save--general--create-default-dir",
-                                    help="Should the emulator create the default directory for cloud saves on "
-                                         "startup. Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--app--cloud-save--general--create-specific-dir",
-                                    help="Should the emulator create the directories specified in the cloud saves "
-                                         "section of the current OS on startup. Default: `Disabled`",
-                                    action="store_true_int")
+    emu_group.add_advanced_argument(
+        "--ec--app--cloud-save--general--create-default-dir",
+        help="Should the emulator create the default directory for cloud saves on "
+             "startup. Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--app--cloud-save--general--create-specific-dir",
+        help="Should the emulator create the directories specified in the cloud saves "
+             "section of the current OS on startup. Default: `Disabled`",
+        action="store_true_int",
+    )
 
-    emu_group.add_advanced_argument("--ec--app--cloud-save--win",
-                                    help="Directories that should be created on startup, this is used for cloud "
-                                         "saves. Some games refuse to work unless these directories exist. "
-                                         "There are reserved identifiers that are replaced at runtime, you can find a "
-                                         "list of them here: https://partner.steamgames.com/doc/features/cloud#setup "
-                                         "Default: `empty`",
-                                    nargs="*",
-                                    metavar="PATH")
-    emu_group.add_advanced_argument("--ec--app--cloud-save--linux",
-                                    help="Directories that should be created on startup, this is used for cloud "
-                                         "saves. Some games refuse to work unless these directories exist. "
-                                         "There are reserved identifiers that are replaced at runtime, you can find a "
-                                         "list of them here: https://partner.steamgames.com/doc/features/cloud#setup "
-                                         "Default: `empty`",
-                                    nargs="*",
-                                    metavar="PATH")
+    emu_group.add_advanced_argument(
+        "--ec--app--cloud-save--win",
+        help="Directories that should be created on startup, this is used for cloud "
+             "saves. Some games refuse to work unless these directories exist. "
+             "There are reserved identifiers that are replaced at runtime, you can find a "
+             "list of them here: https://partner.steamgames.com/doc/features/cloud#setup "
+             "Default: `empty`",
+        nargs="*",
+        metavar="PATH",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--app--cloud-save--linux",
+        help="Directories that should be created on startup, this is used for cloud "
+             "saves. Some games refuse to work unless these directories exist. "
+             "There are reserved identifiers that are replaced at runtime, you can find a "
+             "list of them here: https://partner.steamgames.com/doc/features/cloud#setup "
+             "Default: `empty`",
+        nargs="*",
+        metavar="PATH",
+    )
 
     # endregion
 
@@ -310,251 +357,325 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
 
     # region Main - General
 
-    emu_group.add_advanced_argument("--ec--main--general--new-app-ticket",
-                                    help="Generate a newer version of auth ticket, used by some modern apps. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--main--general--gc-token",
-                                    help="Generate/embed Game Coordinator token inside the new auth ticket. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--main--general--block-unknown-clients",
-                                    help="If enabled, the game server will only allow connections from legit Steam "
-                                         "clients and known Steam emulators. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--general--steam-deck",
-                                    help="Pretend the app is running on a steam deck. "
-                                         "**Warning**: This option is deprecated and may be removed in the future. "
-                                         "Please use the `steam_hardware_type` option instead. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--general--enable-account-avatar",
-                                    help="Enable avatar functionality. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--general--enable-voice-chat",
-                                    help="Enable the experimental voice chat feature. This may result in higher "
-                                         "system usage and cause performance drops or cause crashes. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--general--immediate-gameserver-stats",
-                                    help="Synchronize user stats/achievements with game servers as soon as possible "
-                                         "instead of caching them until the next call to `Steam_RunCallbacks()`. *Not "
-                                         "recommended to enable this.* "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--general--matchmaking-server-list-actual-type",
-                                    help="Use the proper type of the server list (internet, friends, etc...) when "
-                                         "requested by the game. If disabled: always return the type of the server "
-                                         "list as \"LAN server\". *Not recommended to enable this.* "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--general--matchmaking-server-details-via-source-query",
-                                    help="Grab the server details for matchmaking using an actual server query. If "
-                                         "disabled: use the info from the local network messages shared between "
-                                         "client/server. *Not recommended to enable this, currently breaks some "
-                                         "games.* "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--general--crash-printer-location",
-                                    help="Path to a file where to log. Very basic crash logger/printer. This is "
-                                         "intended to debug some annoying scenarios and best used with the debug "
-                                         "build of the emu. "
-                                         "Default: `empty`",
-                                    type=str,
-                                    metavar="PATH")
-    emu_group.add_advanced_argument("--ec--main--general--steam-hardware-type",
-                                    help="Pretend the app is running on a Steam hardware device. Possible hardware "
-                                         "list: 0 (Not on a Steam hardware device), 1 (Steam deck), "
-                                         "2 (Steam Machine), 3 (Steam Frame) "
-                                         "Default : `0`",
-                                    type=int,
-                                    choices=[0, 1, 2, 3])
-    emu_group.add_advanced_argument("--ec--main--general--steam-hardware-default-config",
-                                    help="Set the default configuration for a Steam hardware device used by "
-                                         "`Steam_Utils::GetSteamHardwareDefaultConfig()`. The emulator can auto-parse "
-                                         "this option if `steam_hardware_type` is set to a valid device and "
-                                         "`steam_hardware_default_config` is left untouched. "
-                                         "Possible values: 0 (not set), 1 (low), 2 (medium), 3 (high), 4 (max), "
-                                         "5 (Steam Deck), 6 (Steam Machine), 7 (Steam Frame) "
-                                         "Default: `0`",
-                                    type=int,
-                                    choices=[0, 1, 2, 3, 4, 5, 6, 7])
-    emu_group.add_advanced_argument("--ec--main--general--is-under-proton",
-                                    help="Pretend the app is running on proton. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
+    emu_group.add_advanced_argument(
+        "--ec--main--general--new-app-ticket",
+        help="Generate a newer version of auth ticket, used by some modern apps. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--gc-token",
+        help="Generate/embed Game Coordinator token inside the new auth ticket. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--block-unknown-clients",
+        help="If enabled, the game server will only allow connections from legit Steam "
+             "clients and known Steam emulators. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--steam-deck",
+        help="Pretend the app is running on a steam deck. "
+             "**Warning**: This option is deprecated and may be removed in the future. "
+             "Please use the `steam_hardware_type` option instead. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--enable-account-avatar",
+        help="Enable avatar functionality. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--enable-voice-chat",
+        help="Enable the experimental voice chat feature. This may result in higher "
+             "system usage and cause performance drops or cause crashes. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--immediate-gameserver-stats",
+        help="Synchronize user stats/achievements with game servers as soon as possible "
+             "instead of caching them until the next call to `Steam_RunCallbacks()`. *Not "
+             "recommended to enable this.* "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--matchmaking-server-list-actual-type",
+        help="Use the proper type of the server list (internet, friends, etc...) when "
+             "requested by the game. If disabled: always return the type of the server "
+             "list as \"LAN server\". *Not recommended to enable this.* "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--matchmaking-server-details-via-source-query",
+        help="Grab the server details for matchmaking using an actual server query. If "
+             "disabled: use the info from the local network messages shared between "
+             "client/server. *Not recommended to enable this, currently breaks some "
+             "games.* "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--crash-printer-location",
+        help="Path to a file where to log. Very basic crash logger/printer. This is "
+             "intended to debug some annoying scenarios and best used with the debug "
+             "build of the emu. "
+             "Default: `empty`",
+        type=str,
+        metavar="PATH",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--steam-hardware-type",
+        help="Pretend the app is running on a Steam hardware device. Possible hardware "
+             "list: 0 (Not on a Steam hardware device), 1 (Steam deck), "
+             "2 (Steam Machine), 3 (Steam Frame) "
+             "Default : `0`",
+        type=int,
+        choices=[0, 1, 2, 3],
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--steam-hardware-default-config",
+        help="Set the default configuration for a Steam hardware device used by "
+             "`Steam_Utils::GetSteamHardwareDefaultConfig()`. The emulator can auto-parse "
+             "this option if `steam_hardware_type` is set to a valid device and "
+             "`steam_hardware_default_config` is left untouched. "
+             "Possible values: 0 (not set), 1 (low), 2 (medium), 3 (high), 4 (max), "
+             "5 (Steam Deck), 6 (Steam Machine), 7 (Steam Frame) "
+             "Default: `0`",
+        type=int,
+        choices=[0, 1, 2, 3, 4, 5, 6, 7],
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--general--is-under-proton",
+        help="Pretend the app is running on proton. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
 
     # endregion
 
     # region Main - Stats
 
-    emu_group.add_advanced_argument("--ec--main--stats--disable-leaderboards-create-unknown",
-                                    help="Prevent `Steam_User_Stats::FindLeaderboard()` from always succeeding and "
-                                         "creating the unknown leaderboard. **Not recommended to enable this.** "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--stats--allow-unknown-stats",
-                                    help="Allow unknown stats to be saved/updated. By default, the emulator will only "
-                                         "save/update stats defined by the user, unknown stats requested or updated "
-                                         "by the game are rejected. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--stats--stat-achievement-progress-functionality",
-                                    help="The emulator has an internal extra functionality which reports an "
-                                         "achievement's progress when a stat tied to an achievement is updated, "
-                                         "also the progress is saved to disk so that external applications can watch "
-                                         "these updates. Only used internally for a stat tied to an achievement, "
-                                         "the normal achievement progress requests made by the game are not impacted, "
-                                         "some applications tie many stats to achievements, and update these stats "
-                                         "very frequently, causing a spam of disk writes and overlay popups; in that "
-                                         "case you can disable this functionality, but the stat progress won't be "
-                                         "saved or displayed in the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--main--stats--save-only-higher-stat-achievement-progress",
-                                    help="Save stat achievement progress value only if it is higher than the current "
-                                         "one. If disabled, the emulator will save any stat achievement progress "
-                                         "value (higher or lower). Whenever a game updates a stat which is tied to an "
-                                         "achievement's progress, the emulator will save that progress immediately to "
-                                         "disk. However, some games will update the stat very frequently (with lower "
-                                         "and higher values) resulting in spam of disk writes or overlay "
-                                         "notifications. This has no impact on the stat itself; only the achievement "
-                                         "progress, it also has no impact on the functions which directly change "
-                                         "stats, achievements, or achievement progress. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--main--stats--paginated-achievements-icons",
-                                    help="How many icons to load in memory. If set to `0`, the icon will be loaded "
-                                         "into memory only when it's requested. Set to `-1` to disable this "
-                                         "functionality (`ISteamUserStats::GetAchievementIcon()` and the overlay "
-                                         "won't be able to use icons). Each achievement has 2 icons, one when it's "
-                                         "locked and another when it's unlocked, so a value of 10 means loading 20 "
-                                         "icons. *Increasing this value will cause a huge startup delay.* "
-                                         "Default: `10`",
-                                    type=int,
-                                    metavar="NUMBER-OF-ICONS")
-    emu_group.add_advanced_argument("--ec--main--stats--record-playtime",
-                                    help="Enable the functionality that allows the emulator to record the user's "
-                                         "playtime. This will create a file named \"playtime.txt\" in the game's GSE "
-                                         "Saves folder. The recorded playtime will be updated every minute, "
-                                         "the emulator will also resume recording playtime when the game is "
-                                         "relaunched. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--stats--pause-total-when-unfocused",
-                                    help="When enabled, total playtime pauses when the game's window loses focus (on "
-                                         "ALT+TAB). "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--stats--pause-session-when-unfocused",
-                                    help="When enabled, session playtime pauses when the game's window loses focus ("
-                                         "on ALT+TAB). "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--disable-leaderboards-create-unknown",
+        help="Prevent `Steam_User_Stats::FindLeaderboard()` from always succeeding and "
+             "creating the unknown leaderboard. **Not recommended to enable this.** "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--allow-unknown-stats",
+        help="Allow unknown stats to be saved/updated. By default, the emulator will only "
+             "save/update stats defined by the user, unknown stats requested or updated "
+             "by the game are rejected. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--stat-achievement-progress-functionality",
+        help="The emulator has an internal extra functionality which reports an "
+             "achievement's progress when a stat tied to an achievement is updated, "
+             "also the progress is saved to disk so that external applications can watch "
+             "these updates. Only used internally for a stat tied to an achievement, "
+             "the normal achievement progress requests made by the game are not impacted, "
+             "some applications tie many stats to achievements, and update these stats "
+             "very frequently, causing a spam of disk writes and overlay popups; in that "
+             "case you can disable this functionality, but the stat progress won't be "
+             "saved or displayed in the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--save-only-higher-stat-achievement-progress",
+        help="Save stat achievement progress value only if it is higher than the current "
+             "one. If disabled, the emulator will save any stat achievement progress "
+             "value (higher or lower). Whenever a game updates a stat which is tied to an "
+             "achievement's progress, the emulator will save that progress immediately to "
+             "disk. However, some games will update the stat very frequently (with lower "
+             "and higher values) resulting in spam of disk writes or overlay "
+             "notifications. This has no impact on the stat itself; only the achievement "
+             "progress, it also has no impact on the functions which directly change "
+             "stats, achievements, or achievement progress. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--paginated-achievements-icons",
+        help="How many icons to load in memory. If set to `0`, the icon will be loaded "
+             "into memory only when it's requested. Set to `-1` to disable this "
+             "functionality (`ISteamUserStats::GetAchievementIcon()` and the overlay "
+             "won't be able to use icons). Each achievement has 2 icons, one when it's "
+             "locked and another when it's unlocked, so a value of 10 means loading 20 "
+             "icons. *Increasing this value will cause a huge startup delay.* "
+             "Default: `10`",
+        type=int,
+        metavar="NUMBER-OF-ICONS",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--record-playtime",
+        help="Enable the functionality that allows the emulator to record the user's "
+             "playtime. This will create a file named \"playtime.txt\" in the game's GSE "
+             "Saves folder. The recorded playtime will be updated every minute, "
+             "the emulator will also resume recording playtime when the game is "
+             "relaunched. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--pause-total-when-unfocused",
+        help="When enabled, total playtime pauses when the game's window loses focus (on "
+             "ALT+TAB). "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--stats--pause-session-when-unfocused",
+        help="When enabled, session playtime pauses when the game's window loses focus ("
+             "on ALT+TAB). "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
 
     # endregion
 
     # region Main - Connectivity
 
-    emu_group.add_advanced_argument("--ec--main--connectivity--disable-lan-only",
-                                    help="Prevent hooking OS networking APIs and allow any external requests only "
-                                         "used by the experimental builds on *Windows*. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--connectivity--disable-networking",
-                                    help="Disable all the Steam networking interface functionality, this won't "
-                                         "prevent games/apps from making external requests. Networking-related "
-                                         "functionality like lobbies or those that launch a server in the background "
-                                         "will not work. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--connectivity--listen-port",
-                                    help="Change the UDP/TCP port the emulator listens on, you should probably not "
-                                         "change this because everyone needs to use the same port, or you won't find "
-                                         "yourselves on the network. "
-                                         "Default: `47584`",
-                                    type=int,
-                                    metavar="PORT-NUMBER")
-    emu_group.add_advanced_argument("--ec--main--connectivity--offline",
-                                    help="Pretend Steam is running in offline mode. Mainly affects the function "
-                                         "`ISteamUser::BLoggedOn()`. Some games that connect to online servers might "
-                                         "only work if the emulator behaves like Steam when it's in offline mode. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--connectivity--disable-sharing-stats-with-gameserver",
-                                    help="Prevent sharing stats and achievements with any game server, "
-                                         "this also disables the interface `ISteamGameServerStats`. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--connectivity--disable-source-query",
-                                    help="Don't send server details to the server browser. Only works for game "
-                                         "servers. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--connectivity--share-leaderboards-over-network",
-                                    help="Enable sharing leaderboard scores with people playing the same game on the "
-                                         "same network. *Not ideal and synchronization isn't perfect.* "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--connectivity--disable-lobby-creation",
-                                    help="Prevent lobby creation in the steam matchmaking interface. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--connectivity--download-steamhttp-requests",
-                                    help="Attempt to download external HTTPs requests made via "
-                                         "`Steam_HTTP::SendHTTPRequest()` inside `steam_settings/http/`. Make sure to "
-                                         "enable --ec--main--connectivity--disable-lan-only and to disable "
-                                         "--ec--main--connectivity--disable-networking. This will `not` work if the "
-                                         "app is using native/OS web APIs. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--disable-lan-only",
+        help="Prevent hooking OS networking APIs and allow any external requests only "
+             "used by the experimental builds on *Windows*. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--disable-networking",
+        help="Disable all the Steam networking interface functionality, this won't "
+             "prevent games/apps from making external requests. Networking-related "
+             "functionality like lobbies or those that launch a server in the background "
+             "will not work. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--listen-port",
+        help="Change the UDP/TCP port the emulator listens on, you should probably not "
+             "change this because everyone needs to use the same port, or you won't find "
+             "yourselves on the network. "
+             "Default: `47584`",
+        type=int,
+        metavar="PORT-NUMBER",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--offline",
+        help="Pretend Steam is running in offline mode. Mainly affects the function "
+             "`ISteamUser::BLoggedOn()`. Some games that connect to online servers might "
+             "only work if the emulator behaves like Steam when it's in offline mode. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--disable-sharing-stats-with-gameserver",
+        help="Prevent sharing stats and achievements with any game server, "
+             "this also disables the interface `ISteamGameServerStats`. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--disable-source-query",
+        help="Don't send server details to the server browser. Only works for game "
+             "servers. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--share-leaderboards-over-network",
+        help="Enable sharing leaderboard scores with people playing the same game on the "
+             "same network. *Not ideal and synchronization isn't perfect.* "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--disable-lobby-creation",
+        help="Prevent lobby creation in the steam matchmaking interface. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--connectivity--download-steamhttp-requests",
+        help="Attempt to download external HTTPs requests made via "
+             "`Steam_HTTP::SendHTTPRequest()` inside `steam_settings/http/`. Make sure to "
+             "enable --ec--main--connectivity--disable-lan-only and to disable "
+             "--ec--main--connectivity--disable-networking. This will `not` work if the "
+             "app is using native/OS web APIs. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
 
     # endregion
 
     # region Main - Misc
 
-    emu_group.add_advanced_argument("--ec--main--misc--achievements-bypass",
-                                    help="Force `ISteamUserStats::SetAchievement()` to always return true. This is a "
-                                         "workaround for some games that otherwise won't work. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--misc--force-steamhttp-success",
-                                    help="Force the function `Steam_HTTP::SendHTTPRequest()` to always succeed. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--misc--disable-steamoverlaygameid-env-var",
-                                    help="Don't write env var `SteamOverlayGameId`, allowing Steam Input to work. The "
-                                         "env var `SteamOverlayGameId` breaks Steam Input when the game is added to "
-                                         "Steam as a non-steam game. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--misc--enable-steam-preowned-ids",
-                                    help="Add many Steam apps to the list of owned DLCs and to the emulator's list of "
-                                         "installed app IDs. Useful for many Source-based games. See: "
-                                         "https://developer.valvesoftware.com/wiki/Steam_Application_IDs and "
-                                         "https://developer.valvesoftware.com/wiki/Dedicated_Servers_List "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--misc--steam-game-stats-reports-dir",
-                                    help="Some Source-based games use the interface `ISteamGameStats` to report some "
-                                         "stats. The emulator can save this data to a folder. If set, the emulator "
-                                         "will create the folders if it's missing, but the path specified must be "
-                                         "writable. "
-                                         "Default: `empty`",
-                                    type=str,
-                                    metavar="PATH")
-    emu_group.add_advanced_argument("--ec--main--misc--free-weekend",
-                                    help="Some games may have extra bonuses/achievements when being or playing with a "
-                                         "free-weekend player. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--main--misc--use-32bit-inventory-item-ids",
-                                    help="Very old versions of Team Fortress 2 don't properly handle 64-bit item IDs, "
-                                         "this workaround makes Goldberg only generate 32-bit item IDs. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
+    emu_group.add_advanced_argument(
+        "--ec--main--misc--achievements-bypass",
+        help="Force `ISteamUserStats::SetAchievement()` to always return true. This is a "
+             "workaround for some games that otherwise won't work. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--misc--force-steamhttp-success",
+        help="Force the function `Steam_HTTP::SendHTTPRequest()` to always succeed. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--misc--disable-steamoverlaygameid-env-var",
+        help="Don't write env var `SteamOverlayGameId`, allowing Steam Input to work. The "
+             "env var `SteamOverlayGameId` breaks Steam Input when the game is added to "
+             "Steam as a non-steam game. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--misc--enable-steam-preowned-ids",
+        help="Add many Steam apps to the list of owned DLCs and to the emulator's list of "
+             "installed app IDs. Useful for many Source-based games. See: "
+             "https://developer.valvesoftware.com/wiki/Steam_Application_IDs and "
+             "https://developer.valvesoftware.com/wiki/Dedicated_Servers_List "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--misc--steam-game-stats-reports-dir",
+        help="Some Source-based games use the interface `ISteamGameStats` to report some "
+             "stats. The emulator can save this data to a folder. If set, the emulator "
+             "will create the folders if it's missing, but the path specified must be "
+             "writable. "
+             "Default: `empty`",
+        type=str,
+        metavar="PATH",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--misc--free-weekend",
+        help="Some games may have extra bonuses/achievements when being or playing with a "
+             "free-weekend player. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--main--misc--use-32bit-inventory-item-ids",
+        help="Very old versions of Team Fortress 2 don't properly handle 64-bit item IDs, "
+             "this workaround makes Goldberg only generate 32-bit item IDs. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
     # endregion
 
     # endregion
@@ -563,227 +684,307 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
 
     # region Overlay - General
 
-    emu_group.add_advanced_argument("--ec--overlay--general--enable-experimental-overlay",
-                                    help="Enable the experimental overlay, might cause crashes. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--hook-delay-sec",
-                                    help="Amount of time to wait before attempting to detect and hook the renderer ("
-                                         "DirectX, OpenGL, etc.). "
-                                         "Default: `0`",
-                                    type=int,
-                                    metavar="DELAY-IN-SEC")
-    emu_group.add_advanced_argument("--ec--overlay--general--renderer-detector-timeout-sec",
-                                    help="Timeout for the renderer detector. "
-                                         "Default: `15`",
-                                    type=int,
-                                    metavar="TIMEOUT-IN-SEC")
-    emu_group.add_advanced_argument("--ec--overlay--general--disable-achievement-notification",
-                                    help="Disable the achievement notifications. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--disable-friend-notification",
-                                    help="Disable friend invitations and message notifications. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--disable-achievement-progress",
-                                    help="Disable showing notifications for achievements' progress. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--disable-warning-any",
-                                    help="Disable any warning in the overlay. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--disable-warning-bad-appid",
-                                    help="Disable the bad app ID warning in the overlay. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--disable-warning-local-save",
-                                    help="Disable the local_save warning in the overlay. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--upload-achievements-icons-to-gpu",
-                                    help="Attempt to upload the achievement icons to the GPU. If disabled, "
-                                         "achievement icons won't be displayed in the overlay. This is done so that "
-                                         "the icons are displayed in the overlay, in rare cases this might keep "
-                                         "failing and cause FPS drops. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--fps-averaging-window",
-                                    help="Amount of frames to accumulate, to eventually calculate the average "
-                                         "frametime (in milliseconds). The minimum possible value is 1. Lower values "
-                                         "would result in instantaneous frametime/fps, but the FPS would be erratic. "
-                                         "Higher values would result in a more stable frametime/fps, but will be "
-                                         "inaccurate due to averaging over a long time. "
-                                         "Default: `10`",
-                                    type=int,
-                                    metavar="TIME-IN-MS")
-    emu_group.add_advanced_argument("--ec--overlay--general--overlay-always-show-user-info",
-                                    help="Always show user info in the overlay. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--overlay-always-show-fps",
-                                    help="Always show fps in the overlay. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--overlay-always-show-frametime",
-                                    help="Always show frametime in the overlay. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--overlay-always-show-playtime",
-                                    help="Always show playtime in the overlay. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--enable-screenshot",
-                                    help="Enable the F12 screenshot feature, whether it is enabled or not the "
-                                         "gallery/pins remain available. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-button-user-info",
-                                    help="Show the button on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-button-achievements",
-                                    help="Show the button on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-button-test-achievement",
-                                    help="Show the button on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-button-copy-id",
-                                    help="Show the button on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-button-screenshots",
-                                    help="Show the button on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-button-history",
-                                    help="Show the button on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-button-settings",
-                                    help="Show the button on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-checkbox-fps",
-                                    help="Show the checkbox on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-checkbox-frametime",
-                                    help="Show the checkbox on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
-    emu_group.add_advanced_argument("--ec--overlay--general--show-checkbox-playtime",
-                                    help="Show the checkbox on the overlay. "
-                                         "Default: `Enabled`",
-                                    action="store_false_int")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--enable-experimental-overlay",
+        help="Enable the experimental overlay, might cause crashes. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--hook-delay-sec",
+        help="Amount of time to wait before attempting to detect and hook the renderer ("
+             "DirectX, OpenGL, etc.). "
+             "Default: `0`",
+        type=int,
+        metavar="DELAY-IN-SEC",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--renderer-detector-timeout-sec",
+        help="Timeout for the renderer detector. "
+             "Default: `15`",
+        type=int,
+        metavar="TIMEOUT-IN-SEC",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--disable-achievement-notification",
+        help="Disable the achievement notifications. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--disable-friend-notification",
+        help="Disable friend invitations and message notifications. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--disable-achievement-progress",
+        help="Disable showing notifications for achievements' progress. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--disable-warning-any",
+        help="Disable any warning in the overlay. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--disable-warning-bad-appid",
+        help="Disable the bad app ID warning in the overlay. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--disable-warning-local-save",
+        help="Disable the local_save warning in the overlay. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--upload-achievements-icons-to-gpu",
+        help="Attempt to upload the achievement icons to the GPU. If disabled, "
+             "achievement icons won't be displayed in the overlay. This is done so that "
+             "the icons are displayed in the overlay, in rare cases this might keep "
+             "failing and cause FPS drops. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--fps-averaging-window",
+        help="Amount of frames to accumulate, to eventually calculate the average "
+             "frametime (in milliseconds). The minimum possible value is 1. Lower values "
+             "would result in instantaneous frametime/fps, but the FPS would be erratic. "
+             "Higher values would result in a more stable frametime/fps, but will be "
+             "inaccurate due to averaging over a long time. "
+             "Default: `10`",
+        type=int,
+        metavar="TIME-IN-MS",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--overlay-always-show-user-info",
+        help="Always show user info in the overlay. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--overlay-always-show-fps",
+        help="Always show fps in the overlay. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--overlay-always-show-frametime",
+        help="Always show frametime in the overlay. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--overlay-always-show-playtime",
+        help="Always show playtime in the overlay. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--enable-screenshot",
+        help="Enable the F12 screenshot feature, whether it is enabled or not the "
+             "gallery/pins remain available. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-button-user-info",
+        help="Show the button on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-button-achievements",
+        help="Show the button on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-button-test-achievement",
+        help="Show the button on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-button-copy-id",
+        help="Show the button on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-button-screenshots",
+        help="Show the button on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-button-history",
+        help="Show the button on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-button-settings",
+        help="Show the button on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-checkbox-fps",
+        help="Show the checkbox on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-checkbox-frametime",
+        help="Show the checkbox on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--general--show-checkbox-playtime",
+        help="Show the checkbox on the overlay. "
+             "Default: `Enabled`",
+        action="store_false_int",
+    )
 
     # endregion
 
     # region Overlay - Hotkeys
 
-    emu_group.add_advanced_argument("--ec--overlay--hotkeys--key-combo",
-                                    help="Combination of keys used to show/hide the overlay. Available values: shift, "
-                                         "ctrl, alt, tab, fn1, fn2, ..., fn12. You can use the \"+\" sign to combine "
-                                         "multiple keys. "
-                                         "Default: `shift + tab`",
-                                    type=str,
-                                    metavar="KEY-COMBO")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--hotkeys--key-combo",
+        help="Combination of keys used to show/hide the overlay. Available values: shift, "
+             "ctrl, alt, tab, fn1, fn2, ..., fn12. You can use the \"+\" sign to combine "
+             "multiple keys. "
+             "Default: `shift + tab`",
+        type=str,
+        metavar="KEY-COMBO",
+    )
 
-    emu_group.add_advanced_argument("--ec--overlay--hotkeys--screenshot-combo",
-                                    help="Combination of keys used to take a screenshot. Available values: shift, "
-                                         "ctrl, alt, tab, fn1, fn2, ..., fn12. You can use the \"+\" sign to combine "
-                                         "multiple keys. "
-                                         "Default: `fn12`",
-                                    type=str,
-                                    metavar="KEY-COMBO")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--hotkeys--screenshot-combo",
+        help="Combination of keys used to take a screenshot. Available values: shift, "
+             "ctrl, alt, tab, fn1, fn2, ..., fn12. You can use the \"+\" sign to combine "
+             "multiple keys. "
+             "Default: `fn12`",
+        type=str,
+        metavar="KEY-COMBO",
+    )
 
     # endregion
 
     # region Overlay - Appearance
 
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Override",
-                                    help="Load custom TrueType font from a path, it could be absolute, or relative. "
-                                         "Relative paths will be looked up inside the local folder "
-                                         "`steam_settings/fonts` first, if that isn't found, it will be looked up "
-                                         "inside the global folder `GSE Settings/settings/fonts`. "
-                                         "Default: `empty`",
-                                    type=str,
-                                    metavar="PATH")
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Override-Achievement-Title",
-                                    help="Custom font for achievement title. Leave empty to use the default font. "
-                                         "Default: `empty`",
-                                    type=str,
-                                    metavar="PATH")
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Override-Achievement-Description",
-                                    help="Custom font for achievement description. Leave empty to use the default "
-                                         "font. "
-                                         "Default: `empty`",
-                                    type=str,
-                                    metavar="PATH")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Override",
+        help="Load custom TrueType font from a path, it could be absolute, or relative. "
+             "Relative paths will be looked up inside the local folder "
+             "`steam_settings/fonts` first, if that isn't found, it will be looked up "
+             "inside the global folder `GSE Settings/settings/fonts`. "
+             "Default: `empty`",
+        type=str,
+        metavar="PATH",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Override-Achievement-Title",
+        help="Custom font for achievement title. Leave empty to use the default font. "
+             "Default: `empty`",
+        type=str,
+        metavar="PATH",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Override-Achievement-Description",
+        help="Custom font for achievement description. Leave empty to use the default "
+             "font. "
+             "Default: `empty`",
+        type=str,
+        metavar="PATH",
+    )
 
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Size",
-                                    help="Global font size. For the built-in font, a multiple of 16 is recommended. "
-                                         "E.g.: 16, 32... "
-                                         "Default: `16.0`",
-                                    type=float,
-                                    metavar="SIZE")
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Size-FPS",
-                                    help="Optional independent font size. Less or equal than 0 uses "
-                                         "--ec--overlay--appearance--Font-Size. "
-                                         "Default: `0.0`",
-                                    type=float,
-                                    metavar="SIZE")
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Size-Achievement-Title",
-                                    help="Optional independent font size. Less or equal than 0 uses "
-                                         "--ec--overlay--appearance--Font-Size. "
-                                         "Default: `0.0`",
-                                    type=float,
-                                    metavar="SIZE")
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Size-Achievement-Description",
-                                    help="Optional independent font size. Less or equal than 0 uses "
-                                         "--ec--overlay--appearance--Font-Size. "
-                                         "Default: `0.0`",
-                                    type=float,
-                                    metavar="SIZE")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Size",
+        help="Global font size. For the built-in font, a multiple of 16 is recommended. "
+             "E.g.: 16, 32... "
+             "Default: `16.0`",
+        type=float,
+        metavar="SIZE",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Size-FPS",
+        help="Optional independent font size. Less or equal than 0 uses "
+             "--ec--overlay--appearance--Font-Size. "
+             "Default: `0.0`",
+        type=float,
+        metavar="SIZE",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Size-Achievement-Title",
+        help="Optional independent font size. Less or equal than 0 uses "
+             "--ec--overlay--appearance--Font-Size. "
+             "Default: `0.0`",
+        type=float,
+        metavar="SIZE",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Size-Achievement-Description",
+        help="Optional independent font size. Less or equal than 0 uses "
+             "--ec--overlay--appearance--Font-Size. "
+             "Default: `0.0`",
+        type=float,
+        metavar="SIZE",
+    )
 
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Font-Achievement-Title-Bold",
-                                    help="Bold font for achievement title. "
-                                         "Default: `Disabled`",
-                                    action="store_true_int")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Font-Achievement-Title-Bold",
+        help="Bold font for achievement title. "
+             "Default: `Disabled`",
+        action="store_true_int",
+    )
 
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Icon-Size",
-                                    help="Achievement icon size. "
-                                         "Default: `64.0`",
-                                    type=float,
-                                    metavar="SIZE")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Icon-Size",
+        help="Achievement icon size. "
+             "Default: `64.0`",
+        type=float,
+        metavar="SIZE",
+    )
 
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Achievement-Notification-Delay",
-                                    help="Minimum time interval between achievement notifications (in seconds). Set "
-                                         "to 0 to show all achievements immediately without delay. "
-                                         "Default: `0`",
-                                    type=int,
-                                    metavar="DELAY-IN-SEC")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Achievement-Notification-Delay",
+        help="Minimum time interval between achievement notifications (in seconds). Set "
+             "to 0 to show all achievements immediately without delay. "
+             "Default: `0`",
+        type=int,
+        metavar="DELAY-IN-SEC",
+    )
 
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Achievement-Unlock-Datetime-Format",
-                                    help="Format for the achievement unlock date/time, limited to 79 characters. If "
-                                         "the output formatted string exceeds this limit, the built-in format will be "
-                                         "used. Look for the format here: "
-                                         "https://en.cppreference.com/w/cpp/chrono/c/strftime "
-                                         "Default: `%%Y/%%m/%%d - %%H:%%M:%%S`",
-                                    type=str,
-                                    metavar="DATETIME-FORMAT")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Achievement-Unlock-Datetime-Format",
+        help="Format for the achievement unlock date/time, limited to 79 characters. If "
+             "the output formatted string exceeds this limit, the built-in format will be "
+             "used. Look for the format here: "
+             "https://en.cppreference.com/w/cpp/chrono/c/strftime "
+             "Default: `%%Y/%%m/%%d - %%H:%%M:%%S`",
+        type=str,
+        metavar="DATETIME-FORMAT",
+    )
 
-    emu_group.add_advanced_argument("--ec--overlay--appearance--Screenshot-Datetime-Format",
-                                    help="Format for the screenshots date/time, limited to 79 characters. If "
-                                         "the output formatted string exceeds this limit, the built-in format will be "
-                                         "used. Look for the format here: "
-                                         "https://en.cppreference.com/w/cpp/chrono/c/strftime "
-                                         "Default: `%%Y/%%m/%%d - %%H:%%M:%%S`",
-                                    type=str,
-                                    metavar="DATETIME-FORMAT")
+    emu_group.add_advanced_argument(
+        "--ec--overlay--appearance--Screenshot-Datetime-Format",
+        help="Format for the screenshots date/time, limited to 79 characters. If "
+             "the output formatted string exceeds this limit, the built-in format will be "
+             "used. Look for the format here: "
+             "https://en.cppreference.com/w/cpp/chrono/c/strftime "
+             "Default: `%%Y/%%m/%%d - %%H:%%M:%%S`",
+        type=str,
+        metavar="DATETIME-FORMAT",
+    )
 
     # endregion
 
@@ -793,66 +994,84 @@ def _build_emu_config_args(parser: AdvancedArgumentParser) -> None:
 
     # region User - General
 
-    emu_group.add_advanced_argument("--ec--user--general--account-name",
-                                    help="User account name. "
-                                         "Default: `gse orca`",
-                                    type=str,
-                                    metavar="ACCOUNT-NAME")
-    emu_group.add_advanced_argument("--ec--user--general--account-steamid",
-                                    help="Your account ID in Steam64 format, if the specified ID is invalid, "
-                                         "the emulator will ignore it and generate a proper one. "
-                                         "Default: `randomly-generated`",
-                                    type=int,
-                                    metavar="STEAM-ID")
-    emu_group.add_advanced_argument("--ec--user--general--ticket",
-                                    help="Base64 Ticket. "
-                                         "Default: `empty`",
-                                    type=str,
-                                    metavar="BASE64-TICKET")
-    emu_group.add_advanced_argument("--ec--user--general--alt-steamid",
-                                    help="Alt SteamId for encrypted savegames. "
-                                         "Default: `0`",
-                                    type=int,
-                                    metavar="ALT-STEAM-ID")
-    emu_group.add_advanced_argument("--ec--user--general--alt-steamid-count",
-                                    help="How many calls before swapping out the SteamId to Alt. IT WILL REPLACE IT "
-                                         "AFTER THOSE CALLS. BE AWARE! "
-                                         "Default: `5`",
-                                    type=int,
-                                    metavar="COUNT")
-    emu_group.add_advanced_argument("--ec--user--general--language",
-                                    help="The language reported to the app/game. This must exist in the "
-                                         "`supported_languages.txt` file, otherwise it will be ignored by the "
-                                         "emulator. "
-                                         "Default: `english`",
-                                    type=str,
-                                    metavar="LANGUAGE")
-    emu_group.add_advanced_argument("--ec--user--general--ip-country",
-                                    help="Report a country IP if the game queries it. ISO 3166-1-alpha-2 format. "
-                                         "Default: `US`",
-                                    type=str,
-                                    metavar="IP-COUNTRY")
+    emu_group.add_advanced_argument(
+        "--ec--user--general--account-name",
+        help="User account name. "
+             "Default: `gse orca`",
+        type=str,
+        metavar="ACCOUNT-NAME",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--user--general--account-steamid",
+        help="Your account ID in Steam64 format, if the specified ID is invalid, "
+             "the emulator will ignore it and generate a proper one. "
+             "Default: `randomly-generated`",
+        type=int,
+        metavar="STEAM-ID",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--user--general--ticket",
+        help="Base64 Ticket. "
+             "Default: `empty`",
+        type=str,
+        metavar="BASE64-TICKET",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--user--general--alt-steamid",
+        help="Alt SteamId for encrypted savegames. "
+             "Default: `0`",
+        type=int,
+        metavar="ALT-STEAM-ID",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--user--general--alt-steamid-count",
+        help="How many calls before swapping out the SteamId to Alt. IT WILL REPLACE IT "
+             "AFTER THOSE CALLS. BE AWARE! "
+             "Default: `5`",
+        type=int,
+        metavar="COUNT",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--user--general--language",
+        help="The language reported to the app/game. This must exist in the "
+             "`supported_languages.txt` file, otherwise it will be ignored by the "
+             "emulator. "
+             "Default: `english`",
+        type=str,
+        metavar="LANGUAGE",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--user--general--ip-country",
+        help="Report a country IP if the game queries it. ISO 3166-1-alpha-2 format. "
+             "Default: `US`",
+        type=str,
+        metavar="IP-COUNTRY",
+    )
 
     # endregion
 
     # region User - Saves
 
-    emu_group.add_advanced_argument("--ec--user--saves--local-save-path",
-                                    help="When this is set, it will force the emulator to use the specified location "
-                                         "instead of the default global location. The path can be absolute or "
-                                         "relative to the location of the .dll/.so. Leading and trailing whitespaces "
-                                         "are trimmed. When this option is used, the global settings folder is "
-                                         "completely ignored, allowing a full portable behavior. "
-                                         "Default: `empty`",
-                                    type=str,
-                                    metavar="PATH")
-    emu_group.add_advanced_argument("--ec--user--saves--saves-folder-name",
-                                    help="Name of the base folder used to store save data, leading and trailing "
-                                         "whitespaces are trimmed. Only useful if "
-                                         "--ec--user--saves--local-save-path isn't used. "
-                                         "Default: `GSE Saves`",
-                                    type=str,
-                                    metavar="FOLDER-NAME")
+    emu_group.add_advanced_argument(
+        "--ec--user--saves--local-save-path",
+        help="When this is set, it will force the emulator to use the specified location "
+             "instead of the default global location. The path can be absolute or "
+             "relative to the location of the .dll/.so. Leading and trailing whitespaces "
+             "are trimmed. When this option is used, the global settings folder is "
+             "completely ignored, allowing a full portable behavior. "
+             "Default: `empty`",
+        type=str,
+        metavar="PATH",
+    )
+    emu_group.add_advanced_argument(
+        "--ec--user--saves--saves-folder-name",
+        help="Name of the base folder used to store save data, leading and trailing "
+             "whitespaces are trimmed. Only useful if "
+             "--ec--user--saves--local-save-path isn't used. "
+             "Default: `GSE Saves`",
+        type=str,
+        metavar="FOLDER-NAME",
+    )
 
     # endregion
 
@@ -873,142 +1092,210 @@ def main() -> None:
         sys.argv.remove("--help-advanced")
         sys.argv.append("--help")
 
-    parser = AdvancedArgumentParser(description="Build Steam emulator configuration",
-                                    show_advanced=show_advanced,
-                                    showing_help=showing_help,
-                                    formatter_class=RawDescriptionRichHelpFormatter)
+    parser = AdvancedArgumentParser(
+        description="Build Steam emulator configuration",
+        show_advanced=show_advanced,
+        showing_help=showing_help,
+        formatter_class=RawDescriptionRichHelpFormatter,
+    )
 
-    parser.add_argument("-v", "--version",
-                        action="version",
-                        version=f"%(prog)s v{__version__}")
+    parser.add_argument(
+        "-v", "--version",
+        action="version",
+        version=f"%(prog)s v{__version__}",
+    )
 
-    parser.add_argument("--help-advanced",
-                        help="Show help for the extra arguments.",
-                        action="store_true")
+    parser.add_argument(
+        "--help-advanced",
+        help="Show help for the extra arguments.",
+        action="store_true",
+    )
 
-    parser.add_argument("--appid",
-                        help="Game's Steam app ID. If not specified it is extracted from the provided directories if "
-                             "possible.",
-                        required=False,
-                        type=str)
-    parser.add_argument("--output-dir",
-                        help="Where to store the configuration. If not specified it is inferred based on the provided "
-                             "directory.",
-                        required=False,
-                        type=str)
-    parser.add_argument("--game-dir",
-                        help="Path to the (extracted/installed) game directory.",
-                        required=False,
-                        type=str)
-    parser.add_argument("--package-dir",
-                        help="Path to the game package directory. Can either be packaged or unpackaged.",
-                        required=False,
-                        type=str)
-    parser.add_argument("--api-key",
-                        help="Steam API key. Can also be specified with the env var STEAM_API_KEY",
-                        required=False,
-                        type=str)
+    parser.add_argument(
+        "--appid",
+        help="Game's Steam app ID. If not specified it is extracted from the provided directories if "
+             "possible.",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "--output-dir",
+        help="Where to store the configuration. If not specified it is inferred based on the provided "
+             "directory.",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "--game-dir",
+        help="Path to the (extracted/installed) game directory.",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "--package-dir",
+        help="Path to the game package directory. Can either be packaged or unpackaged.",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "--api-key",
+        help="Steam API key. Can also be specified with the env var STEAM_API_KEY",
+        required=False,
+        type=str,
+    )
     # noinspection PyTypeChecker
-    parser.add_argument("--preferred-language",
-                        help="The preferred language to use to retrieve achievements. Not all are supported, "
-                             "it fallbacks to English.",
-                        default="english",
-                        choices=LONG_LANGUAGE_CHOICES + SHORT_LANGUAGE_CHOICES,
-                        metavar="LANGUAGE",
-                        type=str.lower)
-    parser.add_argument("--do-not-ask",
-                        help="Don't ask for the Steam app ID when it can't be automatically extracted and simply exit.",
-                        action="store_true")
-    parser.add_argument("--include-emulator",
-                        help="Include the emulator files in the package.",
-                        action="store_true")
-    parser.add_argument("--rename-package-dir",
-                        help="Rename package directory to the game's name and release year. E.g. 'The Game (2025)'.",
-                        action="store_true")
-    parser.add_argument("--only-rename",
-                        help="Do not write anything, only rename.",
-                        action="store_true")
-    parser.add_argument("--add-language-flag-on-rename",
-                        help="On renaming when a language is provided if the game doesn't support said language "
-                             "(nor their fallback) an \"[eng]\" flag will be appended to the name.",
-                        action="store_true")
-    parser.add_argument("--add-early-access-label", "--add-ea-label",
-                        help="Add early access label to the new name if game is early access.",
-                        action="store_true")
-    parser.add_argument("--custom-early-access-label", "--custom-ea-label",
-                        help=f"Custom early access label to use instead of the default one. (Default: \""
-                             f"{DEFAULT_EARLY_ACCESS_LABEL}\")",
-                        required=False,
-                        type=str)
-    parser.add_argument("--output-dir-is-base",
-                        help="Treat the specified output directory as a base for building the output directory.",
-                        action="store_true")
-    parser.add_argument("--archive-password",
-                        help="Password to open compressed files.",
-                        required=False,
-                        type=str)
-    parser.add_argument("--use-steam-for-stats",
-                        help="Use Steam for stats (not achievements) retrieval.",
-                        action="store_true")
-    parser.add_argument("--fallback-to-steam",
-                        help="Fallback to Steam when no stat has been found on the GitHub stats package.",
-                        action="store_true")
-    parser.add_argument("--fail-if-no-dll",
-                        help="Fail earlier if no DLL/SO file is found. Otherwise only fails if no DLL/SO is found and "
-                             "--include-emulator is used.",
-                        action="store_true")
-    parser.add_argument("--compress-config",
-                        help="Compress configuration directory using the --compressed-filename specified name",
-                        action="store_true")
-    parser.add_argument("--compressed-filename",
-                        help="Filename of the resulting compressed file.",
-                        required=False,
-                        type=str)
-    parser.add_argument("--skip-achievements",
-                        help="Skip downloading and configuring the game's achievements.",
-                        action="store_true")
-    parser.add_argument("--skip-stats",
-                        help="Skip configuring the game's stats.",
-                        action="store_true")
-    parser.add_argument("--update-config-package",
-                        help="Update compressed configuration package if found. The name is taken from "
-                             "--compressed-filename so it must be supplied.",
-                        action="store_true")
-    parser.add_argument("--add-user-config",
-                        help="Add user config to setup the language.",
-                        action="store_true")
+    parser.add_argument(
+        "--preferred-language",
+        help="The preferred language to use to retrieve achievements. Not all are supported, "
+             "it fallbacks to English.",
+        default="english",
+        choices=LONG_LANGUAGE_CHOICES + SHORT_LANGUAGE_CHOICES,
+        metavar="LANGUAGE",
+        type=str.lower,
+    )
+    parser.add_argument(
+        "--do-not-ask",
+        help="Don't ask for the Steam app ID when it can't be automatically extracted and simply exit.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--include-emulator",
+        help="Include the emulator files in the package.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--rename-package-dir",
+        help="Rename package directory to the game's name and release year. E.g. 'The Game (2025)'.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--only-rename",
+        help="Do not write anything, only rename.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--add-language-flag-on-rename",
+        help="On renaming when a language is provided if the game doesn't support said language "
+             "(nor their fallback) an \"[eng]\" flag will be appended to the name.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--add-early-access-label", "--add-ea-label",
+        help="Add early access label to the new name if game is early access.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--custom-early-access-label", "--custom-ea-label",
+        help=f"Custom early access label to use instead of the default one. (Default: \""
+             f"{DEFAULT_EARLY_ACCESS_LABEL}\")",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "--output-dir-is-base",
+        help="Treat the specified output directory as a base for building the output directory.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--archive-password",
+        help="Password to open compressed files.",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "--use-steam-for-stats",
+        help="Use Steam for stats (not achievements) retrieval.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--fallback-to-steam",
+        help="Fallback to Steam when no stat has been found on the GitHub stats package.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--fail-if-no-dll",
+        help="Fail earlier if no DLL/SO file is found. Otherwise only fails if no DLL/SO is found and "
+             "--include-emulator is used.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--compress-config",
+        help="Compress configuration directory using the --compressed-filename specified name",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--compressed-filename",
+        help="Filename of the resulting compressed file.",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "--skip-achievements",
+        help="Skip downloading and configuring the game's achievements.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--skip-stats",
+        help="Skip configuring the game's stats.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--update-config-package",
+        help="Update compressed configuration package if found. The name is taken from "
+             "--compressed-filename so it must be supplied.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--add-user-config",
+        help="Add user config to setup the language.",
+        action="store_true",
+    )
 
-    parser.add_argument("--cache-game-info",
-                        help="Cache the downloaded game info and achievement icon files",
-                        action="store_true")
-    parser.add_argument("--cache-location",
-                        help="Path where to store the cache",
-                        required=False,
-                        type=str,
-                        default=os.path.join(PROGRAM_DIR, "cache"))
-    parser.add_argument("--force-achievement-icon-download",
-                        help="When using --cache-game-info, force download the icon files for the achievements and "
-                             "cache them.",
-                        action="store_true")
-    parser.add_argument("--copy-cache-back",
-                        help="Copy downloaded icons back to the cache when they exist in the existing config but not "
-                             "in the cache location. This is only useful when updating old configs",
-                        action="store_true")
+    parser.add_argument(
+        "--cache-game-info",
+        help="Cache the downloaded game info and achievement icon files",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--cache-location",
+        help="Path where to store the cache",
+        required=False,
+        type=str,
+        default=os.path.join(PROGRAM_DIR, "cache"),
+    )
+    parser.add_argument(
+        "--force-achievement-icon-download",
+        help="When using --cache-game-info, force download the icon files for the achievements and "
+             "cache them.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--copy-cache-back",
+        help="Copy downloaded icons back to the cache when they exist in the existing config but not "
+             "in the cache location. This is only useful when updating old configs",
+        action="store_true",
+    )
 
-    parser.add_argument("--include-dll",
-                        help="Include the specified DLL/SO files into the configuration for the emulator to load.",
-                        nargs="*")
+    parser.add_argument(
+        "--include-dll",
+        help="Include the specified DLL/SO files into the configuration for the emulator to load.",
+        nargs="*",
+    )
 
     # noinspection PyTypeChecker
-    parser.add_argument("--log-level",
-                        help="How much stuff is logged.",
-                        default="WARNING",
-                        choices=["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"],
-                        type=str.upper)
-    parser.add_argument("--log-file",
-                        help="Where to store the log file. By default in the program dir.",
-                        required=False,
-                        type=str)
+    parser.add_argument(
+        "--log-level",
+        help="How much stuff is logged.",
+        default="WARNING",
+        choices=["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"],
+        type=str.upper,
+    )
+    parser.add_argument(
+        "--log-file",
+        help="Where to store the log file. By default in the program dir.",
+        required=False,
+        type=str,
+    )
 
     _build_emu_config_args(parser=parser)
 
@@ -1068,8 +1355,10 @@ def main() -> None:
             app_config.compressed_filename += ".7z"
 
     if app_config.update_config_package and app_config.compressed_filename is None:
-        logger.critical("Can't update the compressed configuration package because "
-                        "no compressed filename was supplied.")
+        logger.critical(
+            "Can't update the compressed configuration package because "
+            "no compressed filename was supplied.",
+        )
         sys.exit(1)
 
     if len(app_config.include_dll) != 0:
@@ -1085,13 +1374,15 @@ def main() -> None:
     if app_config.cache_game_info and app_config.cache_location is None:
         logger.info("Using default cache location.")
 
-    thread = threading.Thread(target=delete_old_caches,
-                              kwargs={
-                                  "product_name": "steam-emu-configurator",
-                                  "current_version": __version__,
-                              },
-                              daemon=False,
-                              name="cache_deleter")
+    thread = threading.Thread(
+        target=delete_old_caches,
+        kwargs={
+            "product_name": "steam-emu-configurator",
+            "current_version": __version__,
+        },
+        daemon=False,
+        name="cache_deleter",
+    )
     thread.start()
 
     load_data_file()
@@ -1116,11 +1407,13 @@ def main() -> None:
         sys.exit(6)
 
     try:
-        runtime_data = start_configuration(app_config=stripped_app_config,
-                                           cache_opts=cache_opts,
-                                           lang_opts=lang_opts,
-                                           game_details=game_details,
-                                           user_provided_emu_config=user_provided_emu_config)
+        runtime_data = start_configuration(
+            app_config=stripped_app_config,
+            cache_opts=cache_opts,
+            lang_opts=lang_opts,
+            game_details=game_details,
+            user_provided_emu_config=user_provided_emu_config,
+        )
 
         if error_occurred.value:
             sys.exit(9)
@@ -1155,11 +1448,13 @@ def start_configuration(app_config: MinAppConfig,
     runtime_data = RuntimeData()
 
     if game_details.appid is None:
-        ids_result = get_appid_and_buildid(game_dir=app_config.game_dir,
-                                           package_dir=app_config.package_dir,
-                                           do_not_ask=app_config.do_not_ask,
-                                           tools_path=app_config.tools_path,
-                                           archive_password=app_config.archive_password)
+        ids_result = get_appid_and_buildid(
+            game_dir=app_config.game_dir,
+            package_dir=app_config.package_dir,
+            do_not_ask=app_config.do_not_ask,
+            tools_path=app_config.tools_path,
+            archive_password=app_config.archive_password,
+        )
 
         game_details.appid = ids_result["appid"]
         game_details.buildid = ids_result["buildid"]  # currently not used for anything
@@ -1169,9 +1464,11 @@ def start_configuration(app_config: MinAppConfig,
         runtime_data.tried_extracting_package_files = ids_result["tried_extracting_package_files"]
     else:
         if app_config.package_dir is not None:
-            found_acf_files, extracted_files_path = retrieve_acf_files(package_dir=app_config.package_dir,
-                                                                       tools_path=app_config.tools_path,
-                                                                       archive_password=app_config.archive_password)
+            found_acf_files, extracted_files_path = retrieve_acf_files(
+                package_dir=app_config.package_dir,
+                tools_path=app_config.tools_path,
+                archive_password=app_config.archive_password,
+            )
 
             runtime_data.acf_files = found_acf_files
             if extracted_files_path is not None:
@@ -1179,15 +1476,19 @@ def start_configuration(app_config: MinAppConfig,
                 runtime_data.tried_extracting_package_files = True
 
     game_info: SteamGameInfo | GHGameInfo
-    steam_game_info = get_steam_game_info(appid=game_details.appid,
-                                          cache_opts=cache_opts)
+    steam_game_info = get_steam_game_info(
+        appid=game_details.appid,
+        cache_opts=cache_opts,
+    )
 
     if steam_game_info is None:
         gh_game_info = get_gh_game_info(tools_path=app_config.tools_path, appid=game_details.appid)
 
         if gh_game_info is None:
-            logger.critical("No game info could be found in the GH package. Probably this app ID has no game "
-                            "information. Exiting...")
+            logger.critical(
+                "No game info could be found in the GH package. Probably this app ID has no game "
+                "information. Exiting...",
+            )
             sys.exit(3)
         else:
             game_info = gh_game_info
@@ -1197,15 +1498,17 @@ def start_configuration(app_config: MinAppConfig,
     lang_opts.supported_languages = get_supported_languages(game_info=game_info, appid=game_details.appid)
 
     if not app_config.only_rename:
-        output_dir_data = set_output_directory(package_dir=app_config.package_dir,
-                                               game_dir=app_config.game_dir,
-                                               output_dir=app_config.output_dir,
-                                               output_dir_is_base=app_config.output_dir_is_base,
-                                               extracted_files_path=runtime_data.extracted_files_path,
-                                               tried_extracting_package_files=runtime_data.tried_extracting_package_files,
-                                               fail_if_no_dll=app_config.fail_if_no_dll,
-                                               tools_path=app_config.tools_path,
-                                               archive_password=app_config.archive_password)
+        output_dir_data = set_output_directory(
+            package_dir=app_config.package_dir,
+            game_dir=app_config.game_dir,
+            output_dir=app_config.output_dir,
+            output_dir_is_base=app_config.output_dir_is_base,
+            extracted_files_path=runtime_data.extracted_files_path,
+            tried_extracting_package_files=runtime_data.tried_extracting_package_files,
+            fail_if_no_dll=app_config.fail_if_no_dll,
+            tools_path=app_config.tools_path,
+            archive_password=app_config.archive_password,
+        )
 
         app_config.output_dir = output_dir_data["output_dir"]
         runtime_data.lib_locations = output_dir_data["lib_locations"]
@@ -1215,17 +1518,20 @@ def start_configuration(app_config: MinAppConfig,
         game_details.is_linux = output_dir_data["is_linux"]
 
         if app_config.update_config_package and app_config.compressed_filename is not None:
-            extract_configuration_package(directory_to_compress=runtime_data.directory_to_compress,
-                                          compressed_filename=app_config.compressed_filename,
-                                          tools_path=app_config.tools_path)
+            extract_configuration_package(
+                directory_to_compress=runtime_data.directory_to_compress,
+                compressed_filename=app_config.compressed_filename,
+                tools_path=app_config.tools_path,
+            )
 
         logger.debug("Creating output directory...")
         for output_dir in runtime_data.output_dir_relations:
             os.makedirs(output_dir, exist_ok=True)
 
         lang_opts.sanitized_language, fallback_language_used = get_sanitized_preferred_language(
-                supported_languages=lang_opts.supported_languages,
-                preferred_language=lang_opts.preferred_language)
+            supported_languages=lang_opts.supported_languages,
+            preferred_language=lang_opts.preferred_language,
+        )
 
         if fallback_language_used:
             lang_opts.fallback_language_used = fallback_language_used
@@ -1241,53 +1547,64 @@ def start_configuration(app_config: MinAppConfig,
         if not app_config.skip_achievements or not app_config.skip_stats:
             if app_config.api_key is not None:
                 achievements_thread, fallback_language_used = handle_stat_and_achievements(
-                        skip_achievements=app_config.skip_achievements,
-                        skip_stats=app_config.skip_stats,
-                        appid=game_details.appid,
-                        tools_path=app_config.tools_path,
-                        api_key=app_config.api_key,
-                        output_dir_relations=runtime_data.output_dir_relations,
-                        acf_files=runtime_data.acf_files,
-                        use_steam_for_stats=app_config.use_steam_for_stats,
-                        fallback_to_steam=app_config.fallback_to_steam,
-                        cache_opts=cache_opts,
-                        lang_opts=lang_opts)
+                    skip_achievements=app_config.skip_achievements,
+                    skip_stats=app_config.skip_stats,
+                    appid=game_details.appid,
+                    tools_path=app_config.tools_path,
+                    api_key=app_config.api_key,
+                    output_dir_relations=runtime_data.output_dir_relations,
+                    acf_files=runtime_data.acf_files,
+                    use_steam_for_stats=app_config.use_steam_for_stats,
+                    fallback_to_steam=app_config.fallback_to_steam,
+                    cache_opts=cache_opts,
+                    lang_opts=lang_opts,
+                )
 
                 if fallback_language_used:
                     lang_opts.fallback_language_used = fallback_language_used
             else:
                 logger.warning("No API key has been provided, skipping stats and achievements.")
 
-        write_supported_languages(supported_languages=lang_opts.supported_languages,
-                                  output_dir_relations=runtime_data.output_dir_relations)
+        write_supported_languages(
+            supported_languages=lang_opts.supported_languages,
+            output_dir_relations=runtime_data.output_dir_relations,
+        )
 
-        write_interfaces_file(lib_locations=runtime_data.lib_locations,
-                              output_dir_relations=runtime_data.output_dir_relations,
-                              extracted_files_path=runtime_data.extracted_files_path,
-                              is_linux=game_details.is_linux)
+        write_interfaces_file(
+            lib_locations=runtime_data.lib_locations,
+            output_dir_relations=runtime_data.output_dir_relations,
+            extracted_files_path=runtime_data.extracted_files_path,
+            is_linux=game_details.is_linux,
+        )
 
-        write_steam_appid(appid=game_details.appid,
-                          output_dir_relations=runtime_data.output_dir_relations)
+        write_steam_appid(
+            appid=game_details.appid,
+            output_dir_relations=runtime_data.output_dir_relations,
+        )
 
-        write_emu_config(game_info=game_info,
-                         tools_path=app_config.tools_path,
-                         appid=game_details.appid,
-                         add_user_config=app_config.add_user_config,
-                         output_dir_relations=runtime_data.output_dir_relations,
-                         fallback_to_steam=app_config.fallback_to_steam,
-                         cache_opts=cache_opts,
-                         lang_opts=lang_opts,
-                         user_provided_emu_config=user_provided_emu_config)
+        write_emu_config(
+            game_info=game_info,
+            tools_path=app_config.tools_path,
+            appid=game_details.appid,
+            add_user_config=app_config.add_user_config,
+            output_dir_relations=runtime_data.output_dir_relations,
+            fallback_to_steam=app_config.fallback_to_steam,
+            cache_opts=cache_opts,
+            lang_opts=lang_opts,
+            user_provided_emu_config=user_provided_emu_config,
+        )
 
         if app_config.include_emulator:
-            add_emulator(tools_path=app_config.tools_path,
-                         output_dir_relations=runtime_data.output_dir_relations,
-                         lib_locations=runtime_data.lib_locations,
-                         output_dir=app_config.output_dir,
-                         game_dir=app_config.game_dir,
-                         extracted_files_path=runtime_data.extracted_files_path,
-                         is_linux=game_details.is_linux,
-                         include_dll=app_config.include_dll)
+            add_emulator(
+                tools_path=app_config.tools_path,
+                output_dir_relations=runtime_data.output_dir_relations,
+                lib_locations=runtime_data.lib_locations,
+                output_dir=app_config.output_dir,
+                game_dir=app_config.game_dir,
+                extracted_files_path=runtime_data.extracted_files_path,
+                is_linux=game_details.is_linux,
+                include_dll=app_config.include_dll,
+            )
 
         if achievements_thread is not None and achievements_thread.is_alive():
             logger.info("Waiting for achievements to finish downloading...")
@@ -1299,24 +1616,28 @@ def start_configuration(app_config: MinAppConfig,
                 sys.exit(4)
 
         if (app_config.compress_config
-                and runtime_data.directory_to_compress is not None
-                and app_config.compressed_filename is not None):
-            compress_config(directory_to_compress=runtime_data.directory_to_compress,
-                            game_dir=app_config.game_dir,
-                            tools_path=app_config.tools_path,
-                            compressed_filename=app_config.compressed_filename)
+            and runtime_data.directory_to_compress is not None
+            and app_config.compressed_filename is not None):
+            compress_config(
+                directory_to_compress=runtime_data.directory_to_compress,
+                game_dir=app_config.game_dir,
+                tools_path=app_config.tools_path,
+                compressed_filename=app_config.compressed_filename,
+            )
     else:
         logger.info("Configured to only rename.")
 
-    rename_package_dir(game_info=game_info,
-                       do_rename_package_dir=app_config.rename_package_dir,
-                       package_dir=app_config.package_dir,
-                       appid=game_details.appid,
-                       only_rename=app_config.only_rename,
-                       add_language_flag_on_rename=app_config.add_language_flag_on_rename,
-                       add_early_access_label=app_config.add_early_access_label,
-                       custom_early_access_label=app_config.custom_early_access_label,
-                       lang_opts=lang_opts)
+    rename_package_dir(
+        game_info=game_info,
+        do_rename_package_dir=app_config.rename_package_dir,
+        package_dir=app_config.package_dir,
+        appid=game_details.appid,
+        only_rename=app_config.only_rename,
+        add_language_flag_on_rename=app_config.add_language_flag_on_rename,
+        add_early_access_label=app_config.add_early_access_label,
+        custom_early_access_label=app_config.custom_early_access_label,
+        lang_opts=lang_opts,
+    )
 
     logger.info("Configuration creation finished.")
 
@@ -1337,10 +1658,12 @@ def handle_stat_and_achievements(skip_achievements: bool,
     stat_info: SteamStatInfo | None = None
     fallback_language_used = lang_opts.fallback_language_used
     if not skip_achievements or not skip_stats:
-        stat_info, fallback_language_used = get_stat_info(appid=appid,
-                                                          api_key=api_key,
-                                                          cache_opts=cache_opts,
-                                                          lang_opts=lang_opts)
+        stat_info, fallback_language_used = get_stat_info(
+            appid=appid,
+            api_key=api_key,
+            cache_opts=cache_opts,
+            lang_opts=lang_opts,
+        )
 
     achievements_thread: threading.Thread | None = None
     if skip_achievements:
@@ -1351,32 +1674,36 @@ def handle_stat_and_achievements(skip_achievements: bool,
         else:
             logger.info("Executing achievements download in a new thread...")
             achievements_thread_opts = AchievementOptions(
-                    appid=appid,
-                    api_key=api_key,
-                    stat_info=stat_info,
-                    acf_files=acf_files,
-                    output_dir_relations=output_dir_relations,
+                appid=appid,
+                api_key=api_key,
+                stat_info=stat_info,
+                acf_files=acf_files,
+                output_dir_relations=output_dir_relations,
             )
-            achievements_thread = threading.Thread(target=write_achievements_wrapper,
-                                                   kwargs={
-                                                       "opts": achievements_thread_opts,
-                                                       "cache_opts": cache_opts,
-                                                       "lang_opts": lang_opts,
-                                                   },
-                                                   daemon=True,
-                                                   name=f"ACH_DOWNLOAD_{appid}")
+            achievements_thread = threading.Thread(
+                target=write_achievements_wrapper,
+                kwargs={
+                    "opts": achievements_thread_opts,
+                    "cache_opts": cache_opts,
+                    "lang_opts": lang_opts,
+                },
+                daemon=True,
+                name=f"ACH_DOWNLOAD_{appid}",
+            )
             achievements_thread.start()
 
     if skip_stats:
         logger.info("Skipping downloading and configuring stats.")
     else:
         if stat_info is not None:
-            write_stats(stat_info=stat_info,
-                        use_steam_for_stats=use_steam_for_stats,
-                        output_dir_relations=output_dir_relations,
-                        tools_path=tools_path,
-                        appid=appid,
-                        fallback_to_steam=fallback_to_steam)
+            write_stats(
+                stat_info=stat_info,
+                use_steam_for_stats=use_steam_for_stats,
+                output_dir_relations=output_dir_relations,
+                tools_path=tools_path,
+                appid=appid,
+                fallback_to_steam=fallback_to_steam,
+            )
 
     return achievements_thread, fallback_language_used
 
@@ -1389,10 +1716,12 @@ def get_appid_and_buildid(game_dir: str | None,
     """
     Retrieve the app ID and build ID from either the game or package directories.
     """
-    ids_result = get_ids(game_dir=game_dir,
-                         package_dir=package_dir,
-                         tools_path=tools_path,
-                         archive_password=archive_password)
+    ids_result = get_ids(
+        game_dir=game_dir,
+        package_dir=package_dir,
+        tools_path=tools_path,
+        archive_password=archive_password,
+    )
 
     if ids_result["appid"] is None:
         if do_not_ask:
@@ -1431,29 +1760,35 @@ def set_output_directory(package_dir: str | None,
                          archive_password: str | None) -> OutputDirResult:
     if output_dir is None:
         logger.info("Trying to infer output directory...")
-        result = get_output_dir(package_dir=package_dir,
-                                game_dir=game_dir,
-                                extracted_files_path=extracted_files_path,
-                                tried_extracting_package_files=tried_extracting_package_files,
-                                fail_if_no_dll=fail_if_no_dll,
-                                tools_path=tools_path,
-                                archive_password=archive_password)
+        result = get_output_dir(
+            package_dir=package_dir,
+            game_dir=game_dir,
+            extracted_files_path=extracted_files_path,
+            tried_extracting_package_files=tried_extracting_package_files,
+            fail_if_no_dll=fail_if_no_dll,
+            tools_path=tools_path,
+            archive_password=archive_password,
+        )
 
-        logger.debug(f"Output directories:\n"
-                     f"{orjson.dumps(result['output_dir_relations'], option=orjson.OPT_INDENT_2).decode('utf-8')}")
+        logger.debug(
+            f"Output directories:\n"
+            f"{orjson.dumps(result['output_dir_relations'], option=orjson.OPT_INDENT_2).decode('utf-8')}",
+        )
 
         return result
     else:
         if output_dir_is_base:
             logger.info("Treat output directory as base was specified.")
-            return force_output_dir(output_dir=output_dir,
-                                    package_dir=package_dir,
-                                    game_dir=game_dir,
-                                    extracted_files_path=extracted_files_path,
-                                    tried_extracting_package_files=tried_extracting_package_files,
-                                    fail_if_no_dll=fail_if_no_dll,
-                                    tools_path=tools_path,
-                                    archive_password=archive_password)
+            return force_output_dir(
+                output_dir=output_dir,
+                package_dir=package_dir,
+                game_dir=game_dir,
+                extracted_files_path=extracted_files_path,
+                tried_extracting_package_files=tried_extracting_package_files,
+                fail_if_no_dll=fail_if_no_dll,
+                tools_path=tools_path,
+                archive_password=archive_password,
+            )
         else:
             if STEAM_SETTINGS_FOLDER_NAME_PATTERN.search(os.path.basename(output_dir)) is not None:
                 out_path: str = os.path.dirname(output_dir)
@@ -1467,13 +1802,14 @@ def set_output_directory(package_dir: str | None,
                 directory_to_compress = out_path
 
             result = get_steam_lib_location(
-                    game_dir=game_dir,
-                    package_dir=package_dir,
-                    extracted_files_path=extracted_files_path,
-                    tried_extracting_package_files=tried_extracting_package_files,
-                    fail_if_no_dll=fail_if_no_dll,
-                    tools_path=tools_path,
-                    archive_password=archive_password)
+                game_dir=game_dir,
+                package_dir=package_dir,
+                extracted_files_path=extracted_files_path,
+                tried_extracting_package_files=tried_extracting_package_files,
+                fail_if_no_dll=fail_if_no_dll,
+                tools_path=tools_path,
+                archive_password=archive_password,
+            )
 
             lib_locations = result["lib_locations"]
             extracted_files_path = result["extracted_files_path"]
@@ -1485,11 +1821,11 @@ def set_output_directory(package_dir: str | None,
 
             if lib_locations is not None:
                 output_dir_relations = {
-                    output_dir: [get_best_lib_file(lib_locations=lib_locations)]
+                    output_dir: [get_best_lib_file(lib_locations=lib_locations)],
                 }
             else:
                 output_dir_relations = {
-                    output_dir: None
+                    output_dir: None,
                 }
 
             return {
@@ -1521,10 +1857,12 @@ def extract_configuration_package(directory_to_compress: str | None,
         logger.error("Couldn't download 7-zip, aborting...")
         sys.exit(2)
 
-    tmp_dir = extract_compressed_file_content(sevenzip_path=sevenzip_path,
-                                              compressed_file_path=compressed_filepath,
-                                              file_list=[],
-                                              output_path=directory_to_compress)
+    tmp_dir = extract_compressed_file_content(
+        sevenzip_path=sevenzip_path,
+        compressed_file_path=compressed_filepath,
+        file_list=[],
+        output_path=directory_to_compress,
+    )
     if tmp_dir is None:
         sys.exit(4)
 
@@ -1534,8 +1872,10 @@ def extract_configuration_package(directory_to_compress: str | None,
 def get_best_lib_file(lib_locations: list[str]) -> str:
     logger.info("Searching for the best DLL/SO...")
 
-    for name_to_search in (STEAMAPI64_DLL_NAME, STEAMAPI_DLL_NAME, STEAMCLIENT64_DLL_NAME, STEAMCLIENT_DLL_NAME,
-                           STEAMAPI_SO_NAME, STEAMCLIENT_SO_NAME):
+    for name_to_search in (
+            STEAMAPI64_DLL_NAME, STEAMAPI_DLL_NAME, STEAMCLIENT64_DLL_NAME, STEAMCLIENT_DLL_NAME,
+            STEAMAPI_SO_NAME, STEAMCLIENT_SO_NAME,
+    ):
         for lib_location in lib_locations:
             lib_name = os.path.basename(lib_location)
 
@@ -1572,9 +1912,11 @@ def get_ids(game_dir: str | None,
             "tried_extracting_package_files": False,
         }
     elif package_dir is not None:
-        return extract_ids_from_package_dir(package_dir=package_dir,
-                                            tools_path=tools_path,
-                                            archive_password=archive_password)
+        return extract_ids_from_package_dir(
+            package_dir=package_dir,
+            tools_path=tools_path,
+            archive_password=archive_password,
+        )
     else:
         logger.critical("No package directory or game directory was specified. Exiting...")
         sys.exit(3)
@@ -1617,9 +1959,10 @@ def extract_ids_from_package_dir(package_dir: str,
     # First, we try with the compressed files contents
     logger.info("Trying to determine app ID and build ID from the compressed package files...")
     result = extract_ids_from_compressed_package_files(
-            package_dir=package_dir,
-            tools_path=tools_path,
-            archive_password=archive_password)
+        package_dir=package_dir,
+        tools_path=tools_path,
+        archive_password=archive_password,
+    )
 
     extracted_appid = result["appid"]
     extracted_build_id = result["buildid"]
@@ -1639,7 +1982,7 @@ def extract_ids_from_package_dir(package_dir: str,
             "buildid": extracted_build_id,
             "extracted_files_path": extraction_path,
             "resulting_acf_files": resulting_acf_files,
-            "tried_extracting_package_files": tried_extracting_package_files
+            "tried_extracting_package_files": tried_extracting_package_files,
         }
 
     # Next, we try with the loose ACF files, provided there are exactly one ACF (excluding the redistributables)
@@ -1662,7 +2005,7 @@ def extract_ids_from_package_dir(package_dir: str,
             "buildid": extracted_build_id,
             "extracted_files_path": extraction_path,
             "resulting_acf_files": resulting_acf_files,
-            "tried_extracting_package_files": tried_extracting_package_files
+            "tried_extracting_package_files": tried_extracting_package_files,
         }
 
     logger.info("IDs not found in ACF file, trying with the compressed filenames...")
@@ -1702,7 +2045,7 @@ def extract_ids_from_package_dir(package_dir: str,
             "buildid": filename_build_id,
             "extracted_files_path": extraction_path,
             "resulting_acf_files": resulting_acf_files,
-            "tried_extracting_package_files": tried_extracting_package_files
+            "tried_extracting_package_files": tried_extracting_package_files,
         }
 
     # If the appid wasn't found in the filename, then try looking for the steam_appid.txt file.
@@ -1719,7 +2062,7 @@ def extract_ids_from_package_dir(package_dir: str,
             "buildid": None,
             "extracted_files_path": extraction_path,
             "resulting_acf_files": resulting_acf_files,
-            "tried_extracting_package_files": tried_extracting_package_files
+            "tried_extracting_package_files": tried_extracting_package_files,
         }
 
     logger.debug(f"Extracted app ID from steam_appid.txt file: {found_appid}.")
@@ -1734,8 +2077,10 @@ def extract_ids_from_package_dir(package_dir: str,
     if acf_files is not None and len(acf_files) > 0:
         resulting_acf_files = acf_files
         logger.info("Trying to extract buildid from ACF file using the found app ID...")
-        extracted_build_id = extract_buildid_from_acf(acf_files=acf_files,
-                                                      appid=found_appid)
+        extracted_build_id = extract_buildid_from_acf(
+            acf_files=acf_files,
+            appid=found_appid,
+        )
 
     logger.info("Finished extracting IDs from package directory.")
     return {
@@ -1743,7 +2088,7 @@ def extract_ids_from_package_dir(package_dir: str,
         "buildid": extracted_build_id,
         "extracted_files_path": extraction_path,
         "resulting_acf_files": resulting_acf_files,
-        "tried_extracting_package_files": tried_extracting_package_files
+        "tried_extracting_package_files": tried_extracting_package_files,
     }
 
 
@@ -1777,9 +2122,11 @@ def extract_ids_from_compressed_package_files(package_dir: str,
     if not no_appid_search:
         logger.info("Extracting app ID and build ID from compressed files...")
 
-    tmp_dir = extract_from_package_files(directory=package_dir,
-                                         tools_path=tools_path,
-                                         archive_password=archive_password)
+    tmp_dir = extract_from_package_files(
+        directory=package_dir,
+        tools_path=tools_path,
+        archive_password=archive_password,
+    )
 
     if tmp_dir is None:
         if no_appid_search:
@@ -1790,7 +2137,7 @@ def extract_ids_from_compressed_package_files(package_dir: str,
                 "buildid": None,
                 "temp_path": None,
                 "acf_files": None,
-                "tried_extracting_package_files": False
+                "tried_extracting_package_files": False,
             }
 
     if no_appid_search:
@@ -1812,7 +2159,7 @@ def extract_ids_from_compressed_package_files(package_dir: str,
         "buildid": extract_id_result["buildid"],
         "temp_path": tmp_dir,
         "acf_files": extract_id_result["acf_files"],
-        "tried_extracting_package_files": True
+        "tried_extracting_package_files": True,
     }
 
 
@@ -1836,10 +2183,12 @@ def extract_from_package_files(directory: str,
         logger.critical("Couldn't download 7-zip, aborting...")
         sys.exit(2)
 
-    sevenzip_output = list_compressed_file_content(sevenzip_path=sevenzip_path,
-                                                   compressed_file_path=compressed_file,
-                                                   patterns=SEVENZIP_LIST_WILDCARD_PATTERNS,
-                                                   archive_password=archive_password)
+    sevenzip_output = list_compressed_file_content(
+        sevenzip_path=sevenzip_path,
+        compressed_file_path=compressed_file,
+        patterns=SEVENZIP_LIST_WILDCARD_PATTERNS,
+        archive_password=archive_password,
+    )
 
     if sevenzip_output is None:
         return None
@@ -1860,10 +2209,12 @@ def extract_from_package_files(directory: str,
 
     logger.info("Extracting found Steam files...")
 
-    return extract_compressed_file_content(sevenzip_path=sevenzip_path,
-                                           compressed_file_path=compressed_file,
-                                           file_list=found_files,
-                                           archive_password=archive_password)
+    return extract_compressed_file_content(
+        sevenzip_path=sevenzip_path,
+        compressed_file_path=compressed_file,
+        file_list=found_files,
+        archive_password=archive_password,
+    )
 
 
 def get_output_dir(game_dir: str | None,
@@ -1882,13 +2233,14 @@ def get_output_dir(game_dir: str | None,
         logger.info("Building output directory...")
 
         result = get_steam_lib_location(
-                game_dir=game_dir,
-                package_dir=package_dir,
-                extracted_files_path=extracted_files_path,
-                tried_extracting_package_files=tried_extracting_package_files,
-                fail_if_no_dll=fail_if_no_dll,
-                tools_path=tools_path,
-                archive_password=archive_password)
+            game_dir=game_dir,
+            package_dir=package_dir,
+            extracted_files_path=extracted_files_path,
+            tried_extracting_package_files=tried_extracting_package_files,
+            fail_if_no_dll=fail_if_no_dll,
+            tools_path=tools_path,
+            archive_password=archive_password,
+        )
 
         relative_lib_location = result["relative_lib_location"]
         lib_locations = result["lib_locations"]
@@ -1901,7 +2253,7 @@ def get_output_dir(game_dir: str | None,
 
         if relative_lib_location is None:
             output_dir_relations = {
-                os.path.join(base_path, "steam_settings"): None
+                os.path.join(base_path, "steam_settings"): None,
             }
         else:
             output_dir_relations = {}
@@ -1931,13 +2283,14 @@ def get_output_dir(game_dir: str | None,
                     output_dir_relations[output_dir].append(full_path)
     else:
         result = get_steam_lib_location(
-                game_dir=game_dir,
-                package_dir=package_dir,
-                extracted_files_path=extracted_files_path,
-                tried_extracting_package_files=tried_extracting_package_files,
-                fail_if_no_dll=fail_if_no_dll,
-                tools_path=tools_path,
-                archive_password=archive_password)
+            game_dir=game_dir,
+            package_dir=package_dir,
+            extracted_files_path=extracted_files_path,
+            tried_extracting_package_files=tried_extracting_package_files,
+            fail_if_no_dll=fail_if_no_dll,
+            tools_path=tools_path,
+            archive_password=archive_password,
+        )
 
         lib_locations = result["lib_locations"]
         extracted_files_path = result["extracted_files_path"]
@@ -1948,7 +2301,7 @@ def get_output_dir(game_dir: str | None,
             # No output directory has been given, and no DLL/SO file has been found, so we fall back to the current
             # working directory
             output_dir_relations = {
-                os.path.join(os.getcwd(), "steam_settings"): None
+                os.path.join(os.getcwd(), "steam_settings"): None,
             }
         else:
             output_dir_relations = {}
@@ -1995,13 +2348,14 @@ def force_output_dir(output_dir: str,
     logger.info("Building output directory...")
 
     result = get_steam_lib_location(
-            game_dir=game_dir,
-            package_dir=package_dir,
-            extracted_files_path=extracted_files_path,
-            tried_extracting_package_files=tried_extracting_package_files,
-            fail_if_no_dll=fail_if_no_dll,
-            tools_path=tools_path,
-            archive_password=archive_password)
+        game_dir=game_dir,
+        package_dir=package_dir,
+        extracted_files_path=extracted_files_path,
+        tried_extracting_package_files=tried_extracting_package_files,
+        fail_if_no_dll=fail_if_no_dll,
+        tools_path=tools_path,
+        archive_password=archive_password,
+    )
 
     relative_lib_location = result["relative_lib_location"]
     lib_locations = result["lib_locations"]
@@ -2012,7 +2366,7 @@ def force_output_dir(output_dir: str,
 
     if relative_lib_location is None:
         output_dir_relations = {
-            os.path.join(output_dir, "steam_settings"): None
+            os.path.join(output_dir, "steam_settings"): None,
         }
     else:
         output_dir_relations = {}
@@ -2042,8 +2396,10 @@ def force_output_dir(output_dir: str,
             else:
                 output_dir_relations[output_directory].append(fullpath_lib)
 
-    logger.debug(f"Output directories:\n"
-                 f"{orjson.dumps(output_dir_relations, option=orjson.OPT_INDENT_2).decode('utf-8')}")
+    logger.debug(
+        f"Output directories:\n"
+        f"{orjson.dumps(output_dir_relations, option=orjson.OPT_INDENT_2).decode('utf-8')}",
+    )
 
     return {
         "output_dir": output_dir,
@@ -2076,10 +2432,12 @@ def get_steam_lib_location(game_dir: str | None,
     elif package_dir is not None:
         if extracted_files_path is None and not tried_extracting_package_files:
             logger.info("DLL/SO files haven't been searched for...")
-            extracted_files_path = extract_ids_from_compressed_package_files(tools_path=tools_path,
-                                                                             package_dir=package_dir,
-                                                                             archive_password=archive_password,
-                                                                             no_appid_search=True)
+            extracted_files_path = extract_ids_from_compressed_package_files(
+                tools_path=tools_path,
+                package_dir=package_dir,
+                archive_password=archive_password,
+                no_appid_search=True,
+            )
 
         if extracted_files_path is not None:
             logger.debug("Using the extracted files directory as base.")
@@ -2152,12 +2510,14 @@ def extract_id_from_acf(root_dir: str) -> ExtractIdFromAcfResult:
     # If we didn't get only one result, then we can't do anything yet, any of the files could be the game's.
     if len(acf_files) != 1:
         logger.info("There is not only a single ACF file, can't extract app ID from ACF.")
-        logger.debug("If there is more than one ACF file then we can't know which one is the one belonging to the "
-                     "game.")
+        logger.debug(
+            "If there is more than one ACF file then we can't know which one is the one belonging to the "
+            "game.",
+        )
         return {
             "appid": None,
             "buildid": None,
-            "acf_files": acf_files
+            "acf_files": acf_files,
         }
 
     acf_file = next(iter(acf_files))
@@ -2213,7 +2573,7 @@ def extract_id_from_acf(root_dir: str) -> ExtractIdFromAcfResult:
     return {
         "appid": appid,
         "buildid": buildid,
-        "acf_files": acf_files
+        "acf_files": acf_files,
     }
 
 
@@ -2286,9 +2646,11 @@ def get_steam_game_info(appid: str,
     logger.info("Retrieving game information...")
 
     steam_game_info_file_cache_path = os.path.join(cache_opts.cache_location, appid, f"steam_game_info_english.json")
-    steam_game_info_last_retrieval_flag_path = os.path.join(cache_opts.cache_location,
-                                                            appid,
-                                                            f"steam_game_info_english_last_retrieval")
+    steam_game_info_last_retrieval_flag_path = os.path.join(
+        cache_opts.cache_location,
+        appid,
+        f"steam_game_info_english_last_retrieval",
+    )
 
     if cache_opts.cache_game_info and os.path.isfile(steam_game_info_last_retrieval_flag_path):
         with open(steam_game_info_last_retrieval_flag_path, "r", encoding="utf-8") as flag_stream:
@@ -2304,8 +2666,12 @@ def get_steam_game_info(appid: str,
 
     try:
         # Use English here to be able to extract the supported languages
-        store_info_response = get_with_retry(url=APP_DETAILS_URL_TEMPLATE.substitute(appid=appid,
-                                                                                     language="english"))
+        store_info_response = get_with_retry(
+            url=APP_DETAILS_URL_TEMPLATE.substitute(
+                appid=appid,
+                language="english",
+            ),
+        )
     except RemoteDisconnected:
         logger.critical("Couldn't retrieve game information.")
         sys.exit(1)
@@ -2393,10 +2759,12 @@ def get_stat_info(appid: str,
         do_not_compare = False
 
     for language in languages:
-        response_content = download_stat_info(appid=appid,
-                                              language=language,
-                                              api_key=api_key,
-                                              cache_opts=cache_opts)
+        response_content = download_stat_info(
+            appid=appid,
+            language=language,
+            api_key=api_key,
+            cache_opts=cache_opts,
+        )
         try:
             responses[language] = RawSteamStatInfo.model_validate_json(response_content)
         except ValidationError as err:
@@ -2440,8 +2808,10 @@ def get_stat_info(appid: str,
         return SteamStatInfo.model_validate(preferred_language_data.model_dump()), fallback_language_used
 
     if lang_opts.supported_languages is None:
-        logger.warning(f"No game stats found for {languages[0]} language and the supported languages is "
-                       f"unknown, skipping...")
+        logger.warning(
+            f"No game stats found for {languages[0]} language and the supported languages is "
+            f"unknown, skipping...",
+        )
         return None, fallback_language_used
     else:
         logger.warning(f"No game stats found for {languages[0]} language. Trying with fallback language...")
@@ -2449,17 +2819,20 @@ def get_stat_info(appid: str,
     alt_supported_languages = lang_opts.supported_languages.copy()
     alt_supported_languages.remove(lang_opts.sanitized_language)
     fallback_language, fallback_language_used = get_sanitized_preferred_language(
-            supported_languages=alt_supported_languages,
-            preferred_language=lang_opts.preferred_language,
-            quiet=True)
+        supported_languages=alt_supported_languages,
+        preferred_language=lang_opts.preferred_language,
+        quiet=True,
+    )
 
     if fallback_language_used:
         logger.info(f"Using fallback language: {fallback_language}")
 
-        response_content = download_stat_info(appid=appid,
-                                              language=fallback_language,
-                                              api_key=api_key,
-                                              cache_opts=cache_opts)
+        response_content = download_stat_info(
+            appid=appid,
+            language=fallback_language,
+            api_key=api_key,
+            cache_opts=cache_opts,
+        )
         try:
             fallback_response = RawSteamStatInfo.model_validate_json(response_content)
         except ValidationError as err:
@@ -2473,8 +2846,10 @@ def get_stat_info(appid: str,
             logger.warning("No game stats available for the game.")
             return None, fallback_language_used
         else:
-            logger.warning(f"No game stats found for the fallback language {fallback_language}, English will be used "
-                           f"for the achievements info.")
+            logger.warning(
+                f"No game stats found for the fallback language {fallback_language}, English will be used "
+                f"for the achievements info.",
+            )
             return SteamStatInfo.model_validate(english_language_data.model_dump()), fallback_language_used
     elif english_language_data.game is None:
         logger.warning(f"No fallback exists for the preferred language and there are no game stats in English.")
@@ -2489,9 +2864,11 @@ def download_stat_info(appid: str,
                        api_key: str,
                        cache_opts: CacheOptions) -> str:
     stat_file_cache_path = os.path.join(cache_opts.cache_location, appid, f"steam_stat_{language}.json")
-    stat_last_retrieval_flag_path = os.path.join(cache_opts.cache_location,
-                                                 appid,
-                                                 f"steam_stat_{language}_last_retrieval")
+    stat_last_retrieval_flag_path = os.path.join(
+        cache_opts.cache_location,
+        appid,
+        f"steam_stat_{language}_last_retrieval",
+    )
 
     if cache_opts.cache_game_info and os.path.isfile(stat_last_retrieval_flag_path):
         with open(stat_last_retrieval_flag_path, "r", encoding="utf-8") as flag_stream:
@@ -2504,9 +2881,13 @@ def download_stat_info(appid: str,
                 return file_stream.read()
 
     try:
-        stats_response = get_with_retry(url=STATS_URL_TEMPLATE.substitute(appid=appid,
-                                                                          language=language,
-                                                                          apikey=api_key))
+        stats_response = get_with_retry(
+            url=STATS_URL_TEMPLATE.substitute(
+                appid=appid,
+                language=language,
+                apikey=api_key,
+            ),
+        )
     except RemoteDisconnected:
         logger.critical(f"Couldn't retrieve stats information for {language}.")
         sys.exit(1)
@@ -2540,14 +2921,18 @@ def get_preferred_lang(preferred_lang: str,
     fallback_language_used = False
     if fallback_language in supported_languages:
         if not quiet:
-            logger.info(f"{preferred_lang} is not supported by the game, falling back to "
-                        f"{fallback_language}.")
+            logger.info(
+                f"{preferred_lang} is not supported by the game, falling back to "
+                f"{fallback_language}.",
+            )
         fallback_language_used = True
         preferred_lang = fallback_language
     else:
         if not quiet:
-            logger.warning(f"{preferred_lang} and {fallback_language} are not supported by the game, "
-                           f"falling back to English.")
+            logger.warning(
+                f"{preferred_lang} and {fallback_language} are not supported by the game, "
+                f"falling back to English.",
+            )
         preferred_lang = "english"
 
     return preferred_lang, fallback_language_used
@@ -2572,45 +2957,57 @@ def get_sanitized_preferred_language(supported_languages: set[str] | None,
             case "latam":
                 if preferred_lang not in supported_languages:
                     fallback_language = "spanish"
-                    preferred_lang, fallback_language_used = get_preferred_lang(preferred_lang=preferred_lang,
-                                                                                supported_languages=supported_languages,
-                                                                                fallback_language=fallback_language,
-                                                                                quiet=quiet)
+                    preferred_lang, fallback_language_used = get_preferred_lang(
+                        preferred_lang=preferred_lang,
+                        supported_languages=supported_languages,
+                        fallback_language=fallback_language,
+                        quiet=quiet,
+                    )
             case "spanish":
                 if preferred_lang not in supported_languages:
                     fallback_language = "latam"
-                    preferred_lang, fallback_language_used = get_preferred_lang(preferred_lang=preferred_lang,
-                                                                                supported_languages=supported_languages,
-                                                                                fallback_language=fallback_language,
-                                                                                quiet=quiet)
+                    preferred_lang, fallback_language_used = get_preferred_lang(
+                        preferred_lang=preferred_lang,
+                        supported_languages=supported_languages,
+                        fallback_language=fallback_language,
+                        quiet=quiet,
+                    )
             case "brazilian":
                 if preferred_lang not in supported_languages:
                     fallback_language = "portuguese"
-                    preferred_lang, fallback_language_used = get_preferred_lang(preferred_lang=preferred_lang,
-                                                                                supported_languages=supported_languages,
-                                                                                fallback_language=fallback_language,
-                                                                                quiet=quiet)
+                    preferred_lang, fallback_language_used = get_preferred_lang(
+                        preferred_lang=preferred_lang,
+                        supported_languages=supported_languages,
+                        fallback_language=fallback_language,
+                        quiet=quiet,
+                    )
             case "portuguese":
                 if preferred_lang not in supported_languages:
                     fallback_language = "brazilian"
-                    preferred_lang, fallback_language_used = get_preferred_lang(preferred_lang=preferred_lang,
-                                                                                supported_languages=supported_languages,
-                                                                                fallback_language=fallback_language,
-                                                                                quiet=quiet)
+                    preferred_lang, fallback_language_used = get_preferred_lang(
+                        preferred_lang=preferred_lang,
+                        supported_languages=supported_languages,
+                        fallback_language=fallback_language,
+                        quiet=quiet,
+                    )
             case "tchinese":
                 if preferred_lang not in supported_languages:
                     fallback_language = "schinese"
-                    preferred_lang, fallback_language_used = get_preferred_lang(preferred_lang=preferred_lang,
-                                                                                supported_languages=supported_languages,
-                                                                                fallback_language=fallback_language,
-                                                                                quiet=quiet)
+                    preferred_lang, fallback_language_used = get_preferred_lang(
+                        preferred_lang=preferred_lang,
+                        supported_languages=supported_languages,
+                        fallback_language=fallback_language,
+                        quiet=quiet,
+                    )
             case "schinese":
                 if preferred_lang not in supported_languages:
                     fallback_language = "tchinese"
-                    preferred_lang, fallback_language_used = get_preferred_lang(preferred_lang=preferred_lang,
-                                                                                supported_languages=supported_languages,
-                                                                                fallback_language=fallback_language,
-                                                                                quiet=quiet)
+                    preferred_lang, fallback_language_used = get_preferred_lang(
+                        preferred_lang=preferred_lang,
+                        supported_languages=supported_languages,
+                        fallback_language=fallback_language,
+                        quiet=quiet,
+                    )
             case _:
                 if preferred_lang not in supported_languages:
                     preferred_lang = "english"
@@ -2657,8 +3054,10 @@ def get_supported_languages(game_info: SteamGameInfo | GHGameInfo,
 
         for language in supported_languages:
             if language in LANGUAGES_ONLY_IN_GAMES:
-                logger.warning(f"Language {language} found supported in game but no support in Steam API, configure "
-                               f"it in-game.")
+                logger.warning(
+                    f"Language {language} found supported in game but no support in Steam API, configure "
+                    f"it in-game.",
+                )
             elif language in SUPPORTED_LANGUAGES_MAPPING:
                 normalized_supported_langs.add(SUPPORTED_LANGUAGES_MAPPING[language])
             else:
@@ -2737,10 +3136,12 @@ def write_interfaces_file(lib_locations: list[str] | None,
 
                 logger.debug(f"Interfaces found:\n{interfaces_list}")
 
-                with open(os.path.join(output_path, INTERFACES_FILENAME),
-                          "w",
-                          encoding="utf-8",
-                          newline=NEW_LINE) as stream:
+                with open(
+                    os.path.join(output_path, INTERFACES_FILENAME),
+                    "w",
+                    encoding="utf-8",
+                    newline=NEW_LINE,
+                ) as stream:
                     stream.write("\n".join(sorted(interfaces_list)))
 
                 if is_linux:
@@ -2752,8 +3153,10 @@ def write_interfaces_file(lib_locations: list[str] | None,
 
     if not found:
         logger.warning("No Steam API DLL/SO found, not writing interfaces file.")
-        logger.debug(f"Output dir and Steam DLL/SO path relations:\n"
-                     f"{orjson.dumps(output_dir_relations, option=orjson.OPT_INDENT_2).decode(encoding='utf-8')}")
+        logger.debug(
+            f"Output dir and Steam DLL/SO path relations:\n"
+            f"{orjson.dumps(output_dir_relations, option=orjson.OPT_INDENT_2).decode(encoding='utf-8')}",
+        )
 
     logger.info("Finished writing interfaces file.")
 
@@ -2791,23 +3194,31 @@ def write_achievements(opts: AchievementOptions,
     output_directories: list[str] = list(opts.output_dir_relations.keys())
 
     for extra_appid in additional_appids:
-        extra_game_info = get_steam_game_info(appid=extra_appid,
-                                              cache_opts=cache_opts)
+        extra_game_info = get_steam_game_info(
+            appid=extra_appid,
+            cache_opts=cache_opts,
+        )
 
         if extra_game_info is None:
             continue
 
-        supported_languages: set[str] | None = get_supported_languages(game_info=extra_game_info,
-                                                                       appid=extra_appid)
+        supported_languages: set[str] | None = get_supported_languages(
+            game_info=extra_game_info,
+            appid=extra_appid,
+        )
 
-        extra_appid_lang_opts = lang_opts.model_copy(update={
-            "supported_languages": supported_languages or lang_opts.supported_languages
-        })
+        extra_appid_lang_opts = lang_opts.model_copy(
+            update={
+                "supported_languages": supported_languages or lang_opts.supported_languages,
+            },
+        )
 
-        extra_stat_info, _ = get_stat_info(appid=extra_appid,
-                                           lang_opts=extra_appid_lang_opts,
-                                           api_key=opts.api_key,
-                                           cache_opts=cache_opts)
+        extra_stat_info, _ = get_stat_info(
+            appid=extra_appid,
+            lang_opts=extra_appid_lang_opts,
+            api_key=opts.api_key,
+            cache_opts=cache_opts,
+        )
 
         if extra_stat_info is None:
             continue
@@ -2817,19 +3228,27 @@ def write_achievements(opts: AchievementOptions,
         except (KeyError, AttributeError):
             dlc_name = extra_appid
 
-        sanitized_achievements.extend(download_achievements(stat_info=extra_stat_info,
-                                                            output_dir=output_directories[0],
-                                                            appid=opts.appid,
-                                                            base_game=False,
-                                                            downloaded_achievements=tuple(sanitized_achievements),
-                                                            dlc_name=dlc_name,
-                                                            cache_opts=cache_opts))
+        sanitized_achievements.extend(
+            download_achievements(
+                stat_info=extra_stat_info,
+                output_dir=output_directories[0],
+                appid=opts.appid,
+                base_game=False,
+                downloaded_achievements=tuple(sanitized_achievements),
+                dlc_name=dlc_name,
+                cache_opts=cache_opts,
+            ),
+        )
 
-    sanitized_achievements.extend(download_achievements(stat_info=opts.stat_info,
-                                                        output_dir=output_directories[0],
-                                                        appid=opts.appid,
-                                                        downloaded_achievements=tuple(sanitized_achievements),
-                                                        cache_opts=cache_opts))
+    sanitized_achievements.extend(
+        download_achievements(
+            stat_info=opts.stat_info,
+            output_dir=output_directories[0],
+            appid=opts.appid,
+            downloaded_achievements=tuple(sanitized_achievements),
+            cache_opts=cache_opts,
+        ),
+    )
 
     logger.info("Finished downloading achievements.")
 
@@ -2848,8 +3267,10 @@ def write_achievements(opts: AchievementOptions,
         logger.info("Copying achievement files to the additional directories...")
 
         for output_directory in output_directories[1:]:
-            custom_copy(os.path.join(output_directories[0], ACHIEVEMENTS_DIRNAME),
-                        os.path.join(output_directory, ACHIEVEMENTS_DIRNAME))
+            custom_copy(
+                os.path.join(output_directories[0], ACHIEVEMENTS_DIRNAME),
+                os.path.join(output_directory, ACHIEVEMENTS_DIRNAME),
+            )
             custom_copy(os.path.join(output_directories[0], "achievements.json"), output_directory)
 
         logger.info("Finished copying achievement files.")
@@ -2917,9 +3338,11 @@ def download_achievements(stat_info: SteamStatInfo,
                           downloaded_achievements: tuple[AchievementInfo, ...] | None = None) -> list[AchievementInfo]:
     sanitized_achievements: list[AchievementInfo] = []
 
-    if (stat_info.game is None
-            or stat_info.game.availableGameStats.achievements is None
-            or len(stat_info.game.availableGameStats.achievements) == 0):
+    if (
+        stat_info.game is None
+        or stat_info.game.availableGameStats.achievements is None
+        or len(stat_info.game.availableGameStats.achievements) == 0
+    ):
         if base_game:
             logger.warning("No achievements found.")
         else:
@@ -2965,28 +3388,36 @@ def download_achievements(stat_info: SteamStatInfo,
         normal_icon_ext = os.path.splitext(achievement.icon)[1]
         gray_icon_ext = os.path.splitext(achievement.icongray)[1]
 
-        normal_icon_rel_path = os.path.join(ACHIEVEMENTS_DIRNAME,
-                                            extra_path,
-                                            achievement.name +
-                                            normal_icon_ext)
+        normal_icon_rel_path = os.path.join(
+            ACHIEVEMENTS_DIRNAME,
+            extra_path,
+            achievement.name +
+            normal_icon_ext,
+        )
 
         if achievement.icongray.endswith("/"):
-            gray_icon_rel_path = os.path.join(ACHIEVEMENTS_DIRNAME,
-                                              extra_path,
-                                              achievement.name + "_gray" +
-                                              normal_icon_ext)
+            gray_icon_rel_path = os.path.join(
+                ACHIEVEMENTS_DIRNAME,
+                extra_path,
+                achievement.name + "_gray" +
+                normal_icon_ext,
+            )
         else:
-            gray_icon_rel_path = os.path.join(ACHIEVEMENTS_DIRNAME,
-                                              extra_path,
-                                              achievement.name + "_gray" +
-                                              gray_icon_ext)
+            gray_icon_rel_path = os.path.join(
+                ACHIEVEMENTS_DIRNAME,
+                extra_path,
+                achievement.name + "_gray" +
+                gray_icon_ext,
+            )
 
-        achievement_info = AchievementInfo(name=achievement.name,
-                                           displayName=achievement.displayName,
-                                           description=achievement.description,
-                                           icon=normal_icon_rel_path,
-                                           icongray=gray_icon_rel_path,
-                                           hidden=ach_hidden)
+        achievement_info = AchievementInfo(
+            name=achievement.name,
+            displayName=achievement.displayName,
+            description=achievement.description,
+            icon=normal_icon_rel_path,
+            icongray=gray_icon_rel_path,
+            hidden=ach_hidden,
+        )
 
         file_path_color: str = os.path.join(output_dir, normal_icon_rel_path)
         file_path_gray: str = os.path.join(output_dir, gray_icon_rel_path)
@@ -3013,7 +3444,8 @@ def download_achievements(stat_info: SteamStatInfo,
                 continue
 
         if not cache_opts.force_achievement_icon_download and cache_opts.cache_game_info and os.path.isfile(
-                color_icon_cache_path):
+            color_icon_cache_path,
+        ):
             logger.debug(f"Using cached color icon file: {color_icon_cache_path}")
 
             custom_copy(color_icon_cache_path, file_path_color)
@@ -3052,15 +3484,18 @@ def download_achievements(stat_info: SteamStatInfo,
                 achievement_info.icon = None
 
         if not cache_opts.force_achievement_icon_download and cache_opts.cache_game_info and os.path.isfile(
-                gray_icon_cache_path):
+            gray_icon_cache_path,
+        ):
             logger.debug(f"Using cached gray icon file: {gray_icon_cache_path}")
 
             custom_copy(gray_icon_cache_path, file_path_gray)
         elif achievement.icongray.endswith("/"):
             if achievement_info.icon is not None:
                 logger.warning("Gray icon not available, converting color icon to grayscale...")
-                if get_gray_icon_from_normal(color_icon=file_path_color,
-                                             output_path=file_path_gray):
+                if get_gray_icon_from_normal(
+                    color_icon=file_path_color,
+                    output_path=file_path_gray,
+                ):
                     if cache_opts.cache_game_info:
                         custom_copy(file_path_gray, gray_icon_cache_path)
                 else:
@@ -3101,8 +3536,10 @@ def download_achievements(stat_info: SteamStatInfo,
                 )
                 if achievement_info.icon is not None:
                     logger.warning("Gray icon not available, converting color icon to grayscale...")
-                    if get_gray_icon_from_normal(color_icon=file_path_color,
-                                                 output_path=file_path_gray):
+                    if get_gray_icon_from_normal(
+                        color_icon=file_path_color,
+                        output_path=file_path_gray,
+                    ):
                         if cache_opts.cache_game_info:
                             custom_copy(file_path_gray, gray_icon_cache_path)
                     else:
@@ -3127,10 +3564,12 @@ def write_stats(stat_info: SteamStatInfo,
     if use_steam_for_stats:
         stats = get_stats_from_steam(stat_info=stat_info)
     else:
-        stats = get_stats_from_gh(stat_info=stat_info,
-                                  tools_path=tools_path,
-                                  appid=appid,
-                                  fallback_to_steam=fallback_to_steam)
+        stats = get_stats_from_gh(
+            stat_info=stat_info,
+            tools_path=tools_path,
+            appid=appid,
+            fallback_to_steam=fallback_to_steam,
+        )
 
     if stats is None:
         logger.info("No stats found.")
@@ -3191,9 +3630,11 @@ def get_stats_from_steam(stat_info: SteamStatInfo) -> set[GameStat] | None:
         if isinstance(stat_entry_default, float) or isinstance(stat_entry_default, int):
             stat_entry_default = str(stat_entry_default)
 
-        game_stat = GameStat(name=stat_entry_name,
-                             type=stat_type,
-                             default_val=stat_entry_default)
+        game_stat = GameStat(
+            name=stat_entry_name,
+            type=stat_type,
+            default_val=stat_entry_default,
+        )
         game_stats.add(game_stat)
 
     return game_stats
@@ -3259,9 +3700,11 @@ def get_stats_from_gh(stat_info: SteamStatInfo,
             if isinstance(stat_entry_default, float) or isinstance(stat_entry_default, int):
                 stat_entry_default = str(stat_entry_default)
 
-            game_stat_entry = GameStat(name=stat_entry_name,
-                                       type=stat_entry_type,
-                                       default_val=stat_entry_default)
+            game_stat_entry = GameStat(
+                name=stat_entry_name,
+                type=stat_entry_type,
+                default_val=stat_entry_default,
+            )
             game_stats.add(game_stat_entry)
         except ValidationError as err:
             logger.critical(f"Error validating stats information:\n{process_errors(error_details=err.errors())}")
@@ -3431,13 +3874,15 @@ def get_emu_config_app(game_info: SteamGameInfo | GHGameInfo,
     else:
         dlc_unlock_all_user_provided = None
 
-    emu_config_app_dlc: EmuConfigAppDLC = get_dlc_config_from_gh_pkg(game_info=game_info,
-                                                                     tools_path=tools_path,
-                                                                     appid=appid,
-                                                                     fallback_to_steam=fallback_to_steam,
-                                                                     cache_opts=cache_opts,
-                                                                     lang_opts=lang_opts,
-                                                                     unlock_all=dlc_unlock_all_user_provided)
+    emu_config_app_dlc: EmuConfigAppDLC = get_dlc_config_from_gh_pkg(
+        game_info=game_info,
+        tools_path=tools_path,
+        appid=appid,
+        fallback_to_steam=fallback_to_steam,
+        cache_opts=cache_opts,
+        lang_opts=lang_opts,
+        unlock_all=dlc_unlock_all_user_provided,
+    )
 
     if ec_app is not None and ec_app.app__dlcs is not None:
         if ec_app.app__dlcs.model_extra is not None:
@@ -3445,21 +3890,21 @@ def get_emu_config_app(game_info: SteamGameInfo | GHGameInfo,
 
     if ec_app is not None and ec_app.app__cloud_save__general is not None:
         emu_config_app_cloud_saves_general = EmuConfigAppCloudSaveGeneral.model_validate(
-                ec_app.app__cloud_save__general.model_dump()
+            ec_app.app__cloud_save__general.model_dump(),
         )
     else:
         emu_config_app_cloud_saves_general = EmuConfigAppCloudSaveGeneral()
 
     if ec_app is not None and ec_app.app__cloud_save__win is not None:
         emu_config_app_cloud_saves_win = EmuConfigAppCloudSaveWin.model_validate(
-                ec_app.app__cloud_save__win.model_dump()
+            ec_app.app__cloud_save__win.model_dump(),
         )
     else:
         emu_config_app_cloud_saves_win = EmuConfigAppCloudSaveWin()
 
     if ec_app is not None and ec_app.app__cloud_save__linux is not None:
         emu_config_app_cloud_saves_linux = EmuConfigAppCloudSaveLinux.model_validate(
-                ec_app.app__cloud_save__linux.model_dump()
+            ec_app.app__cloud_save__linux.model_dump(),
         )
     else:
         emu_config_app_cloud_saves_linux = EmuConfigAppCloudSaveLinux()
@@ -3474,13 +3919,15 @@ def get_emu_config_app(game_info: SteamGameInfo | GHGameInfo,
     else:
         emu_config_app_paths = EmuConfigAppPaths()
 
-    return EmuConfigApp(app__general=emu_config_app_general,
-                        app__dlcs=emu_config_app_dlc,
-                        app__controller=emu_config_app_controller,
-                        app__paths=emu_config_app_paths,
-                        app__cloud_save__general=emu_config_app_cloud_saves_general,
-                        app__cloud_save__win=emu_config_app_cloud_saves_win,
-                        app__cloud_save__linux=emu_config_app_cloud_saves_linux)
+    return EmuConfigApp(
+        app__general=emu_config_app_general,
+        app__dlcs=emu_config_app_dlc,
+        app__controller=emu_config_app_controller,
+        app__paths=emu_config_app_paths,
+        app__cloud_save__general=emu_config_app_cloud_saves_general,
+        app__cloud_save__win=emu_config_app_cloud_saves_win,
+        app__cloud_save__linux=emu_config_app_cloud_saves_linux,
+    )
 
 
 def get_emu_config_main(ec_main: ParsedUserProvidedEmuConfigMain | None) -> EmuConfigMain:
@@ -3504,10 +3951,12 @@ def get_emu_config_main(ec_main: ParsedUserProvidedEmuConfigMain | None) -> EmuC
     else:
         emu_config_main_misc = EmuConfigMainMisc()
 
-    return EmuConfigMain(main__general=emu_config_main_general,
-                         main__stats=emu_config_main_stats,
-                         main__connectivity=emu_config_main_connectivity,
-                         main__misc=emu_config_main_misc)
+    return EmuConfigMain(
+        main__general=emu_config_main_general,
+        main__stats=emu_config_main_stats,
+        main__connectivity=emu_config_main_connectivity,
+        main__misc=emu_config_main_misc,
+    )
 
 
 def get_emu_config_overlay(ec_overlay: ParsedUserProvidedEmuConfigOverlay | None) -> EmuConfigOverlay:
@@ -3523,14 +3972,16 @@ def get_emu_config_overlay(ec_overlay: ParsedUserProvidedEmuConfigOverlay | None
 
     if ec_overlay is not None and ec_overlay.overlay__appearance is not None:
         emu_config_overlay_appearance = EmuConfigOverlayAppearance.model_validate(
-                ec_overlay.overlay__appearance.model_dump()
+            ec_overlay.overlay__appearance.model_dump(),
         )
     else:
         emu_config_overlay_appearance = EmuConfigOverlayAppearance()
 
-    return EmuConfigOverlay(overlay__general=emu_config_overlay_general,
-                            overlay__hotkeys=emu_config_overlay_hotkeys,
-                            overlay__appearance=emu_config_overlay_appearance)
+    return EmuConfigOverlay(
+        overlay__general=emu_config_overlay_general,
+        overlay__hotkeys=emu_config_overlay_hotkeys,
+        overlay__appearance=emu_config_overlay_appearance,
+    )
 
 
 def get_emu_config_user(lang_opts: LanguageOptions,
@@ -3555,15 +4006,17 @@ def get_emu_config_user(lang_opts: LanguageOptions,
 
         if ec_user.user__saves is not None:
             emu_config_user_saves = EmuConfigUserSavesWithOptionals.model_validate(
-                    ec_user.user__saves.model_dump(exclude_none=True)
+                ec_user.user__saves.model_dump(exclude_none=True),
             )
         else:
             emu_config_user_saves = None
 
         if emu_config_user_general is not None:
             if emu_config_user_saves is not None:
-                return EmuConfigUserWithOptionals(user__general=emu_config_user_general,
-                                                  user__saves=emu_config_user_saves)
+                return EmuConfigUserWithOptionals(
+                    user__general=emu_config_user_general,
+                    user__saves=emu_config_user_saves,
+                )
             else:
                 return EmuConfigUserOnlyGeneral(user__general=emu_config_user_general)
         elif emu_config_user_saves is not None:
@@ -3572,7 +4025,7 @@ def get_emu_config_user(lang_opts: LanguageOptions,
             raise ValueError("At least one of user--general or user--saves should have been provided.")
     elif add_user_config:
         return EmuConfigUserOnlyGeneralOnlyLanguage(
-                user__general=EmuConfigUserGeneralOnlyLanguage(language=lang_opts.sanitized_language)
+            user__general=EmuConfigUserGeneralOnlyLanguage(language=lang_opts.sanitized_language),
         )
     else:
         return None
@@ -3594,13 +4047,15 @@ def write_emu_config(game_info: SteamGameInfo | GHGameInfo,
     ec_overlay = user_provided_emu_config["ec_overlay"]
     ec_user = user_provided_emu_config["ec_user"]
 
-    emu_config_app: EmuConfigApp = get_emu_config_app(game_info=game_info,
-                                                      tools_path=tools_path,
-                                                      appid=appid,
-                                                      fallback_to_steam=fallback_to_steam,
-                                                      cache_opts=cache_opts,
-                                                      lang_opts=lang_opts,
-                                                      ec_app=ec_app)
+    emu_config_app: EmuConfigApp = get_emu_config_app(
+        game_info=game_info,
+        tools_path=tools_path,
+        appid=appid,
+        fallback_to_steam=fallback_to_steam,
+        cache_opts=cache_opts,
+        lang_opts=lang_opts,
+        ec_app=ec_app,
+    )
 
     emu_config_main: EmuConfigMain = get_emu_config_main(ec_main=ec_main)
 
@@ -3627,9 +4082,11 @@ def write_emu_config(game_info: SteamGameInfo | GHGameInfo,
         config.read_dict(emu_config_overlay.model_dump(by_alias=True))
         config.write(stream, space_around_delimiters=False)
 
-    emu_config_user = get_emu_config_user(lang_opts=lang_opts,
-                                          add_user_config=add_user_config,
-                                          ec_user=ec_user)
+    emu_config_user = get_emu_config_user(
+        lang_opts=lang_opts,
+        add_user_config=add_user_config,
+        ec_user=ec_user,
+    )
 
     if emu_config_user is not None:
         with open(emu_config_user_path, "w", encoding="utf-8", newline=NEW_LINE) as stream:
@@ -3671,10 +4128,12 @@ def get_dlc_config_from_gh_pkg(game_info: SteamGameInfo | GHGameInfo,
 
         if gh_game_info is None or not isinstance(gh_game_info.Dlcs, dict) or len(gh_game_info.Dlcs) == 0:
             if fallback_to_steam:
-                return get_dlc_config_from_steam(game_info=game_info,
-                                                 appid=appid,
-                                                 cache_opts=cache_opts,
-                                                 lang_opts=lang_opts)
+                return get_dlc_config_from_steam(
+                    game_info=game_info,
+                    appid=appid,
+                    cache_opts=cache_opts,
+                    lang_opts=lang_opts,
+                )
             else:
                 return EmuConfigAppDLC()
     else:
@@ -3704,9 +4163,11 @@ def get_dlc_config_from_steam(game_info: SteamGameInfo,
     if dlc_data is None:
         logger.warning("No DLC found.")
     else:
-        dlc_info = get_dlc_info_from_steam(appid=appid,
-                                           cache_opts=cache_opts,
-                                           lang_opts=lang_opts)
+        dlc_info = get_dlc_info_from_steam(
+            appid=appid,
+            cache_opts=cache_opts,
+            lang_opts=lang_opts,
+        )
         logger.debug(f"DLC info:\n{dlc_info}")
 
         for dlc in dlc_data:
@@ -3733,15 +4194,21 @@ def get_dlc_info_from_steam(appid: str,
     logger.info("Retrieving DLC information...")
 
     if lang_opts.sanitized_language is None:
-        sanitized_language, _ = get_sanitized_preferred_language(supported_languages=lang_opts.supported_languages,
-                                                                 preferred_language=lang_opts.preferred_language)
+        sanitized_language, _ = get_sanitized_preferred_language(
+            supported_languages=lang_opts.supported_languages,
+            preferred_language=lang_opts.preferred_language,
+        )
 
-    dlc_info_file_cache_path = os.path.join(cache_opts.cache_location,
-                                            appid,
-                                            f"dlc_info_{lang_opts.sanitized_language}.json")
-    dlc_info_last_retrieval_flag_path = os.path.join(cache_opts.cache_location,
-                                                     appid,
-                                                     f"dlc_info_{lang_opts.sanitized_language}_last_retrieval")
+    dlc_info_file_cache_path = os.path.join(
+        cache_opts.cache_location,
+        appid,
+        f"dlc_info_{lang_opts.sanitized_language}.json",
+    )
+    dlc_info_last_retrieval_flag_path = os.path.join(
+        cache_opts.cache_location,
+        appid,
+        f"dlc_info_{lang_opts.sanitized_language}_last_retrieval",
+    )
 
     if cache_opts.cache_game_info and os.path.isfile(dlc_info_last_retrieval_flag_path):
         with open(dlc_info_last_retrieval_flag_path, "r", encoding="utf-8") as flag_stream:
@@ -3754,8 +4221,12 @@ def get_dlc_info_from_steam(appid: str,
                 return SteamDLCInfo.model_validate(orjson.loads(file_stream.read()))
 
     try:
-        response = get_with_retry(url=DLC_INFO_URL_TEMPLATE.substitute(appid=appid,
-                                                                       language=lang_opts.sanitized_language))
+        response = get_with_retry(
+            url=DLC_INFO_URL_TEMPLATE.substitute(
+                appid=appid,
+                language=lang_opts.sanitized_language,
+            ),
+        )
     except HTTPError as err:
         if err.response.status_code == 404:
             logger.error("DLC information not found.")
@@ -3805,8 +4276,10 @@ def add_emulator(tools_path: str,
 
     if lib_locations is None:
         logger.info("Copying sound files...")
-        custom_copy(os.path.join(emu_files_path, "sounds"),
-                    os.path.join(list(output_dir_relations.keys())[0], "sounds"))
+        custom_copy(
+            os.path.join(emu_files_path, "sounds"),
+            os.path.join(list(output_dir_relations.keys())[0], "sounds"),
+        )
         logger.error("No DLL/SO location found, can't add emulator, bitness is unknown.")
         return
 
@@ -3889,20 +4362,30 @@ def add_emulator(tools_path: str,
             client_lib_path_x64: str = os.path.join(lib_output_dir, STEAMCLIENT64_LIB_NAME)
             sub_dir_name_x64: str = "x64"
 
-            libs_to_add.append((api_lib_path_x64, client_lib_path_x64, STEAMAPI64_LIB_NAME, STEAMCLIENT64_LIB_NAME,
-                                sub_dir_name_x64))
+            libs_to_add.append(
+                (
+                    api_lib_path_x64, client_lib_path_x64, STEAMAPI64_LIB_NAME, STEAMCLIENT64_LIB_NAME,
+                    sub_dir_name_x64,
+                ),
+            )
 
         if x86:
             api_lib_path_x86: str = os.path.join(lib_output_dir, STEAMAPI_LIB_NAME)
             client_lib_path_x86: str = os.path.join(lib_output_dir, STEAMCLIENT_LIB_NAME)
             sub_dir_name_x86: str = "x86"
 
-            libs_to_add.append((api_lib_path_x86, client_lib_path_x86, STEAMAPI_LIB_NAME, STEAMCLIENT_LIB_NAME,
-                                sub_dir_name_x86))
+            libs_to_add.append(
+                (
+                    api_lib_path_x86, client_lib_path_x86, STEAMAPI_LIB_NAME, STEAMCLIENT_LIB_NAME,
+                    sub_dir_name_x86,
+                ),
+            )
 
         for api_lib_path, client_lib_path, api_lib_name, client_lib_name, sub_dir_name in libs_to_add:
-            logger.debug(f"Info:\nAPI DLL/SO path: {api_lib_path}\nClient DLL/SO path: {client_lib_path}\nAPI DLL/SO "
-                         f"name: {api_lib_name}\nClient DLL/SO name: {client_lib_name}\nSub dir name: {sub_dir_name}")
+            logger.debug(
+                f"Info:\nAPI DLL/SO path: {api_lib_path}\nClient DLL/SO path: {client_lib_path}\nAPI DLL/SO "
+                f"name: {api_lib_name}\nClient DLL/SO name: {client_lib_name}\nSub dir name: {sub_dir_name}",
+            )
 
             for lib_path, lib_name in ((api_lib_path, api_lib_name), (client_lib_path, client_lib_name)):
                 if game_dir is not None and (output_dir is None or output_dir == game_dir):
@@ -3926,8 +4409,10 @@ def add_emulator(tools_path: str,
                                 else:
                                     rel_location: str = lib_location
 
-                                logger.info(f"Original DLL/SO found ({rel_location}), copying it with \".orig\" "
-                                            f"extension...")
+                                logger.info(
+                                    f"Original DLL/SO found ({rel_location}), copying it with \".orig\" "
+                                    f"extension...",
+                                )
                                 custom_copy(lib_location, lib_path + ".orig")
 
                             break
@@ -3944,12 +4429,16 @@ def add_emulator(tools_path: str,
                 logger.info("Copying additional DLL/SO files...")
 
                 for additional_lib in include_dll:
-                    custom_copy(additional_lib,
-                                os.path.join(orig_output_dir, "load_dlls", os.path.basename(additional_lib)))
+                    custom_copy(
+                        additional_lib,
+                        os.path.join(orig_output_dir, "load_dlls", os.path.basename(additional_lib)),
+                    )
 
             logger.info("Copying sound files...")
-            custom_copy(os.path.join(emu_files_path, "sounds"),
-                        os.path.join(orig_output_dir, "sounds"))
+            custom_copy(
+                os.path.join(emu_files_path, "sounds"),
+                os.path.join(orig_output_dir, "sounds"),
+            )
 
     logger.info("Finished adding emulator.")
 
@@ -3989,8 +4478,10 @@ def rename_package_dir(game_info: SteamGameInfo | GHGameInfo,
     logger.debug(f"Title: {title}\nRelease date: {release_date}")
 
     if add_language_flag_on_rename:
-        extra_name_info: str = get_extra_name_info(supported_languages=lang_opts.supported_languages,
-                                                   preferred_language=lang_opts.preferred_language)
+        extra_name_info: str = get_extra_name_info(
+            supported_languages=lang_opts.supported_languages,
+            preferred_language=lang_opts.preferred_language,
+        )
     else:
         extra_name_info = ""
 
@@ -4009,8 +4500,10 @@ def rename_package_dir(game_info: SteamGameInfo | GHGameInfo,
         else:
             logger.warning("No genres available. Can't detect if game is early access.")
 
-    new_name: str = os.path.join(os.path.dirname(package_dir),
-                                 f"{sanitized_title} ({release_datetime.year}){extra_name_info}")
+    new_name: str = os.path.join(
+        os.path.dirname(package_dir),
+        f"{sanitized_title} ({release_datetime.year}){extra_name_info}",
+    )
 
     if new_name != package_dir:
         if os.path.exists(new_name):
@@ -4081,8 +4574,10 @@ def compress_config(directory_to_compress: str,
                     compressed_filename: str) -> None:
     if directory_to_compress is None:
         if game_dir is not None:
-            logger.warning("Can only compress configuration if --package-dir has been used or if --game-dir is used "
-                           "with --output-dir. Not compressing.")
+            logger.warning(
+                "Can only compress configuration if --package-dir has been used or if --game-dir is used "
+                "with --output-dir. Not compressing.",
+            )
             return
         else:
             logger.error("Not compressing.")
@@ -4098,9 +4593,11 @@ def compress_config(directory_to_compress: str,
 
     compressed_filepath: str = os.path.join(directory_to_compress, compressed_filename)
 
-    if not compress_directory_content(sevenzip_path=sevenzip_path,
-                                      output_path=compressed_filepath,
-                                      directory_to_compress=directory_to_compress):
+    if not compress_directory_content(
+        sevenzip_path=sevenzip_path,
+        output_path=compressed_filepath,
+        directory_to_compress=directory_to_compress,
+    ):
         return
 
     logger.info("Finished compressing configuration.")
@@ -4113,9 +4610,11 @@ def find_acf_files(root_dir: str) -> set[str]:
     logger.info("Trying to find ACF files...")
     logger.info(f"Root directory used as base for ACF file search is: {root_dir}")
 
-    found_acf_files = glob.glob(f"**{os.path.sep}*.acf",
-                                recursive=True,
-                                root_dir=root_dir)
+    found_acf_files = glob.glob(
+        f"**{os.path.sep}*.acf",
+        recursive=True,
+        root_dir=root_dir,
+    )
 
     if len(found_acf_files) == 0:
         logger.info("No ACF files found.")
@@ -4170,9 +4669,11 @@ def retrieve_acf_files(package_dir: str,
     tmp_dir = None
 
     if len(acf_files) == 0:
-        tmp_dir = extract_from_package_files(directory=package_dir,
-                                             tools_path=tools_path,
-                                             archive_password=archive_password)
+        tmp_dir = extract_from_package_files(
+            directory=package_dir,
+            tools_path=tools_path,
+            archive_password=archive_password,
+        )
 
         if tmp_dir is not None:
             acf_files = find_acf_files(root_dir=tmp_dir)

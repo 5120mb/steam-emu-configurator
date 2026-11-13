@@ -2,7 +2,7 @@ import os
 import platform
 import re
 import sys
-from argparse import ArgumentParser, _ArgumentGroup, _StoreConstAction, Action
+from argparse import Action, ArgumentParser, _ArgumentGroup, _StoreConstAction
 from datetime import datetime
 from string import Template
 from typing import Any

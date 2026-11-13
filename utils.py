@@ -15,51 +15,57 @@ from http.client import RemoteDisconnected
 from pathlib import Path
 from subprocess import Popen
 from tempfile import mkdtemp
-from typing import overload, Callable, Iterable
+from typing import Callable, Iterable, overload
 
 from PIL import Image
 from loguru import logger
 from packaging.version import Version
 from pydantic_core import ErrorDetails
-from requests import Response, HTTPError
+from requests import HTTPError, Response
 
-from common import (GIT_EXE_NAME,
-                    PATHS_TO_CLEANUP,
-                    GIT_FOR_WINDOWS_NAME,
-                    GIT_FOR_WINDOWS_URL,
-                    ELF_CLASS,
-                    EMULATOR_URL,
-                    SEVENZIP_URL,
-                    CACHE_DELETING_SIGNAL,
-                    SYSTEM_PLATFORM,
-                    LOCKFILE_WAIT_TIME,
-                    SESSION,
-                    PACKAGE_FILES_VALID_EXTENSIONS,
-                    EXTRACT_FROM_PACKAGE_NAME_PATTERN,
-                    PACKAGE_LIST_PATH_EXTRACT_PATTERN,
-                    SEVENZIP_EXE_NAME,
-                    SYSTEM_BITNESS)
+from common import (
+    CACHE_DELETING_SIGNAL,
+    ELF_CLASS,
+    EMULATOR_URL,
+    EXTRACT_FROM_PACKAGE_NAME_PATTERN,
+    GIT_EXE_NAME,
+    GIT_FOR_WINDOWS_NAME,
+    GIT_FOR_WINDOWS_URL,
+    LOCKFILE_WAIT_TIME,
+    PACKAGE_FILES_VALID_EXTENSIONS,
+    PACKAGE_LIST_PATH_EXTRACT_PATTERN,
+    PATHS_TO_CLEANUP,
+    SESSION,
+    SEVENZIP_EXE_NAME,
+    SEVENZIP_URL,
+    SYSTEM_BITNESS,
+    SYSTEM_PLATFORM,
+)
 from custom_types.common import tree
 from custom_types.emulator_user_provided import ParseEmuConfigArgsResult
-from models.emulator_user_provided import (UserProvidedEmuConfigAppGeneral,
-                                           UserProvidedEmuConfigAppDLC,
-                                           UserProvidedEmuConfigAppController,
-                                           UserProvidedEmuConfigAppPaths,
-                                           UserProvidedEmuConfigAppCloudSaveGeneral,
-                                           UserProvidedEmuConfigAppCloudSaveWin,
-                                           UserProvidedEmuConfigAppCloudSaveLinux,
-                                           UserProvidedEmuConfigMainGeneral,
-                                           UserProvidedEmuConfigMainStats,
-                                           UserProvidedEmuConfigMainConnectivity,
-                                           UserProvidedEmuConfigMainMisc,
-                                           UserProvidedEmuConfigOverlayGeneral,
-                                           UserProvidedEmuConfigOverlayHotkeys,
-                                           UserProvidedEmuConfigOverlayAppearance,
-                                           UserProvidedEmuConfigUserGeneral,
-                                           UserProvidedEmuConfigUserSaves)
-from models.parsed_emulator_user_provided import (ParsedUserProvidedEmuConfigApp,
-                                                  ParsedUserProvidedEmuConfigMain,
-                                                  ParsedUserProvidedEmuConfigOverlay, ParsedUserProvidedEmuConfigUser)
+from models.emulator_user_provided import (
+    UserProvidedEmuConfigAppCloudSaveGeneral,
+    UserProvidedEmuConfigAppCloudSaveLinux,
+    UserProvidedEmuConfigAppCloudSaveWin,
+    UserProvidedEmuConfigAppController,
+    UserProvidedEmuConfigAppDLC,
+    UserProvidedEmuConfigAppGeneral,
+    UserProvidedEmuConfigAppPaths,
+    UserProvidedEmuConfigMainConnectivity,
+    UserProvidedEmuConfigMainGeneral,
+    UserProvidedEmuConfigMainMisc,
+    UserProvidedEmuConfigMainStats,
+    UserProvidedEmuConfigOverlayAppearance,
+    UserProvidedEmuConfigOverlayGeneral,
+    UserProvidedEmuConfigOverlayHotkeys,
+    UserProvidedEmuConfigUserGeneral,
+    UserProvidedEmuConfigUserSaves,
+)
+from models.parsed_emulator_user_provided import (
+    ParsedUserProvidedEmuConfigApp,
+    ParsedUserProvidedEmuConfigMain,
+    ParsedUserProvidedEmuConfigOverlay, ParsedUserProvidedEmuConfigUser,
+)
 
 
 def search_for_package_file(directory: str) -> str | None:
@@ -91,9 +97,11 @@ def search_for_package_file(directory: str) -> str | None:
             if found:
                 break
 
-            logger.info(f"More than one file with the extension {extension} was found, "
-                        f"and no filename matched the package pattern \"Game Name (#####) [Build ######].ext\", "
-                        f"trying with another extension...")
+            logger.info(
+                f"More than one file with the extension {extension} was found, "
+                f"and no filename matched the package pattern \"Game Name (#####) [Build ######].ext\", "
+                f"trying with another extension...",
+            )
         elif len(package_files) == 0:
             logger.info(f"No file with the extension {extension} was found, trying with another extension...")
         else:
@@ -135,7 +143,7 @@ def list_compressed_file_content(sevenzip_path: str,
         "-bd",
         f"-p{archive_password}",
         "-sccUTF-8",
-        "-slt"
+        "-slt",
     )
 
     try:
@@ -195,13 +203,15 @@ def extract_compressed_file_content(sevenzip_path: str,
     )
 
     try:
-        subprocess.run(sevenzip_extract_cmd,
-                       check=True,
-                       encoding="utf-8",
-                       cwd=os.path.dirname(compressed_file_path),
-                       stdout=subprocess.DEVNULL,
-                       stderr=subprocess.STDOUT,
-                       bufsize=1)
+        subprocess.run(
+            sevenzip_extract_cmd,
+            check=True,
+            encoding="utf-8",
+            cwd=os.path.dirname(compressed_file_path),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.STDOUT,
+            bufsize=1,
+        )
     except subprocess.CalledProcessError:
         logger.error("Couldn't extract the compressed file contents.")
         logger.opt(exception=True).debug("Traceback:")
@@ -266,12 +276,14 @@ def compress_directory_content(sevenzip_path: str,
         if os.path.exists(output_path):
             os.remove(output_path)
 
-        subprocess.run(compress_cmd,
-                       check=True,
-                       bufsize=1,
-                       encoding="utf-8",
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT)
+        subprocess.run(
+            compress_cmd,
+            check=True,
+            bufsize=1,
+            encoding="utf-8",
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
     except subprocess.CalledProcessError as err:
         logger.error(f"Error compressing directory.\n{err.output}")
         logger.opt(exception=True).debug("Traceback:")
@@ -340,9 +352,9 @@ def get_emulator(tools_path: str,
     latest_version = json_response["tag_name"]
 
     if (check_version is not None
-            and check_version >= 2
-            and current_version is not None
-            and latest_version == current_version):
+        and check_version >= 2
+        and current_version is not None
+        and latest_version == current_version):
         logger.info("Emulator is already up to date.")
 
         with open(os.path.join(tools_path, "last-check"), "w", encoding="utf-8") as stream:
@@ -359,17 +371,23 @@ def get_emulator(tools_path: str,
             logger.info("Getting current version filename for Windows...")
             current_version_name = sanitize_name(f"emu-win-release_{current_version}.7z")
 
-            assets_to_download.append({
-                "url": asset["browser_download_url"],
-                "compressed_file_path": os.path.join(tools_path,
-                                                     "temp",
-                                                     new_version_name),
-                "file_to_delete": os.path.join(tools_path,
-                                               "temp",
-                                               current_version_name),
-                "output_path": os.path.join(tools_path, "windows"),
-                "system": "windows",
-            })
+            assets_to_download.append(
+                {
+                    "url": asset["browser_download_url"],
+                    "compressed_file_path": os.path.join(
+                        tools_path,
+                        "temp",
+                        new_version_name,
+                    ),
+                    "file_to_delete": os.path.join(
+                        tools_path,
+                        "temp",
+                        current_version_name,
+                    ),
+                    "output_path": os.path.join(tools_path, "windows"),
+                    "system": "windows",
+                },
+            )
         elif asset["name"] == "emu-linux-release.tar.bz2":
             logger.info("Getting new version filename for Linux...")
             new_version_name = sanitize_name(f"emu-linux-release_{latest_version}.7z")
@@ -377,17 +395,23 @@ def get_emulator(tools_path: str,
             logger.info("Getting current version filename for Linux...")
             current_version_name = sanitize_name(f"emu-linux-release_{current_version}.7z")
 
-            assets_to_download.append({
-                "url": asset["browser_download_url"],
-                "compressed_file_path": os.path.join(tools_path,
-                                                     "temp",
-                                                     new_version_name),
-                "file_to_delete": os.path.join(tools_path,
-                                               "temp",
-                                               current_version_name),
-                "output_path": os.path.join(tools_path, "linux"),
-                "system": "linux",
-            })
+            assets_to_download.append(
+                {
+                    "url": asset["browser_download_url"],
+                    "compressed_file_path": os.path.join(
+                        tools_path,
+                        "temp",
+                        new_version_name,
+                    ),
+                    "file_to_delete": os.path.join(
+                        tools_path,
+                        "temp",
+                        current_version_name,
+                    ),
+                    "output_path": os.path.join(tools_path, "linux"),
+                    "system": "linux",
+                },
+            )
 
         if len(assets_to_download) == 2:
             break
@@ -417,20 +441,26 @@ def get_emulator(tools_path: str,
             return False
 
         if asset_to_download["system"] == "linux":
-            extract_compressed_file_content(sevenzip_path=sevenzip_path,
-                                            compressed_file_path=asset_to_download["compressed_file_path"],
-                                            file_list=[],
-                                            output_path=os.path.dirname(asset_to_download["compressed_file_path"]))
+            extract_compressed_file_content(
+                sevenzip_path=sevenzip_path,
+                compressed_file_path=asset_to_download["compressed_file_path"],
+                file_list=[],
+                output_path=os.path.dirname(asset_to_download["compressed_file_path"]),
+            )
 
             os.remove(remove_readonly_flag(asset_to_download["compressed_file_path"]))
 
             asset_to_download["compressed_file_path"] = os.path.splitext(asset_to_download["compressed_file_path"])[0]
 
-        tmp_dir = extract_compressed_file_content(sevenzip_path=sevenzip_path,
-                                                  compressed_file_path=asset_to_download["compressed_file_path"],
-                                                  file_list=["release/experimental",
-                                                             "release/steam_settings.EXAMPLE/sounds.EXAMPLE"],
-                                                  output_path=asset_to_download["output_path"])
+        tmp_dir = extract_compressed_file_content(
+            sevenzip_path=sevenzip_path,
+            compressed_file_path=asset_to_download["compressed_file_path"],
+            file_list=[
+                "release/experimental",
+                "release/steam_settings.EXAMPLE/sounds.EXAMPLE",
+            ],
+            output_path=asset_to_download["output_path"],
+        )
 
         if tmp_dir is None:
             return False
@@ -440,13 +470,19 @@ def get_emulator(tools_path: str,
         except FileNotFoundError:
             pass
 
-        shutil.move(os.path.join(asset_to_download["output_path"], "release", "experimental"),
-                    os.path.join(asset_to_download["output_path"], "gbe_fork_experimental"))
-        shutil.move(os.path.join(asset_to_download["output_path"],
-                                 "release",
-                                 "steam_settings.EXAMPLE",
-                                 "sounds.EXAMPLE"),
-                    os.path.join(asset_to_download["output_path"], "gbe_fork_experimental", "sounds"))
+        shutil.move(
+            os.path.join(asset_to_download["output_path"], "release", "experimental"),
+            os.path.join(asset_to_download["output_path"], "gbe_fork_experimental"),
+        )
+        shutil.move(
+            os.path.join(
+                asset_to_download["output_path"],
+                "release",
+                "steam_settings.EXAMPLE",
+                "sounds.EXAMPLE",
+            ),
+            os.path.join(asset_to_download["output_path"], "gbe_fork_experimental", "sounds"),
+        )
 
         shutil.rmtree(os.path.join(asset_to_download["output_path"], "release"))
 
@@ -532,10 +568,12 @@ def get_7zip_for_windows(tools_path: str) -> bool:
     sevenzip_path: str = os.path.join(tools_path, "7z", sevenzip_filename)
     download_data(download_url=download_url_7z, output=sevenzip_path)
 
-    output_path = extract_compressed_file_content(sevenzip_path=sevenzip_reduced_path,
-                                                  compressed_file_path=sevenzip_path,
-                                                  file_list=[],
-                                                  output_path=os.path.join(tools_path, "7z"))
+    output_path = extract_compressed_file_content(
+        sevenzip_path=sevenzip_reduced_path,
+        compressed_file_path=sevenzip_path,
+        file_list=[],
+        output_path=os.path.join(tools_path, "7z"),
+    )
 
     if output_path is None:
         logger.error("Couldn't extract the 7-zip files.")
@@ -562,8 +600,10 @@ def get_7zip_for_linux(tools_path: str) -> bool:
     sevenzip_path: str = os.path.join(tools_path, "7z", sevenzip_filename)
     download_data(download_url=download_url_7z, output=sevenzip_path)
 
-    output_path = extract_xz_file_content(compressed_file_path=sevenzip_path,
-                                          output_path=os.path.join(tools_path, "7z"))
+    output_path = extract_xz_file_content(
+        compressed_file_path=sevenzip_path,
+        output_path=os.path.join(tools_path, "7z"),
+    )
 
     if output_path is None:
         logger.error("Couldn't extract the 7-zip files.")
@@ -598,8 +638,10 @@ def update_emulator(tools_path: str) -> bool:
             check_version = int(last_check_parts[1])
 
             if time.time() - last_time <= 24 * 60 * 60:
-                logger.info("Update check for the emulator has been performed recently (less than 24 hours ago), "
-                            "skipping updating it...")
+                logger.info(
+                    "Update check for the emulator has been performed recently (less than 24 hours ago), "
+                    "skipping updating it...",
+                )
 
                 return True
         else:
@@ -616,9 +658,11 @@ def update_emulator(tools_path: str) -> bool:
         else:
             current_version = None
 
-        success: bool = get_emulator(tools_path=tools_path,
-                                     current_version=current_version,
-                                     check_version=check_version)
+        success: bool = get_emulator(
+            tools_path=tools_path,
+            current_version=current_version,
+            check_version=check_version,
+        )
 
         logger.info("Finished updating emulator.")
 
@@ -643,11 +687,11 @@ def sanitize_name(name: str,
             "\\": "\uFF3C",
             "|": "\uFF5C",
             "?": "\uFF1F",
-            "*": "\uFF0A"
+            "*": "\uFF0A",
         }
     elif SYSTEM_PLATFORM == "darwin" or SYSTEM_PLATFORM == "linux":
         illegal_characters = {
-            "/": "\uFF0F"
+            "/": "\uFF0F",
         }
     else:
         return name
@@ -901,8 +945,10 @@ def get_with_retry(url: str,
 
                 raise
 
-            logger.opt(exception=True).debug(f"Error while getting response from {url}."
-                                             f" HTTP error code: {err.response.status_code}. Traceback:")
+            logger.opt(exception=True).debug(
+                f"Error while getting response from {url}."
+                f" HTTP error code: {err.response.status_code}. Traceback:",
+            )
 
             last_wait += random.randint(3, 20)
             logger.debug(f"Waiting for {last_wait} seconds...")
@@ -1052,8 +1098,10 @@ def get_git_path(tools_path: str) -> str | None:
     if system_git_path is not None:
         return os.path.abspath(os.path.normpath(system_git_path))
     elif SYSTEM_PLATFORM != "windows":
-        logger.critical("Git is not installed on the system, "
-                        "in Linux the only way is to install it from the package manager.")
+        logger.critical(
+            "Git is not installed on the system, "
+            "in Linux the only way is to install it from the package manager.",
+        )
         return None
 
     git_path = os.path.join(tools_path, "git-portable")
@@ -1082,10 +1130,12 @@ def get_git_path(tools_path: str) -> str | None:
             if chunk is not None:
                 stream.write(chunk)
 
-    git_path = extract_compressed_file_content(sevenzip_path=sevenzip_path,
-                                               compressed_file_path=git_portable_temp_path,
-                                               file_list=[],
-                                               output_path=git_path)
+    git_path = extract_compressed_file_content(
+        sevenzip_path=sevenzip_path,
+        compressed_file_path=git_portable_temp_path,
+        file_list=[],
+        output_path=git_path,
+    )
 
     if git_path is not None:
         os.remove(git_portable_temp_path)
@@ -1121,19 +1171,21 @@ def run_command(cmd: list[str],
     PATHS_TO_CLEANUP.add(stdout_path)
     PATHS_TO_CLEANUP.add(stderr_path)
 
-    process = Popen(cmd,
-                    cwd=cwd,
-                    stdout=stdout_fd,
-                    stderr=stderr_fd,
-                    creationflags=subprocess.CREATE_NO_WINDOW)
+    process = Popen(
+        cmd,
+        cwd=cwd,
+        stdout=stdout_fd,
+        stderr=stderr_fd,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
 
     os.close(stdout_fd)
     os.close(stderr_fd)
 
     result = ProcessResult(
-            process=process,
-            stdout_path=Path(stdout_path),
-            stderr_path=Path(stderr_path),
+        process=process,
+        stdout_path=Path(stdout_path),
+        stderr_path=Path(stderr_path),
     )
 
     result.wait()
@@ -1160,40 +1212,48 @@ class GitRepo:
     def _git(self,
              *args: str,
              cwd: str | None = None) -> ProcessResult:
-        return run_command([self._git_path, *args],
-                           cwd=cwd)
+        return run_command(
+            [self._git_path, *args],
+            cwd=cwd,
+        )
 
     def clone(self) -> ProcessResult:
         if self._repo_url is None:
             raise ValueError("No repo URL specified.")
 
-        return self._git("clone",
-                         "--depth",
-                         "1",
-                         "--single-branch",
-                         "--branch",
-                         "main",
-                         self._repo_url,
-                         self._repo_path)
+        return self._git(
+            "clone",
+            "--depth",
+            "1",
+            "--single-branch",
+            "--branch",
+            "main",
+            self._repo_url,
+            self._repo_path,
+        )
 
     def pull(self) -> ProcessResult:
         """
         This is not really a pull operation; we fetch the minimal needed, then reset.
         """
-        fetch_result = self._git("fetch",
-                                 "--depth",
-                                 "1",
-                                 "origin",
-                                 "main",
-                                 cwd=self._repo_path)
+        fetch_result = self._git(
+            "fetch",
+            "--depth",
+            "1",
+            "origin",
+            "main",
+            cwd=self._repo_path,
+        )
 
         if fetch_result.process.returncode != 0:
             return fetch_result
 
-        return self._git("reset",
-                         "--hard",
-                         "origin/main",
-                         cwd=self._repo_path)
+        return self._git(
+            "reset",
+            "--hard",
+            "origin/main",
+            cwd=self._repo_path,
+        )
 
 
 def cleanup() -> None:
@@ -1284,11 +1344,13 @@ def extract_xz_file_content(compressed_file_path: str,
     )
 
     try:
-        subprocess.run(extract_cmd,
-                       check=True,
-                       encoding="utf-8",
-                       stdout=subprocess.DEVNULL,
-                       stderr=subprocess.STDOUT)
+        subprocess.run(
+            extract_cmd,
+            check=True,
+            encoding="utf-8",
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.STDOUT,
+        )
     except subprocess.CalledProcessError:
         logger.error("Couldn't extract the XZ file contents.")
         logger.opt(exception=True).debug("Traceback:")
@@ -1361,7 +1423,8 @@ def parse_emu_config_args(args: Namespace) -> ParseEmuConfigArgsResult:
 
         if "controller" in emu_config_args["app"]:
             ec_app.app__controller = UserProvidedEmuConfigAppController.model_validate(
-                    emu_config_args["app"]["controller"])
+                emu_config_args["app"]["controller"],
+            )
 
         if "paths" in emu_config_args["app"]:
             paths: dict[str, str] = {}
@@ -1387,7 +1450,8 @@ def parse_emu_config_args(args: Namespace) -> ParseEmuConfigArgsResult:
         if "cloud_save" in emu_config_args["app"]:
             if "general" in emu_config_args["app"]["cloud_save"]:
                 ec_app.app__cloud_save__general = UserProvidedEmuConfigAppCloudSaveGeneral.model_validate(
-                        emu_config_args["app"]["cloud_save"]["general"])
+                    emu_config_args["app"]["cloud_save"]["general"],
+                )
 
             if "win" in emu_config_args["app"]["cloud_save"]:
                 win_paths: dict[str, str] = {}
@@ -1415,7 +1479,8 @@ def parse_emu_config_args(args: Namespace) -> ParseEmuConfigArgsResult:
 
         if "connectivity" in emu_config_args["main"]:
             ec_main.main__connectivity = UserProvidedEmuConfigMainConnectivity.model_validate(
-                    emu_config_args["main"]["connectivity"])
+                emu_config_args["main"]["connectivity"],
+            )
 
         if "misc" in emu_config_args["main"]:
             ec_main.main__misc = UserProvidedEmuConfigMainMisc.model_validate(emu_config_args["main"]["misc"])
@@ -1424,15 +1489,18 @@ def parse_emu_config_args(args: Namespace) -> ParseEmuConfigArgsResult:
         ec_overlay = ParsedUserProvidedEmuConfigOverlay()
         if "general" in emu_config_args["overlay"]:
             ec_overlay.overlay__general = UserProvidedEmuConfigOverlayGeneral.model_validate(
-                    emu_config_args["overlay"]["general"])
+                emu_config_args["overlay"]["general"],
+            )
 
         if "hotkeys" in emu_config_args["overlay"]:
             ec_overlay.overlay__hotkeys = UserProvidedEmuConfigOverlayHotkeys.model_validate(
-                    emu_config_args["overlay"]["hotkeys"])
+                emu_config_args["overlay"]["hotkeys"],
+            )
 
         if "appearance" in emu_config_args["overlay"]:
             ec_overlay.overlay__appearance = UserProvidedEmuConfigOverlayAppearance.model_validate(
-                    emu_config_args["overlay"]["appearance"])
+                emu_config_args["overlay"]["appearance"],
+            )
 
     if "user" in emu_config_args:
         ec_user = ParsedUserProvidedEmuConfigUser()
@@ -1446,5 +1514,5 @@ def parse_emu_config_args(args: Namespace) -> ParseEmuConfigArgsResult:
         "ec_app": ec_app,
         "ec_main": ec_main,
         "ec_overlay": ec_overlay,
-        "ec_user": ec_user
+        "ec_user": ec_user,
     }

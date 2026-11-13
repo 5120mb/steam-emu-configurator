@@ -7,16 +7,18 @@ from pydantic import StringConstraints
 NonEmptyStr = Annotated[
     str,
     StringConstraints(
-            strip_whitespace=True,
-            min_length=1,
+        strip_whitespace=True,
+        min_length=1,
     ),
 ]
 KeyComboStr = Annotated[
     str,
     StringConstraints(
-            strip_whitespace=True,
-            pattern=re.compile(r"^(shift|ctrl|alt|tab|fn1|fn2|fn3|fn4|fn5|fn6|fn7|fn8|fn9|fn10|fn11|fn12)(\s\+\s"
-                               r"(shift|ctrl|alt|tab|fn1|fn2|fn3|fn4|fn5|fn6|fn7|fn8|fn9|fn10|fn11|fn12))*$")
+        strip_whitespace=True,
+        pattern=re.compile(
+            r"^(shift|ctrl|alt|tab|fn1|fn2|fn3|fn4|fn5|fn6|fn7|fn8|fn9|fn10|fn11|fn12)(\s\+\s"
+            r"(shift|ctrl|alt|tab|fn1|fn2|fn3|fn4|fn5|fn6|fn7|fn8|fn9|fn10|fn11|fn12))*$",
+        ),
     ),
 ]
 OutputDirRelations = dict[str, list[str]] | dict[str, None]

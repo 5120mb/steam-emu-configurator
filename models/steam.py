@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import field_validator, BaseModel
+from pydantic import BaseModel, field_validator
 
 from models.common import AllowExtraBaseModel
 

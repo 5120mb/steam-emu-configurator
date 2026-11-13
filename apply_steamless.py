@@ -14,25 +14,29 @@ from loguru import logger
 from pydantic import BaseModel, ValidationError, field_validator
 from requests import Response, HTTPError
 
-from common import (get_program_dir,
-                    SESSION,
-                    LOCKFILE_WAIT_TIME,
-                    CURRENT_DATE,
-                    EXECUTABLES_TO_IGNORE_PATTERNS, load_data_file)
+from common import (
+    get_program_dir,
+    SESSION,
+    LOCKFILE_WAIT_TIME,
+    CURRENT_DATE,
+    EXECUTABLES_TO_IGNORE_PATTERNS, load_data_file,
+)
 from models.common import ErrorOccurred
-from utils import (check_python_version,
-                   search_for_package_file,
-                   list_compressed_file_content,
-                   extract_paths_from_7z_listing,
-                   extract_compressed_file_content,
-                   sanitize_name,
-                   remove_readonly_flag,
-                   process_errors,
-                   ensure_sevenzip,
-                   compress_directory_content,
-                   delete_old_caches,
-                   get_latest_stored_version,
-                   get_previous_stored_version)
+from utils import (
+    check_python_version,
+    search_for_package_file,
+    list_compressed_file_content,
+    extract_paths_from_7z_listing,
+    extract_compressed_file_content,
+    sanitize_name,
+    remove_readonly_flag,
+    process_errors,
+    ensure_sevenzip,
+    compress_directory_content,
+    delete_old_caches,
+    get_latest_stored_version,
+    get_previous_stored_version,
+)
 
 
 class Config(BaseModel):
@@ -46,12 +50,14 @@ class Config(BaseModel):
     compress_output: bool
     compressed_file_name: str | None
 
-    @field_validator("package_path",
-                     "game_path",
-                     "tools_path",
-                     "output_path",
-                     "log_file",
-                     mode="after")
+    @field_validator(
+        "package_path",
+        "game_path",
+        "tools_path",
+        "output_path",
+        "log_file",
+        mode="after",
+    )
     @classmethod
     def sanitize_path(cls,
                       value: str | None) -> str | None:
@@ -75,44 +81,62 @@ def error_sink(message):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-v", "--version",
-                        action="version",
-                        version=f"%(prog)s v{__version__}")
+    parser.add_argument(
+        "-v", "--version",
+        action="version",
+        version=f"%(prog)s v{__version__}",
+    )
 
-    parser.add_argument("--package-path",
-                        required=False,
-                        help="Path to package directory",
-                        type=str)
-    parser.add_argument("--game-path",
-                        required=False,
-                        help="Path to game directory",
-                        type=str)
-    parser.add_argument("--archive-password",
-                        required=False,
-                        help="Password of the package compressed file",
-                        type=str)
-    parser.add_argument("--output-path",
-                        required=False,
-                        help="Path to output the steamless executable",
-                        type=str)
-    parser.add_argument("--compress-output",
-                        action="store_true",
-                        help="Compress output files. Only works with package paths.")
-    parser.add_argument("--compressed-file-name",
-                        required=False,
-                        help="Compressed output file name.",
-                        type=str)
+    parser.add_argument(
+        "--package-path",
+        required=False,
+        help="Path to package directory",
+        type=str,
+    )
+    parser.add_argument(
+        "--game-path",
+        required=False,
+        help="Path to game directory",
+        type=str,
+    )
+    parser.add_argument(
+        "--archive-password",
+        required=False,
+        help="Password of the package compressed file",
+        type=str,
+    )
+    parser.add_argument(
+        "--output-path",
+        required=False,
+        help="Path to output the steamless executable",
+        type=str,
+    )
+    parser.add_argument(
+        "--compress-output",
+        action="store_true",
+        help="Compress output files. Only works with package paths.",
+    )
+    parser.add_argument(
+        "--compressed-file-name",
+        required=False,
+        help="Compressed output file name.",
+        type=str,
+    )
 
     # noinspection PyTypeChecker
-    parser.add_argument("--log-level",
-                        help="How much stuff is logged.",
-                        default="INFO",
-                        choices=["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"],
-                        type=str.upper)
-    parser.add_argument("--log-file",
-                        help="Where to store the log file. By default in the program dir.",
-                        required=False,
-                        type=str)
+    parser.add_argument(
+        "--log-level",
+        help="How much stuff is logged.",
+        default="INFO",
+        choices=["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"],
+        type=str.upper,
+    )
+    parser.add_argument(
+        "--log-file",
+        help="Where to store the log file. By default in the program dir.",
+        required=False,
+        type=str,
+    )
 
     args = parser.parse_args()
 
@@ -158,13 +182,15 @@ def main():
         logger.error("Must specify --output-path when using --package-path")
         sys.exit(1)
 
-    thread = threading.Thread(target=delete_old_caches,
-                              kwargs={
-                                  "product_name": "apply-steamless",
-                                  "current_version": __version__,
-                              },
-                              daemon=False,
-                              name="cache_deleter")
+    thread = threading.Thread(
+        target=delete_old_caches,
+        kwargs={
+            "product_name": "apply-steamless",
+            "current_version": __version__,
+        },
+        daemon=False,
+        name="cache_deleter",
+    )
     thread.start()
 
     for specified_path in (config.package_path, config.game_path):
@@ -197,10 +223,12 @@ def start_processing(config: Config) -> None:
     elif config.package_path is not None:
         parent_path = tmp_dir
         working_path = config.package_path
-        executable_list = process_package_dir(package_path=config.package_path,
-                                              output_path=tmp_dir,
-                                              sevenzip_path=sevenzip_path,
-                                              archive_password=config.archive_password)
+        executable_list = process_package_dir(
+            package_path=config.package_path,
+            output_path=tmp_dir,
+            sevenzip_path=sevenzip_path,
+            archive_password=config.archive_password,
+        )
     else:
         # We should never get here, but just in case...
         logger.critical("No game path or package path specified.")
@@ -212,15 +240,19 @@ def start_processing(config: Config) -> None:
 
     logger.debug(f"Executables: {executable_list}")
 
-    if not update_steamless(sevenzip_path=sevenzip_path,
-                            tools_path=config.tools_path):
+    if not update_steamless(
+        sevenzip_path=sevenzip_path,
+        tools_path=config.tools_path,
+    ):
         sys.exit(1)
 
     found_at_least_one_executable: bool = False
     for exe in executable_list:
-        if not remove_steamstub(filepath=exe,
-                                steamless_path=os.path.join(config.tools_path, "steamless"),
-                                parent_path=parent_path):
+        if not remove_steamstub(
+            filepath=exe,
+            steamless_path=os.path.join(config.tools_path, "steamless"),
+            parent_path=parent_path,
+        ):
             if config.package_path is not None:
                 logger.info(f"Removing extracted executable: {exe}")
                 os.remove(remove_readonly_flag(exe))
@@ -268,9 +300,11 @@ def start_processing(config: Config) -> None:
             if os.path.isfile(output_filepath):
                 os.rename(output_filepath, output_filepath + ".bak")
 
-            if compress_directory_content(sevenzip_path=sevenzip_path,
-                                          output_path=os.path.join(config.output_path, config.compressed_file_name),
-                                          directory_to_compress=tmp_dir):
+            if compress_directory_content(
+                sevenzip_path=sevenzip_path,
+                output_path=os.path.join(config.output_path, config.compressed_file_name),
+                directory_to_compress=tmp_dir,
+            ):
                 try:
                     os.remove(output_filepath + ".bak")
                 except FileNotFoundError:
@@ -314,10 +348,12 @@ def process_package_dir(package_path: str,
         logger.critical("No package file found in the specified directory.")
         sys.exit(2)
 
-    package_file_content = list_compressed_file_content(sevenzip_path=sevenzip_path,
-                                                        compressed_file_path=main_package_file,
-                                                        patterns=["*.exe"],
-                                                        archive_password=archive_password)
+    package_file_content = list_compressed_file_content(
+        sevenzip_path=sevenzip_path,
+        compressed_file_path=main_package_file,
+        patterns=["*.exe"],
+        archive_password=archive_password,
+    )
 
     logger.debug(f"Package file content: {package_file_content}")
 
@@ -349,11 +385,13 @@ def process_package_dir(package_path: str,
 
     logger.info("Extracting executables...")
 
-    tmp_dir = extract_compressed_file_content(sevenzip_path=sevenzip_path,
-                                              compressed_file_path=main_package_file,
-                                              file_list=game_exes,
-                                              archive_password=archive_password,
-                                              output_path=output_path)
+    tmp_dir = extract_compressed_file_content(
+        sevenzip_path=sevenzip_path,
+        compressed_file_path=main_package_file,
+        file_list=game_exes,
+        archive_password=archive_password,
+        output_path=output_path,
+    )
 
     if tmp_dir is None:
         sys.exit(1)
@@ -464,8 +502,10 @@ def update_steamless(sevenzip_path: str,
             last_time = float(stream.read())
 
         if time.time() - last_time <= 24 * 60 * 60:
-            logger.info("Update check for Steamless has been performed recently (less than 24 hours ago), "
-                        "skipping updating it...")
+            logger.info(
+                "Update check for Steamless has been performed recently (less than 24 hours ago), "
+                "skipping updating it...",
+            )
 
             return True
 
@@ -480,9 +520,11 @@ def update_steamless(sevenzip_path: str,
         else:
             current_version = None
 
-        success: bool = get_latest_steamless(sevenzip_path=sevenzip_path,
-                                             tools_path=tools_path,
-                                             current_version=current_version)
+        success: bool = get_latest_steamless(
+            sevenzip_path=sevenzip_path,
+            tools_path=tools_path,
+            current_version=current_version,
+        )
 
         logger.info("Finished updating Steamless.")
 
@@ -493,8 +535,10 @@ def update_steamless(sevenzip_path: str,
 
 def download_all_steamless_versions(sevenzip_path: str,
                                     tools_path: str) -> bool:
-    response: Response = SESSION.get("https://api.github.com/repos/atom0s/Steamless/releases",
-                                     allow_redirects=True)
+    response: Response = SESSION.get(
+        "https://api.github.com/repos/atom0s/Steamless/releases",
+        allow_redirects=True,
+    )
     response.raise_for_status()
 
     json_response: list[dict] = response.json()
@@ -542,13 +586,17 @@ def get_latest_steamless(sevenzip_path: str,
                          current_version: str | None = None) -> bool:
     if current_version is None:
         logger.info("Downloading Steamless...")
-        return download_all_steamless_versions(sevenzip_path=sevenzip_path,
-                                               tools_path=tools_path)
+        return download_all_steamless_versions(
+            sevenzip_path=sevenzip_path,
+            tools_path=tools_path,
+        )
     else:
         logger.info("Checking for new version...")
 
-    response: Response = SESSION.get("https://api.github.com/repos/atom0s/Steamless/releases/latest",
-                                     allow_redirects=True)
+    response: Response = SESSION.get(
+        "https://api.github.com/repos/atom0s/Steamless/releases/latest",
+        allow_redirects=True,
+    )
     response.raise_for_status()
 
     json_response: dict = response.json()
@@ -615,8 +663,10 @@ def download_steamless(release_data: dict,
                 time.sleep(tries)
                 continue
 
-    download_path: str = os.path.join(tools_path, "temp",
-                                      sanitize_name(f"Steamless-win_{release_version}{package_extension}"))
+    download_path: str = os.path.join(
+        tools_path, "temp",
+        sanitize_name(f"Steamless-win_{release_version}{package_extension}"),
+    )
 
     with open(download_path, "wb") as stream:
         for chunk in stream_response.iter_content(4096):
@@ -628,19 +678,25 @@ def download_steamless(release_data: dict,
         float_online_mtime = parsedate_to_datetime(online_mtime).timestamp()
         os.utime(download_path, times=(float_online_mtime, float_online_mtime))
 
-    tmp_dir = extract_compressed_file_content(sevenzip_path=sevenzip_path,
-                                              compressed_file_path=download_path,
-                                              file_list=[],
-                                              output_path=os.path.join(tools_path,
-                                                                       "temp",
-                                                                       "steamless",
-                                                                       sanitize_name(release_version)))
+    tmp_dir = extract_compressed_file_content(
+        sevenzip_path=sevenzip_path,
+        compressed_file_path=download_path,
+        file_list=[],
+        output_path=os.path.join(
+            tools_path,
+            "temp",
+            "steamless",
+            sanitize_name(release_version),
+        ),
+    )
 
     if tmp_dir is None:
         return False
 
-    shutil.move(os.path.join(tools_path, "temp", "steamless", sanitize_name(release_version)),
-                os.path.join(tools_path, "steamless", sanitize_name(release_version)))
+    shutil.move(
+        os.path.join(tools_path, "temp", "steamless", sanitize_name(release_version)),
+        os.path.join(tools_path, "steamless", sanitize_name(release_version)),
+    )
 
     os.remove(download_path)
 
@@ -672,28 +728,34 @@ def remove_steamstub(filepath: str,
         steamless_cmd = [
             cli_path,
             "--quiet",
-            filepath
+            filepath,
         ]
 
     try:
-        subprocess.run(steamless_cmd,
-                       check=True,
-                       encoding="utf-8",
-                       capture_output=True,
-                       text=True)
+        subprocess.run(
+            steamless_cmd,
+            check=True,
+            encoding="utf-8",
+            capture_output=True,
+            text=True,
+        )
     except subprocess.CalledProcessError as e:
-        logger.warning(f"Failed to remove Steam Stub from: \"{os.path.relpath(filepath, parent_path)}\" with "
-                       f"Steamless {version}.")
+        logger.warning(
+            f"Failed to remove Steam Stub from: \"{os.path.relpath(filepath, parent_path)}\" with "
+            f"Steamless {version}.",
+        )
         logger.opt(exception=True).debug("Traceback:")
 
         if e.returncode != 1:
             previous_version = get_previous_stored_version(path_to_check=steamless_path, version_to_use=version)
             if previous_version is not None:
                 logger.info(f"Trying with Steamless version: {previous_version}...")
-                return remove_steamstub(filepath=filepath,
-                                        steamless_path=steamless_path,
-                                        parent_path=parent_path,
-                                        version_to_use=previous_version)
+                return remove_steamstub(
+                    filepath=filepath,
+                    steamless_path=steamless_path,
+                    parent_path=parent_path,
+                    version_to_use=previous_version,
+                )
         else:
             if "No plugins were loaded; be sure to fully extract Steamless before running!" in e.stderr:
                 logger.critical("STEAMLESS: No plugins were loaded; be sure to fully extract Steamless before running!")

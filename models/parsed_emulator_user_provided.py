@@ -1,21 +1,23 @@
 from dataclasses import dataclass
 
-from models.emulator_user_provided import (UserProvidedEmuConfigOverlayAppearance,
-                                           UserProvidedEmuConfigUserGeneral,
-                                           UserProvidedEmuConfigUserSaves,
-                                           UserProvidedEmuConfigOverlayHotkeys,
-                                           UserProvidedEmuConfigMainStats,
-                                           UserProvidedEmuConfigMainConnectivity,
-                                           UserProvidedEmuConfigMainMisc,
-                                           UserProvidedEmuConfigOverlayGeneral,
-                                           UserProvidedEmuConfigAppCloudSaveGeneral,
-                                           UserProvidedEmuConfigAppCloudSaveWin,
-                                           UserProvidedEmuConfigAppCloudSaveLinux,
-                                           UserProvidedEmuConfigAppGeneral,
-                                           UserProvidedEmuConfigAppPaths,
-                                           UserProvidedEmuConfigAppController,
-                                           UserProvidedEmuConfigAppDLC,
-                                           UserProvidedEmuConfigMainGeneral)
+from models.emulator_user_provided import (
+    UserProvidedEmuConfigAppCloudSaveGeneral,
+    UserProvidedEmuConfigAppCloudSaveLinux,
+    UserProvidedEmuConfigAppCloudSaveWin,
+    UserProvidedEmuConfigAppController,
+    UserProvidedEmuConfigAppDLC,
+    UserProvidedEmuConfigAppGeneral,
+    UserProvidedEmuConfigAppPaths,
+    UserProvidedEmuConfigMainConnectivity,
+    UserProvidedEmuConfigMainGeneral,
+    UserProvidedEmuConfigMainMisc,
+    UserProvidedEmuConfigMainStats,
+    UserProvidedEmuConfigOverlayAppearance,
+    UserProvidedEmuConfigOverlayGeneral,
+    UserProvidedEmuConfigOverlayHotkeys,
+    UserProvidedEmuConfigUserGeneral,
+    UserProvidedEmuConfigUserSaves,
+)
 
 
 # These are the parsed configuration data the user has provided; we allow None in each field because the user can

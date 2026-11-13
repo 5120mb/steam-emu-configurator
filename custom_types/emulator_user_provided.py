@@ -1,9 +1,11 @@
 from typing import TypedDict
 
-from models.parsed_emulator_user_provided import (ParsedUserProvidedEmuConfigUser,
-                                                  ParsedUserProvidedEmuConfigOverlay,
-                                                  ParsedUserProvidedEmuConfigMain,
-                                                  ParsedUserProvidedEmuConfigApp)
+from models.parsed_emulator_user_provided import (
+    ParsedUserProvidedEmuConfigApp,
+    ParsedUserProvidedEmuConfigMain,
+    ParsedUserProvidedEmuConfigOverlay,
+    ParsedUserProvidedEmuConfigUser,
+)
 
 
 class ParseEmuConfigArgsResult(TypedDict):
