@@ -352,7 +352,7 @@ def get_emulator(tools_path: str,
 
     assets_to_download: list[dict[str, str]] = []
     for asset in json_response["assets"]:
-        if asset["name"] == "emu-win-release.7z":
+        if asset["name"] == "emu-win-release.7z" or asset["name"] == "emu-win-release-vs26.7z":
             logger.info("Getting new version filename for Windows...")
             new_version_name = sanitize_name(f"emu-win-release_{latest_version}.7z")
 
