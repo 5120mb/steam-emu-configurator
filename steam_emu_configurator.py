@@ -3021,20 +3021,33 @@ def download_achievements(stat_info: SteamStatInfo,
             logger.error(f"Color icon not available for achievement: {achievement.name}.")
             achievement_info.icon = None
         else:
-            try:
-                response_color = get_with_retry(url=achievement.icon)
+            retries = 0
+            while retries < 2:
+                try:
+                    retries += 1
 
-                with open(file_path_color, "wb") as stream:
-                    stream.write(response_color.content)
+                    response_color = get_with_retry(url=achievement.icon)
 
-                online_mtime: str | None = response_color.headers.get("last-modified")
-                if online_mtime is not None:
-                    parsed_online_mtime = parsedate_to_datetime(online_mtime).timestamp()
-                    os.utime(file_path_color, times=(parsed_online_mtime, parsed_online_mtime))
+                    with open(file_path_color, "wb") as stream:
+                        stream.write(response_color.content)
 
-                if cache_opts.cache_game_info:
-                    custom_copy(file_path_color, color_icon_cache_path)
-            except HTTPError:
+                    online_mtime: str | None = response_color.headers.get("last-modified")
+                    if online_mtime is not None:
+                        parsed_online_mtime = parsedate_to_datetime(online_mtime).timestamp()
+                        os.utime(file_path_color, times=(parsed_online_mtime, parsed_online_mtime))
+
+                    if cache_opts.cache_game_info:
+                        custom_copy(file_path_color, color_icon_cache_path)
+
+                    break
+                except HTTPError:
+                    # Fix Steam old achievement URLs, they seem to have updated the domain but are still serving old
+                    # cached data
+                    achievement.icon = achievement.icon.replace(
+                        "https://steamcdn-a.akamaihd.net/steamcommunity/public/",
+                        "https://shared.fastly.steamstatic.com/community_assets/",
+                    )
+            else:
                 logger.error(f"Error downloading color icon for \"{achievement.name}\".")
                 achievement_info.icon = None
 
@@ -3055,22 +3068,37 @@ def download_achievements(stat_info: SteamStatInfo,
             else:
                 achievement_info.icongray = None
         else:
-            try:
-                response_gray = get_with_retry(url=achievement.icongray)
+            retries = 0
+            while retries < 2:
+                try:
+                    retries += 1
 
-                with open(file_path_gray, "wb") as stream:
-                    stream.write(response_gray.content)
+                    response_gray = get_with_retry(url=achievement.icongray)
 
-                online_mtime: str | None = response_gray.headers.get("last-modified")
-                if online_mtime is not None:
-                    parsed_online_mtime = parsedate_to_datetime(online_mtime).timestamp()
-                    os.utime(file_path_gray, times=(parsed_online_mtime, parsed_online_mtime))
+                    with open(file_path_gray, "wb") as stream:
+                        stream.write(response_gray.content)
 
-                if cache_opts.cache_game_info:
-                    custom_copy(file_path_gray, gray_icon_cache_path)
-            except HTTPError:
-                logger.warning(f"Error downloading gray icon for {achievement.name}. Converting from color icon to "
-                               f"grayscale if available...")
+                    online_mtime: str | None = response_gray.headers.get("last-modified")
+                    if online_mtime is not None:
+                        parsed_online_mtime = parsedate_to_datetime(online_mtime).timestamp()
+                        os.utime(file_path_gray, times=(parsed_online_mtime, parsed_online_mtime))
+
+                    if cache_opts.cache_game_info:
+                        custom_copy(file_path_gray, gray_icon_cache_path)
+
+                    break
+                except HTTPError:
+                    # Fix Steam old achievement URLs, they seem to have updated the domain but are still serving old
+                    # cached data
+                    achievement.icongray = achievement.icongray.replace(
+                        "https://steamcdn-a.akamaihd.net/steamcommunity/public/",
+                        "https://shared.fastly.steamstatic.com/community_assets/",
+                    )
+            else:
+                logger.warning(
+                    f"Error downloading gray icon for {achievement.name}. Converting from color icon to "
+                    f"grayscale if available...",
+                )
                 if achievement_info.icon is not None:
                     logger.warning("Gray icon not available, converting color icon to grayscale...")
                     if get_gray_icon_from_normal(color_icon=file_path_color,
