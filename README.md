@@ -10,24 +10,27 @@ When using a Linux system, `git` is required to be installed as there is no port
 ## Usage
 
 ```
-usage: steam-emu-configurator.exe [-h] [-v] [--appid APPID] [--output-dir OUTPUT_DIR] [--game-dir GAME_DIR]
-                                  [--package-dir PACKAGE_DIR] [--api-key API_KEY] [--preferred-language LANGUAGE]
-                                  [--do-not-ask] [--include-emulator] [--rename-package-dir] [--only-rename]
+usage: steam-emu-configurator.exe [-h] [-v] [--help-advanced] [--appid APPID] [--output-dir OUTPUT_DIR]
+                                  [--game-dir GAME_DIR] [--package-dir PACKAGE_DIR] [--api-key API_KEY]
+                                  [--preferred-language LANGUAGE] [--do-not-ask] [--include-emulator]
+                                  [--rename-package-dir] [--only-rename] [--add-language-flag-on-rename]
                                   [--add-early-access-label] [--custom-early-access-label CUSTOM_EARLY_ACCESS_LABEL]
                                   [--output-dir-is-base] [--archive-password ARCHIVE_PASSWORD] [--use-steam-for-stats]
                                   [--fallback-to-steam] [--fail-if-no-dll] [--compress-config]
                                   [--compressed-filename COMPRESSED_FILENAME] [--skip-achievements] [--skip-stats]
                                   [--update-config-package] [--add-user-config] [--cache-game-info]
                                   [--cache-location CACHE_LOCATION] [--force-achievement-icon-download]
+                                  [--copy-cache-back] [--include-dll [INCLUDE_DLL ...]]
                                   [--log-level {TRACE,DEBUG,INFO,SUCCESS,WARNING,ERROR,CRITICAL}]
                                   [--log-file LOG_FILE]
 
 Build Steam emulator configuration
 
-options:
+Options:
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
-  --appid APPID         Game's Steam appid. If not specified it is extracted from the provided directories if
+  --help-advanced       Show help for the extra arguments.
+  --appid APPID         Game's Steam app ID. If not specified it is extracted from the provided directories if
                         possible.
   --output-dir OUTPUT_DIR
                         Where to store the configuration. If not specified it is inferred based on the provided
@@ -39,10 +42,13 @@ options:
   --preferred-language LANGUAGE
                         The preferred language to use to retrieve achievements. Not all are supported, it fallbacks to
                         English.
-  --do-not-ask          Don't ask for the Steam appid when it can't be automatically extracted and simply exit.
+  --do-not-ask          Don't ask for the Steam app ID when it can't be automatically extracted and simply exit.
   --include-emulator    Include the emulator files in the package.
   --rename-package-dir  Rename package directory to the game's name and release year. E.g. 'The Game (2025)'.
   --only-rename         Do not write anything, only rename.
+  --add-language-flag-on-rename
+                        On renaming when a language is provided if the game doesn't support said language (nor their
+                        fallback) an "[eng]" flag will be appended to the name.
   --add-early-access-label, --add-ea-label
                         Add early access label to the new name if game is early access.
   --custom-early-access-label, --custom-ea-label CUSTOM_EARLY_ACCESS_LABEL
@@ -70,6 +76,10 @@ options:
   --force-achievement-icon-download
                         When using --cache-game-info, force download the icon files for the achievements and cache
                         them.
+  --copy-cache-back     Copy downloaded icons back to the cache when they exist in the existing config but not in the
+                        cache location. This is only useful when updating old configs
+  --include-dll [INCLUDE_DLL ...]
+                        Include the specified DLL/SO files into the configuration for the emulator to load.
   --log-level {TRACE,DEBUG,INFO,SUCCESS,WARNING,ERROR,CRITICAL}
                         How much stuff is logged.
   --log-file LOG_FILE   Where to store the log file. By default in the program dir.
