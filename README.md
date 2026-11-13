@@ -77,14 +77,14 @@ options:
 
 ## How it works
 
-First we need a Steam API key, either by specifying it with `--api-key` or by setting the `STEAM_API_KEY` env var.
+First, we need a Steam API key, either by specifying it with `--api-key` or by setting the `STEAM_API_KEY` env var.
 
-The app needs either the `game-dir` or `package-dir` to be specified. Use `game-dir` if the directoy contains the
+The app needs either the `game-dir` or `package-dir` to be specified. Use `game-dir` if the directory contains the
 extracted/installed game, and `package-dir` if it contains the packaged (compressed) game files.
 
 The difference between the two is that:
 
-- With `game-dir` we don't even try to extract the build ID (which in fact is not used at the moment) and the only
+- With `game-dir` we don't even try to extract the build ID (which in fact is not used at the moment), and the only
   method to get the appid is by reading the `steam_appid.txt` file if one exists.
 - With `package-dir` we can extract the compressed files and use the manifest files, the `steam_appid.txt` file and the
   compressed filenames to search for the appid and buildid, and we need to differentiate between the two to figure out a
@@ -99,8 +99,8 @@ To include the emulator files in the package, use `--include-emulator`.
 
 The package directory (if specified) can be renamed to the game's name and release year with `--rename-package-dir`, and
 an early access label can be added with `--add-early-access-label` which can be customized with
-`--custom-early-access-label`. Additionally to the game's name and release year if the preferred language (or its
-fallback if any) is not supported by the game " [eng]" is appended to the name.
+`--custom-early-access-label`. In addition to the game's name and release year if the preferred language (or its
+fallback if any) is not supported by the game, " [eng]" is appended to the name.
 
 > So an early access game that doesn't support Spanish will be named: `The Game (2025) [eng] [Early Access]`
 
@@ -114,20 +114,18 @@ This argument has no effect is no output directory is specified.
 
 When using `--package-dir` you can also specify `--archive-password` which can be used to open the compressed files.
 
-We can fall back to Steam for stats retrieval if the game is not found on the GitHub stats package created by
-nemirtingas
+We can fall back to Steam for stat retrieval if the game is not found on the GitHub stats package created by nemirtingas
 by using `--fallback-to-steam` or directly use it with `--use-steam-for-stats` and skip the GitHub package.
 
-If no Steam DLL/SO file is found we can fail earlier with `--fail-if-no-dll`, otherwise everything is created normally
-though the game won't even use the emulator so no need for any configuration.
+If no Steam DLL/SO file is found, we can fail earlier with `--fail-if-no-dll`, otherwise everything is created normally,
+though the game won't even use the emulator, so no need for any configuration.
 
 We can compress the configuration directory with `--compress-config` and specify the name of the resulting compressed
 file with `--compressed-filename`. This doesn't work when the output directory is either the `game-dir` or the
 `package-dir`. The compressed file will be a 7z file.
 
-We can skip achievements with `--skip-achievements` and stats with `--skip-stats`.
-If `--update-config-package` is specified, if a configuration package is found it will be extracted and its contents
-updated.
+We can skip achievements with `--skip-achievements` and stats with `--skip-stats`. If `--update-config-package` is
+specified, if a configuration package is found, it will be extracted and its contents updated.
 
 By default, the app doesn't add the user config to the configuration files, we can do it with `--add-user-config`, the
 only configuration it will contain is the language.
